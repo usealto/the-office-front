@@ -1,0 +1,48 @@
+<ng-select
+  [items]="data"
+  [disabled]="disabled"
+  [multiple]="multiple"
+  [bindValue]="returnValue"
+  [bindLabel]="displayLabel"
+  [placeholder]="placeholder"
+  [closeOnSelect]="!multiple"
+  [(ngModel)]="selectedItems"
+  [searchable]="false"
+  (change)="selectChange.emit(selectedItems)"
+  [dropdownPosition]="position"
+  [appendTo]="appendTo"
+  #select
+>
+  <ng-template *ngIf="enableSearch" ng-header-tmp>
+    <input
+      data-cy="dropdownInput"
+      style="width: 100%; line-height: 24px"
+      type="text"
+      (input)="search(select, $event)"
+    />
+  </ng-template>
+
+  <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+    <div style="padding-bottom: 0.3rem">
+      {{ placeholder }} <span class="alto-badge ms-1">{{ items.length }}</span>
+    </div>
+  </ng-template>
+  <ng-template ng-option-tmp let-item="item">
+    <span *ngIf="isColored" class="alto-badge badge-option" [style]="item.id | teamColor">
+      {{ item[displayLabel] }}
+    </span>
+    <span
+      data-cy="dropdownItems"
+      *ngIf="!isColored"
+      class="me-4 text-truncate"
+      [ngClass]="{
+        'score-filter-pill-green': item[displayLabel].includes('>'),
+        'score-filter-pill-blue': item[displayLabel].includes('\<'),
+        'alto-badge': item[displayLabel].includes('>') || item[displayLabel].includes('\<')
+      }"
+    >
+      {{ item[displayLabel] }}
+    </span>
+    <i class="bi bi-check-circle-fill"></i>
+  </ng-template>
+</ng-select>

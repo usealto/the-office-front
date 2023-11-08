@@ -1,0 +1,39 @@
+:host {
+  display: inline-block;
+  min-width: 12rem;
+  vertical-align: bottom;
+}
+:host ::ng-deep {
+  .ng-select.right .ng-dropdown-panel {
+    right: 0;
+    left: auto;
+  }
+  .ng-select .ng-select-container {
+    background-color: transparent;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+}
+.alto-badge {
+  background-color: var(--bs-primary);
+  color: white;
+  &.badge-option {
+    font-size: 1.143rem;
+    height: 1.714rem;
+    margin-right: 1.4rem;
+  }
+}
+.bi {
+  position: absolute;
+  right: 0.5rem;
+}
+
+.score-filter-pill-blue {
+  color: var(--bs-primary);
+  background: #eff8ff;
+}
+
+.score-filter-pill-green {
+  color: var(--bs-success);
+  background: #ecfdf3;
+}

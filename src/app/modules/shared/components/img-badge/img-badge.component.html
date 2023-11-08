@@ -1,0 +1,12 @@
+<ng-template #toolTip>
+  {{ getUserName(user) }}
+  <br />
+  {{ user?.email }}
+</ng-template>
+<img
+  [ngbTooltip]="toggleTooltip ? toolTip : null"
+  src="{{ thumb }}"
+  alt="Profile Picture"
+  [style]="getStyle(size)"
+  [ngClass]="{ 'white-border': hasBorder }"
+/>

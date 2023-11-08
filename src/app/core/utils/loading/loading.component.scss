@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+.mask {
+  position: fixed;
+  background-color: #ffffffdc;
+  height: 100vh;
+  left: 0;
+  right: 0;
+  top: 0;
+  text-align: center;
+  z-index: 150;
+}
+.loader-container {
+  width: 15rem;
+  padding: 12px 0;
+  margin: 45vh auto;
+  text-align: center;
+  p {
+    margin: 1.143rem 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+}
+
+.spinner-border {
+  border-right-color: #ec644a;
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

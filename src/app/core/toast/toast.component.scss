@@ -1,0 +1,28 @@
+ngb-toast {
+  border-radius: 0.333rem;
+  padding: 1.333rem;
+  width: 400px;
+}
+:host ::ng-deep {
+  .toast-body {
+    padding: 0;
+  }
+}
+.success,
+a {
+  color: var(--success-600) !important;
+}
+.success {
+  background-color: var(--success-50);
+  border: 1px solid var(--success-100);
+}
+
+.danger {
+  font-weight: 400 !important;
+  color: var(--error-600) !important;
+  background-color: var(--error-50);
+  border: 1px solid var(--error-100);
+  a {
+    color: var(--error-600) !important;
+  }
+}

@@ -1,0 +1,113 @@
+:root {
+  --alto-panel-padding-x: 1.7rem;
+  --alto-panel-padding-y: 1.4rem;
+  --alto-page-padding: 40px 42px;
+  @media screen and (min-width: 768px) {
+    --alto-page-padding: 40px 42px;
+  }
+  @media screen and (min-width: 992px) {
+    --alto-page-padding: 40px 82px;
+  }
+  @media screen and (min-width: 1200px) {
+    --alto-page-padding: 40px 42px;
+  }
+  @media screen and (min-width: 1400px) {
+    --alto-page-padding: 32px 52px;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  :root {
+    // --bs-body-font-size: 14px;
+  }
+  // table,
+  // .header-item {
+  //   font-size: 13px;
+  // }
+}
+
+body {
+  width: calc(100vw - 17px);
+  padding: 0 !important;
+}
+html,
+input,
+select,
+optgroup,
+textarea {
+  font-size: var(--bs-body-font-size);
+}
+
+a {
+  text-decoration: none;
+  color: var(--gray-900);
+}
+p {
+  margin: 0;
+}
+h1 {
+  font-size: 1.333rem;
+  font-weight: 700;
+}
+h2 {
+  font-size: 1.3333rem;
+  font-weight: 600;
+}
+h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+hr {
+  border-top: 1px solid var(--gray-300);
+}
+
+@media screen and (max-width: 820px) {
+  h1 {
+    font-size: 1.167rem;
+  }
+  h2 {
+    font-size: 1.1667rem;
+  }
+  h3 {
+    font-size: 0.8333rem;
+  }
+}
+
+// --- UTILITIES
+
+.link {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.fw-medium {
+  font-weight: 600 !important;
+}
+
+.bg-orange {
+  background-color: var(--bs-orange);
+}
+.text-orange {
+  color: var(--bs-orange);
+}
+.text-purple {
+  color: var(--purple-700);
+}
+.text-blue {
+  color: var(--primary-700);
+}
+
+.w-33 {
+  width: 33%;
+}
+// Creates a width class for each multiple of 5
+@for $wdth from 1 through 20 {
+  .w-#{$wdth*5} {
+    width: #{$wdth * 5} + '%';
+  }
+}
