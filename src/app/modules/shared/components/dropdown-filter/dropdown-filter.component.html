@@ -15,7 +15,6 @@
 >
   <ng-template *ngIf="enableSearch" ng-header-tmp>
     <input
-      data-cy="dropdownInput"
       style="width: 100%; line-height: 24px"
       type="text"
       (input)="search(select, $event)"
@@ -32,7 +31,6 @@
       {{ item[displayLabel] }}
     </span>
     <span
-      data-cy="dropdownItems"
       *ngIf="!isColored"
       class="me-4 text-truncate"
       [ngClass]="{

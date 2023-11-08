@@ -11,6 +11,10 @@ import { AltoRoutes } from './modules/shared/constants/routes';
 import { noSmallScreen } from './no-small-screen.guard';
 import { canActivateAdmin } from './roles.guard';
 import { FlagBasedPreloadingStrategy } from './core/interceptors/module-loading-strategy';
+import { CompaniesComponent } from './modules/companies/companies.component';
+import { CompaniesCreateComponent } from './modules/companies-create/companies-create.component';
+import { CompanyUsersComponent } from './modules/company-users/company-users.component';
+import { CompanyUserComponent } from './modules/company-user/company-user.component';
 
 const routes: Routes = [
   {
@@ -22,7 +26,23 @@ const routes: Routes = [
     children: [
       {
         path: AltoRoutes.home,
-        component: NoSmallScreenComponent,
+        component: CompaniesComponent,
+      },
+      {
+        path: AltoRoutes.companies + '/create',
+        component: CompaniesCreateComponent,
+      },
+      {
+        path: AltoRoutes.companies + '/:id',
+        component: CompaniesCreateComponent,
+      },
+      {
+        path: AltoRoutes.companies + '/:id/users',
+        component: CompanyUsersComponent,
+      },
+      {
+        path: AltoRoutes.companies + '/:companyId/users/:userId',
+        component: CompanyUserComponent,
       },
     ],
     canActivate: [AuthGuard, noSmallScreen],

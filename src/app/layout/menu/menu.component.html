@@ -1,6 +1,7 @@
 <div class="logo">
   <a [routerLink]="['/', AltoRoutes.home]">
     <img width="20" src="assets/img/favicon.png" alt="Alto Logo" />
+    <p class="">Admin</p>
   </a>
 </div>
 
@@ -8,7 +9,6 @@
   <div>
     <div ngbTooltip="{{ I18ns.menu.home }}" placement="right" tooltipClass="menu-tooltip-class">
       <a
-        data-cy="leadMenuHome"
         class="module"
         [routerLink]="'/' + AltoRoutes.home"
         routerLinkActive="menu-selected"
@@ -22,7 +22,6 @@
   <div class="bottom-block">
     <ng-template #popContent>
       <a
-        data-cy="profile"
         [routerLink]="AltoRoutes.profile"
       >
         <div><i class="bi bi-person"></i>{{ I18ns.menu.profile }}</div>
@@ -32,7 +31,6 @@
       </a>
     </ng-template>
     <alto-img-badge
-      data-cy="profileImgBadge"
       [toggleTooltip]="toggleTooltip"
       class="img-badge-menu"
       type="button"

@@ -23,6 +23,10 @@ import { NoSmallScreenComponent } from './layout/no-small-screen/no-small-screen
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { SharedModule } from './modules/shared/shared.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { CompaniesComponent } from './modules/companies/companies.component';
+import { CompaniesCreateComponent } from './modules/companies-create/companies-create.component';
+import { CompanyUsersComponent } from './modules/company-users/company-users.component';
+import { CompanyUserComponent } from './modules/company-user/company-user.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +34,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     MenuComponent,
     NotFoundComponent,
     NoSmallScreenComponent,
+    CompaniesComponent,
+    CompaniesCreateComponent,
+    CompanyUsersComponent,
+    CompanyUserComponent,
   ],
   imports: [
     ApiModule,

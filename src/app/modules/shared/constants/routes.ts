@@ -1,6 +1,6 @@
 export const AltoRoutes = {
   home: 'home',
-  settings: 'settings',
+  companies: 'companies',
   profile: 'profile',
   noSmallScreen: 'screen_too_small',
   notFound: '404',

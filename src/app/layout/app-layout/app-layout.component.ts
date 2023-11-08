@@ -18,13 +18,4 @@ export class AppLayoutComponent implements OnInit {
       environment.production ? 500 : 500,
     );
   }
-
-  darkMode() {
-    if (this.i) {
-      document.getElementsByTagName('body')[0].classList.add('dark-theme');
-    } else {
-      document.getElementsByTagName('body')[0].classList.remove('dark-theme');
-    }
-    this.i = !this.i;
-  }
 }
