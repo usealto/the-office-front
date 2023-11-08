@@ -18,7 +18,6 @@ import { TranslationModule } from './core/utils/i18n/translation.module';
 import { LoadingModule } from './core/utils/loading/loading.module';
 import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
 import { AppComponent } from './layout/app/app.component';
-import { JwtComponent } from './layout/jwt/jwt.component';
 import { MenuComponent } from './layout/menu/menu.component';
 import { NoSmallScreenComponent } from './layout/no-small-screen/no-small-screen.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
@@ -30,7 +29,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AppLayoutComponent,
     MenuComponent,
     NotFoundComponent,
-    JwtComponent,
     NoSmallScreenComponent,
   ],
   imports: [

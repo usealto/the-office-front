@@ -1,0 +1,47 @@
+<h2>Upload a list of users <span *ngIf="company">from {{company.name}}</span> </h2>
+
+Following the CSV format : <i>firstname,lastname,email,role</i>
+
+<br><br>
+
+<div class="row">
+  <div class="col-auto">
+    <input type="file" (change)="onFileSelected($event)" class="form-control" *ngIf="csvData.length === 0">
+  </div>
+</div>
+
+<table *ngIf="csvData.length > 0">
+  <thead>
+    <tr>
+      <th>email</th>
+      <th>team ShortName</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of csvData">
+      <!-- <td *ngIf="!reg.test(row.email)" class="text-danger">{{row.email}} </td><td *ngIf="!!reg.test(row.email)">{{row.email}} </td> -->
+      <!-- <td><pre>{{row |json}}</pre></td> -->
+      <td>
+        <pre>{{row.email}}</pre>
+      </td>
+      <td>{{row.teamId}}
+        <ng-select [(ngModel)]="row.teamId" [items]="teams" bindLabel="shortName" bindValue="id"></ng-select>
+      </td>
+      <td>
+        <div *ngIf="row.isUploaded">successfully uploaded</div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<button class="btn btn-primary" *ngIf="csvData.length > 0" (click)="upload()">Upload</button>
+<button class="btn btn-danger" *ngIf="csvData.length > 0" (click)="csvData = []">Clear</button>
+
+
+
+<div *ngIf="usersFailed.length > 0">
+  <br><br><br>
+  <p>Users with incorrect emails</p>
+  <pre>{{ usersFailed | json  }}</pre>
+</div>

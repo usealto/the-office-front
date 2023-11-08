@@ -6,13 +6,10 @@ import {
   noSplashScreenResolver,
 } from './app.resolver';
 import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
-import { JwtComponent } from './layout/jwt/jwt.component';
 import { NoSmallScreenComponent } from './layout/no-small-screen/no-small-screen.component';
-import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { AltoRoutes } from './modules/shared/constants/routes';
 import { noSmallScreen } from './no-small-screen.guard';
-import { canActivateLead } from './roles.guard';
-import { startup } from './startup.guard';
+import { canActivateAdmin } from './roles.guard';
 import { FlagBasedPreloadingStrategy } from './core/interceptors/module-loading-strategy';
 
 const routes: Routes = [
@@ -24,50 +21,20 @@ const routes: Routes = [
     },
     children: [
       {
-        path: AltoRoutes.user,
-        canActivate: [startup],
-        children: [
-          {
-            path: AltoRoutes.profile,
-            loadChildren: () => import('./modules/profile/profile.module').then((m) => m.ProfileModule),
-          },
-        ],
-      },
-      {
-        path: AltoRoutes.lead,
-        canActivate: [canActivateLead, startup],
-        children: [
-          { path: '', redirectTo: AltoRoutes.leadHome, pathMatch: 'full' },
-          {
-            path: AltoRoutes.profile,
-            loadChildren: () => import('./modules/profile/profile.module').then((m) => m.ProfileModule),
-          },
-        ],
-      },
-      {
-        path: AltoRoutes.notFound,
-        component: NotFoundComponent,
+        path: AltoRoutes.home,
+        component: NoSmallScreenComponent,
       },
     ],
     canActivate: [AuthGuard, noSmallScreen],
-    canActivateChild: [AuthGuard],
+    canActivateChild: [AuthGuard, canActivateAdmin],
   },
   {
-    path: '',
+    path: AltoRoutes.noSmallScreen,
     canActivate: [AuthGuard],
     resolve: {
       splashscreen: noSplashScreenResolver,
     },
-    children: [
-      {
-        path: 'jwt',
-        component: JwtComponent,
-      },
-      {
-        path: AltoRoutes.noSmallScreen,
-        component: NoSmallScreenComponent,
-      },
-    ],
+    component: NoSmallScreenComponent,
   },
   {
     path: AltoRoutes.translation,

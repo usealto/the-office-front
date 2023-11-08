@@ -27,7 +27,7 @@ export const noSmallScreen: CanActivateFn = () => {
             isTooSmall = false;
             router.navigate(
               tmpUrl === '/screen_too_small' || tmpUrl === ''
-                ? ['/', AltoRoutes.lead, AltoRoutes.userHome]
+                ? ['/', AltoRoutes.home]
                 : [tmpUrl],
             );
             tmpUrl = '';
