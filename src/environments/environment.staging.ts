@@ -5,6 +5,6 @@ export const environment = {
   auth0ClientId: 'HHKbREpvuaqfsSPZwZ0q6WDeY9Pyn0oN',
   airtableURL: 'https://airtable.com/shr0l3s2lxxXhvgao?prefill_Requested+by=',
   audience: 'https://api.usealto.com',
-  trainxURL: 'https://app-staging.usealto.com',
+  trainxURL: 'https://trainx-staging.usealto.com',
   theofficeURL: 'https://theoffice-api-develop.usealto.com',
 };
