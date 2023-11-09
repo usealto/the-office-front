@@ -111,7 +111,7 @@ export class CompanyUserComponent implements OnInit {
               });
 
               
-              this.trainxURL = `${environment.trainxURL}/${this.user.email}?auto=true`;
+              this.trainxURL = `${environment.trainxURL}/impersonate/${this.user.email}?auto=true`;
               
 
             } else {
