@@ -21,10 +21,8 @@
 
   <div class="bottom-block">
     <ng-template #popContent>
-      <a
-        [routerLink]="AltoRoutes.profile"
-      >
-        <div><i class="bi bi-person"></i>{{ I18ns.menu.profile }}</div>
+      <a>
+        <div><i class="bi bi-person"></i>{{ userStore.user.value.firstname }}</div>
       </a>
       <a class="logout" (click)="logOut()">
         <div><i class="bi bi-box-arrow-right"></i>{{ I18ns.menu.disconnect }}</div>

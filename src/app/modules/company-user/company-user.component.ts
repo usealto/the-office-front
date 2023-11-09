@@ -1,4 +1,3 @@
-// import { ShowRawDataModalComponent } from './show-raw-data-modal/show-raw-data-modal.component';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -16,6 +15,7 @@ import {
 import { CompaniesRestService } from 'src/app/modules/companies/service/companies-rest.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/app/core/toast/toast.service';
+import { environment } from 'src/environments/environment';
 
 interface UserFormView {
   firstname: string;
@@ -65,6 +65,7 @@ export class CompanyUserComponent implements OnInit {
   userAuth0!: AuthUserGet;
   user!: UserDtoApi;
   company!: CompanyDtoApi;
+  trainxURL?: string; 
 
   constructor(
     private route: ActivatedRoute,
@@ -96,6 +97,8 @@ export class CompanyUserComponent implements OnInit {
         .pipe(
           tap((users) => {
             if (users.data && users.data[0]) {
+              console.log(users);
+                            
               this.user = users.data[0];
               this.fetchAuth0Data(this.user.email);
 
@@ -106,6 +109,11 @@ export class CompanyUserComponent implements OnInit {
                 email: [this.user.email || '', [Validators.required, Validators.email]],
                 roles: [this.user.roles as unknown as Array<RoleEnumApi>, []],
               });
+
+              
+              this.trainxURL = `${environment.trainxURL}/${this.user.email}?auto=true`;
+              
+
             } else {
               throw new Error('User not found');
             }
@@ -125,18 +133,8 @@ export class CompanyUserComponent implements OnInit {
         roles: [[RoleEnumApi.CompanyUser], []],
       });
     }
-  }
 
-  showRawDataModal() {
-    console.log('todo');
     
-    // const modalRef = this.modalService.open(ShowRawDataModalComponent, {
-    //   centered: true,
-    //   scrollable: true,
-    //   size: 'xl',
-    // });
-    // modalRef.componentInstance.userAuth0 = this.userAuth0;
-    // modalRef.componentInstance.user = this.user;
   }
 
   fetchAuth0Data(email: string) {

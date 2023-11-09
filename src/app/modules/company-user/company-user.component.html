@@ -20,14 +20,15 @@
 ></alto-header>
 <div class="d-flex justify-content-end align-items-center alto-grey fs-5 pb-4">
   <div *ngIf="userForm && user && !user.deletedAt">
-    <button
-      [disabled]="!user.email"
+    <a
       type="button"
       class="btn btn-primary d-inline-flex align-items-center"
+      [href]="trainxURL"
+      target="_blank"
     >
     <i class="bi bi-incognito fs-5 text-white"></i>
-      TODO : Impersonnate to TrainX      
-    </button>
+      Impersonnate to TrainX      
+    </a>
   </div>
   <div *ngIf="user && user.deletedAt">
     <alto-colored-pill-list 
@@ -76,12 +77,12 @@
         <label for="name" class="required">Password</label>
       </div>
       <div class="col-7 form-group">
-        <button
+        <button disabled
           type="button"
           class="btn btn-primary d-inline-flex align-items-center text-nowrap"
           (click)="sendResetPassword()"
         >
-          Send reset password email
+          Send reset password email TODO
         </button>
       </div>
     </div>
@@ -159,10 +160,3 @@
 
 
 </form>
-<button
-  type="button"
-  class="btn btn-outline-secondary d-block mx-auto mt-8"
-  (click)="showRawDataModal()"
->
-  Show raw data
-</button>

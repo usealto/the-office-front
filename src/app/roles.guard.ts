@@ -17,7 +17,7 @@ export const canActivateAdmin: CanActivateFn = () => {
       ),
       tap((isAdmin) => {
         if (!isAdmin) {
-          router.navigate(['/', AltoRoutes.home]);
+          router.navigate(['/', AltoRoutes.unauthorized]);
         }
       }),
     );

@@ -27,6 +27,7 @@ import { CompaniesComponent } from './modules/companies/companies.component';
 import { CompaniesCreateComponent } from './modules/companies-create/companies-create.component';
 import { CompanyUsersComponent } from './modules/company-users/company-users.component';
 import { CompanyUserComponent } from './modules/company-user/company-user.component';
+import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +39,7 @@ import { CompanyUserComponent } from './modules/company-user/company-user.compon
     CompaniesCreateComponent,
     CompanyUsersComponent,
     CompanyUserComponent,
+    UnauthorizedComponent,
   ],
   imports: [
     ApiModule,

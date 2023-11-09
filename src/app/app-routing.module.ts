@@ -15,6 +15,7 @@ import { CompaniesComponent } from './modules/companies/companies.component';
 import { CompaniesCreateComponent } from './modules/companies-create/companies-create.component';
 import { CompanyUsersComponent } from './modules/company-users/company-users.component';
 import { CompanyUserComponent } from './modules/company-user/company-user.component';
+import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
 
 const routes: Routes = [
   {
@@ -45,7 +46,7 @@ const routes: Routes = [
         component: CompanyUserComponent,
       },
     ],
-    canActivate: [AuthGuard, noSmallScreen],
+    canActivate: [AuthGuard, noSmallScreen, canActivateAdmin],
     canActivateChild: [AuthGuard, canActivateAdmin],
   },
   {
@@ -64,6 +65,10 @@ const routes: Routes = [
     path: '**',
     redirectTo: AltoRoutes.notFound,
   },
+  {
+    path: "unauthorized",
+    component: UnauthorizedComponent
+  }
 ];
 @NgModule({
   imports: [
