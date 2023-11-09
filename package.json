@@ -7,7 +7,7 @@
     "start:hmr": "ng serve --hmr",
     "prebuild:staging": "node build-time.js",
     "build:staging": "ng build --configuration staging",
-    "build:develop": "ng build",
+    "build:develop": "ng build --configuration develop",
     "prebuild": "node build-time.js",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
