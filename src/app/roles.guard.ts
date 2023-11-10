@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { UserDtoApiRolesEnumApi } from '@usealto/sdk-ts-angular';
+import { UserDtoApiRolesEnumApi } from '@usealto/the-office-sdk-angular';
 import { map, tap } from 'rxjs';
 import { UsersRestService } from './modules/profile/services/users-rest.service';
 import { AltoRoutes } from './modules/shared/constants/routes';

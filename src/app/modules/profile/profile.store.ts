@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from 'src/app/core/utils/store/store';
-import { ProgramDtoApi, UserDtoApi } from '@usealto/sdk-ts-angular';
+import { UserDtoApi } from '@usealto/the-office-sdk-angular';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileStore {
@@ -10,5 +10,4 @@ export class ProfileStore {
   // The connected user
   user: Store<UserDtoApi> = new Store<UserDtoApi>();
 
-  myPrograms: Store<ProgramDtoApi[]> = new Store<ProgramDtoApi[]>([]);
 }

@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, take } from 'rxjs';
-import { AdminApiService, CompanyDtoApi, TeamDtoApi, UserDtoApi, UserDtoApiRolesEnumApi } from '@usealto/sdk-ts-angular';
+import { CompaniesApiService, CompanyDtoApi, UserDtoApi, UserDtoApiRolesEnumApi, UsersApiService } from '@usealto/the-office-sdk-angular';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -20,11 +20,11 @@ export class CompanyUsersComponent implements OnInit {
   page = 1;
   pageSize = 15;
   pageCount = 0;
-  teams: TeamDtoApi[] = [];
   searchString = '';
   
   constructor(
-    private readonly adminApiService: AdminApiService,
+    private readonly companiesApiService: CompaniesApiService,
+    private readonly usersApiService: UsersApiService,
     private route: ActivatedRoute,
     private readonly offcanvasService: NgbOffcanvas,
   ) {}
@@ -36,8 +36,8 @@ export class CompanyUsersComponent implements OnInit {
 
   fetchAll() {
     combineLatest({
-      company: this.adminApiService.adminGetCompanies({ ids: this.id }),
-      users: this.adminApiService.adminGetUsers({ companyIds: this.id, itemsPerPage: 1000, includeSoftDeleted: true, sortBy: 'deletedAt:desc,firstname:asc'  })
+      company: this.companiesApiService.getCompanies({ ids: this.id }),
+      users: this.usersApiService.getUsers({ companyId: this.id, itemsPerPage: 1000, includeSoftDeleted: true, sortBy: 'deletedAt:desc,firstname:asc'  })
     })
       .pipe(take(1))
       .subscribe(({ company, users, }) => {

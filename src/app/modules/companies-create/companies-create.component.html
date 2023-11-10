@@ -39,34 +39,8 @@
             </div>
           </div>
         </form>
-      
 
-      <!-- SETTINGS TAB -->
-        <form *ngIf="companyForm" [formGroup]="companyForm">
-          <!-- Web access -->
-          <div class="py-4">
-            <div class="w-80 row">
-              <div class="col-5 mb-2">
-                <label for="name">Web access</label>
-                <p class="fs-7">Choose if your user can access the web app</p>
-              </div>
-              <div class="col-7 form-group">
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input me-2"
-                    type="checkbox"
-                    role="switch"
-                    id="flexSwitchCheckDefault2"
-                    formControlName="usersHaveWebAccess"
-                  />
-                  <label class="form-check-label" for="flexSwitchCheckDefault2">Access authorized</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-end mt-5">
       <div>
         <button
           [routerLink]="'/home'"

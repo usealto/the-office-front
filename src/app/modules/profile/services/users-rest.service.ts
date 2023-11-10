@@ -1,16 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
-  CreateUserDtoApi,
-  GetNextQuestionsForUserRequestParams,
-  GetScoresRequestParams,
   GetUsersRequestParams,
-  PatchUserDtoApi,
-  QuestionDtoPaginatedResponseApi,
-  ScoresApiService,
   UserDtoApi,
   UserDtoPaginatedResponseApi,
   UsersApiService,
-} from '@usealto/sdk-ts-angular';
+} from '@usealto/the-office-sdk-angular';
 import { Observable, map, tap } from 'rxjs';
 import { ProfileStore } from '../profile.store';
 
@@ -19,7 +13,6 @@ import { ProfileStore } from '../profile.store';
 })
 export class UsersRestService {
   constructor(
-    private readonly scoreApi: ScoresApiService,
     private readonly userApi: UsersApiService,
     private userStore: ProfileStore,
   ) {}
@@ -47,15 +40,6 @@ export class UsersRestService {
     return this.userApi.getUsers({ ...req }).pipe(map((r) => r.data ?? []));
   }
 
-  getUsersScores(userIds: string[]) {
-    const par = {
-      type: 'user',
-      ids: userIds.join(','),
-      timeframe: 'year',
-    } as GetScoresRequestParams;
-    this.scoreApi.getScores(par);
-  }
-
   getUsersPaginated(req?: GetUsersRequestParams): Observable<UserDtoPaginatedResponseApi> {
     const par = {
       ...req,
@@ -76,35 +60,8 @@ export class UsersRestService {
     }
   }
 
-  patchUser(id: string, patchUserDtoApi: PatchUserDtoApi): Observable<UserDtoApi> {
-    return this.userApi.patchUser({ id, patchUserDtoApi }).pipe(
-      map((u) => u.data || ({} as UserDtoApi)),
-      tap((u) => {
-        if (this.userStore.user.value.id === id) {
-          this.userStore.user.value = u;
-        }
-      }),
-    );
-  }
-
-  getNextQuestionsPaginated(
-    userId: string,
-    req?: GetNextQuestionsForUserRequestParams,
-  ): Observable<QuestionDtoPaginatedResponseApi> {
-    const params = {
-      ...req,
-      id: userId,
-      page: req?.page ?? 1,
-      itemsPerPage: req?.itemsPerPage ?? 25,
-    } as GetNextQuestionsForUserRequestParams;
-    return this.userApi.getNextQuestionsForUser(params).pipe();
-  }
-
   deleteUser(id: string) {
     return this.userApi.deleteUser({ id });
   }
 
-  createUser(user: CreateUserDtoApi) {
-    return this.userApi.createUser({ createUserDtoApi: user });
-  }
 }

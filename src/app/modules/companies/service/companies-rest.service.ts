@@ -8,7 +8,7 @@ import {
   CompanyDtoResponseApi,
   PatchCompanyDtoApi,
   DeleteResponseApi,
-} from '@usealto/sdk-ts-angular';
+} from '@usealto/the-office-sdk-angular';
 import { ProfileStore } from '../../profile/profile.store';
 
 @Injectable({

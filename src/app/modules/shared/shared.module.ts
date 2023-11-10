@@ -33,10 +33,8 @@ import { ProgressionBadgeComponent } from './components/progression-badge/progre
 import { ProgressionFilterComponent } from './components/progression-filter/progression-filter.component';
 import { RangeComponent } from './components/range/range.component';
 import { SearchComponent } from './components/search/search.component';
-import { StatusPillComponent } from './components/status-pill/status-pill.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { TextCounterComponent } from './components/text-counter/text-counter.component';
-import { TimePickerComponent } from './components/time-picker/time-picker.component';
 import { ProgressionPillArrowPipe } from './helpers/progression-pill-arrow.pipe';
 import { ProgressionPillPipe } from './helpers/progression-pill.pipe';
 import { TeamColorPipe } from './helpers/team-color.pipe';
@@ -53,12 +51,10 @@ import { HeaderComponent } from './components/header/header.component';
     ImgBadgeComponent,
     AnchorNavigatorComponent,
     DropdownFilterComponent,
-    StatusPillComponent,
     SearchComponent,
     TabsComponent,
     ProfileCardComponent,
     PeriodFilterComponent,
-    TimePickerComponent,
     TeamColorPipe,
     PaginationComponent,
     ProgressionFilterComponent,
@@ -100,7 +96,6 @@ import { HeaderComponent } from './components/header/header.component';
     ProfileCardComponent,
     TabsComponent,
     SearchComponent,
-    StatusPillComponent,
     PeriodFilterComponent,
     TeamColorPipe,
     ProgressionPillPipe,
@@ -117,7 +112,6 @@ import { HeaderComponent } from './components/header/header.component';
     NgbTooltipModule,
     LoadingModule,
     NgbDatepickerModule,
-    TimePickerComponent,
     PaginationComponent,
     AutoResizeTextareaDirective,
     ProgressionFilterComponent,

@@ -1,17 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CompanyForm } from './models/company.create';
 import { CompaniesRestService } from 'src/app/modules/companies/service/companies-rest.service';
 import { IFormBuilder, IFormGroup } from 'src/app/core/form-types';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import {
   CompanyDtoApi,
-  ConnectorTimeEnumApi,
-  TeamDtoApi,
-  WeekDayEnumApi,
-} from '@usealto/sdk-ts-angular';
+} from '@usealto/the-office-sdk-angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 
+interface CompanyForm {
+  name: string;
+}
 
 @Component({
   selector: 'alto-companies-create',
@@ -22,9 +21,7 @@ export class CompaniesCreateComponent implements OnInit {
   edit = false;
   company!: CompanyDtoApi;
   companyForm!: IFormGroup<CompanyForm>;
-  teams: TeamDtoApi[] = [];
   id: string | undefined;
-  weekDayEnum = Object.keys(WeekDayEnumApi);
   private fb: IFormBuilder;
 
   constructor(
@@ -45,7 +42,6 @@ export class CompaniesCreateComponent implements OnInit {
 
     this.companyForm = this.fb.group<CompanyForm>({
       name: ['', [Validators.required]],
-      usersHaveWebAccess: [false],
     });
     if (this.id) {
       this.edit = true;
@@ -56,7 +52,6 @@ export class CompaniesCreateComponent implements OnInit {
           this.company = company;
           this.companyForm = this.fb.group<CompanyForm>({
             name: [this.company.name, [Validators.required]],
-            usersHaveWebAccess: [this.company.usersHaveWebAccess],
           });
         });
     }
@@ -73,14 +68,13 @@ export class CompaniesCreateComponent implements OnInit {
   async submit() {
     if (!this.companyForm.value) return;
 
-    const { name, usersHaveWebAccess } =
+    const { name } =
       this.companyForm.value;
 
     if (this.edit && this.id) {
       this.companiesRestService
         .patchCompany(this.id, {
           name,
-          usersHaveWebAccess: usersHaveWebAccess,
         })
         .subscribe(() => {
           this.initComponent();
@@ -90,11 +84,6 @@ export class CompaniesCreateComponent implements OnInit {
       this.companiesRestService
         .createCompany({
           name,
-          connectorDays: [WeekDayEnumApi.Monday, WeekDayEnumApi.Wednesday, WeekDayEnumApi.Friday],
-          connectorTimes: [ConnectorTimeEnumApi._13h30],
-          connectorQuestionsPerQuiz: 2,
-          isConnectorActive: false,
-          usersHaveWebAccess: usersHaveWebAccess,
         })
         .subscribe((company) => {
           this.router.navigate(['/home/']);

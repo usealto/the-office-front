@@ -46,7 +46,7 @@
                 class="col-10"
               >
                 <span class="fw-bolder alto-grey">{{ company.name }}</span>
-                <p class="fw-lighter alto-grey smaller">Created {{ company.createdAt| date : 'fullDate' }}, by {{ company.createdByUser?.firstname }} {{company.createdByUser?.lastname}} </p>
+                <p class="fw-lighter alto-grey smaller">Created {{ company.createdAt| date : 'fullDate' }}, by {{ company.createdByUser.firstname }} {{company.createdByUser.lastname}} </p>
               </a>
               <div class="col-2 d-flex justify-content-end">
                 <a 
