@@ -45,6 +45,11 @@ const routes: Routes = [
         path: AltoRoutes.companies + '/:companyId/users/:userId',
         component: CompanyUserComponent,
       },
+      {
+        path: '',
+        pathMatch: 'full',
+        component: CompaniesComponent,
+      },
     ],
     canActivate: [AuthGuard, noSmallScreen, canActivateAdmin],
     canActivateChild: [AuthGuard, canActivateAdmin],
