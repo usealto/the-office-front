@@ -1,7 +1,7 @@
 
-import { AuthApiService, AdminApiService, CompanyDtoApi } from '@usealto/sdk-ts-angular';
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs';
+import { CompaniesApiService, CompanyDtoApi } from '@usealto/the-office-sdk-angular';
 
 
 @Component({
@@ -18,13 +18,12 @@ export class CompaniesComponent implements OnInit {
   searchString = '';
 
   constructor(
-    private readonly adminApiService: AdminApiService,
-    private readonly authApiService: AuthApiService,
+    private readonly companiesApiService: CompaniesApiService,
   ) {}
 
   ngOnInit(): void {
-    this.adminApiService
-      .adminGetCompanies({itemsPerPage: 1000 })
+    this.companiesApiService
+      .getCompanies({itemsPerPage: 1000 })
       .pipe(tap((companies) => (this.companies = (companies?.data) ? companies?.data : [])))
       .subscribe(() => {
         this.pageCount = Math.ceil(this.companies.length / this.pageSize);
