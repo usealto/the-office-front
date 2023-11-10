@@ -33,6 +33,9 @@
           <th scope="col">
             Email
           </th>
+          <th>
+            Roles
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -52,6 +55,12 @@
             </div>
           </th>
           <td>{{ user.email }}</td>
+          <td>
+            <alto-colored-pill-list *ngFor="let role of user.roles"
+              [data]="[{name: role, id: role}]"
+              [hasDynamicColor]="true"
+            ></alto-colored-pill-list>
+          </td>
         </tr>
       </tbody>
     </table>
