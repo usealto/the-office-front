@@ -77,16 +77,37 @@
         <label for="name" class="required">Password</label>
       </div>
       <div class="col-7 form-group">
-        <button disabled
+        <button
+          *ngIf="!btnClicked; else sent"
           type="button"
           class="btn btn-primary d-inline-flex align-items-center text-nowrap"
           (click)="sendResetPassword()"
         >
-          Send reset password email TODO
+          <i class="bi bi-send"></i> Send email "reset password"
         </button>
+        <ng-template #sent>
+          <i class="bi bi-check text-success"></i><span class="text-success">Email sent</span>
+        </ng-template>
       </div>
     </div>
   </div>
+
+  <!-- Roles -->
+  <div class="py-4 border-bottom">
+    <div class="w-80 row">
+      <div class="col-5 mb-2">
+        <label for="name">Roles</label>
+      </div>
+      <div class="col-7 form-group">
+        <alto-colored-pill-list *ngFor="let role of user.roles"
+          [data]="[{name: role, id: role}]"
+          [hasDynamicColor]="true"
+        ></alto-colored-pill-list>
+      </div>
+    </div>
+  </div>
+  
+
   <!-- Auth0 Connected -->
   <div class="py-4 border-bottom">
     <div class="w-80 row">

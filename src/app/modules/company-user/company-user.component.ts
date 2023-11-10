@@ -62,6 +62,7 @@ export class CompanyUserComponent implements OnInit {
   user!: UserDtoApi;
   company!: CompanyDtoApi;
   trainxURL?: string; 
+  btnClicked = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -151,9 +152,12 @@ export class CompanyUserComponent implements OnInit {
           email: email,
         },
       })
-      .subscribe((res) => this.toastService.show({
-        text: res.data,
-        type: 'success',
-      }));
+      .subscribe((res) => {
+        this.toastService.show({
+          text: res.data,
+          type: 'success',
+        })
+        this.btnClicked = true;
+      });
   }
 }
