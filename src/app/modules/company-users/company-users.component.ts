@@ -13,6 +13,8 @@ import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 export class CompanyUsersComponent implements OnInit {
   company!: CompanyDtoApi;
   users: UserDtoApi[] = [];
+  hasTrainXLead = true;
+  hasRecordXLead = true;
   id: string | undefined;
   eRolesEnum = UserDtoApiRolesEnumApi;
   displayedUsers: UserDtoApi[] = [];
@@ -31,7 +33,7 @@ export class CompanyUsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') || '';
-    this.fetchAll();
+    this.fetchAll();    
   }
 
   fetchAll() {
@@ -45,6 +47,7 @@ export class CompanyUsersComponent implements OnInit {
         this.users = users.data || [];
         this.pageCount = Math.ceil(this.users.length / this.pageSize);
         this.refreshUsers();
+        this.updateHasLeads()
       });
   }
 
@@ -82,6 +85,11 @@ export class CompanyUsersComponent implements OnInit {
       (this.page - 1) * this.pageSize,
       (this.page - 1) * this.pageSize + this.pageSize,
     );
+  }
+
+  updateHasLeads(){
+    this.hasTrainXLead = this.users.length > 0 && this.users.some(user => user.roles.includes(UserDtoApiRolesEnumApi.TrainxLead))
+    this.hasRecordXLead = this.users.length > 0 && this.users.some(user => user.roles.includes(UserDtoApiRolesEnumApi.RecordxLead))
   }
 
 }
