@@ -40,6 +40,9 @@
           <th>
             Roles
           </th>
+          <th>
+            Created
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -64,6 +67,9 @@
               [data]="[{name: role, id: role}]"
               [hasDynamicColor]="true"
             ></alto-colored-pill-list>
+          </td>
+          <td>
+            <p class="fst-italic alto-grey">{{ user.createdAt | date : 'mediumDate' }}</p>
           </td>
         </tr>
       </tbody>
