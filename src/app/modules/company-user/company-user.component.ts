@@ -15,6 +15,7 @@ import { CompaniesRestService } from 'src/app/modules/companies/service/companie
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/app/core/toast/toast.service';
 import { environment } from 'src/environments/environment';
+import { UserTrainxComponent } from './user-trainx/user-trainx.component';
 
 interface UserFormView {
   firstname: string;
@@ -94,8 +95,6 @@ export class CompanyUserComponent implements OnInit {
         .pipe(
           tap((users) => {
             if (users.data && users.data[0]) {
-              console.log(users);
-                            
               this.user = users.data[0];
               this.fetchAuth0Data(this.user.email);
 
@@ -159,5 +158,11 @@ export class CompanyUserComponent implements OnInit {
         })
         this.btnClicked = true;
       });
+  }
+
+  trainxInfoModal() {
+    const modalRef = this.modalService.open(UserTrainxComponent, { size: 'lg' });
+    // todo chage to the userid from trainX and not the one from theoffice
+    modalRef.componentInstance.userId = this.userId;
   }
 }

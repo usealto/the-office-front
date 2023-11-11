@@ -19,6 +19,17 @@
   ]"
 ></alto-header>
 <div class="d-flex justify-content-end align-items-center alto-grey fs-5 pb-4">
+  <div *ngIf="user && !user.deletedAt">
+    <a
+      type="button"
+      class="btn btn btn-outline-secondary d-inline-flex align-items-center mx-3"
+      (click)="trainxInfoModal()"
+      target="_blank"
+    >
+    <i class="bi bi-book fs-5"></i>
+      TrainX info      
+    </a>
+  </div>
   <div *ngIf="userForm && user && !user.deletedAt">
     <a
       type="button"

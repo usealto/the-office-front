@@ -30,6 +30,7 @@ import { CompanyUsersComponent } from './modules/company-users/company-users.com
 import { CompanyUserComponent } from './modules/company-user/company-user.component';
 import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
 import { CreateUserTrainxComponent } from './modules/create-user-trainx/create-user-trainx.component';
+import { UserTrainxComponent } from './modules/company-user/user-trainx/user-trainx.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +44,7 @@ import { CreateUserTrainxComponent } from './modules/create-user-trainx/create-u
     CompanyUserComponent,
     UnauthorizedComponent,
     CreateUserTrainxComponent,
+    UserTrainxComponent,
   ],
   imports: [
     ApiModule_trainx,
