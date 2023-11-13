@@ -4,31 +4,28 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, take, tap } from 'rxjs';
 import { IFormBuilder, IFormGroup } from 'src/app/core/form-types';
 import {
-  AdminApiService,
+  ApplicationDtoApi,
+  ApplicationsApiService,
   AuthApiService,
   CompanyDtoApi,
   RoleEnumApi,
-  TeamDtoApi,
   UserDtoApi,
   UserDtoApiRolesEnumApi,
-} from '@usealto/sdk-ts-angular';
+  UsersApiService,
+} from '@usealto/the-office-sdk-angular';
 import { CompaniesRestService } from 'src/app/modules/companies/service/companies-rest.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/app/core/toast/toast.service';
-import { environment } from 'src/environments/environment';
 
 interface UserFormView {
   firstname: string;
   lastname: string;
-  teamId: string;
   email: string;
   roles: Array<RoleEnumApi>;
 }
 
 interface AuthUserMetadata {
   bubbleId: string;
-  companyId: string;
-  teamId: string;
+  companyId: string;  
   altoId: string;
 } 
 
@@ -57,24 +54,25 @@ interface AuthUserGet {
 })
 export class CompanyUserComponent implements OnInit {
   companyId!: string;
-  teams: TeamDtoApi[] = [];
   userForm!: IFormGroup<UserFormView>;
   private fb: IFormBuilder;
   rolesPossibleValues = Object.values(UserDtoApiRolesEnumApi);
   userId!: string;
   userAuth0!: AuthUserGet;
   user!: UserDtoApi;
-  company!: CompanyDtoApi;
-  trainxURL?: string; 
+  company!: CompanyDtoApi; 
+  btnClicked = false;
+  hasTrainX = false;
+  applicationList: ApplicationDtoApi[] = [];
 
   constructor(
     private route: ActivatedRoute,
     readonly fob: UntypedFormBuilder,
     private readonly authApiService: AuthApiService,
     private readonly companiesRestService: CompaniesRestService,
+    private readonly usersApiService: UsersApiService,
     private readonly toastService: ToastService,
-    private modalService: NgbModal,
-    private readonly adminApiService: AdminApiService,
+    private readonly applicationsApiService: ApplicationsApiService,
   ) {
     this.fb = fob;
   }
@@ -92,26 +90,28 @@ export class CompanyUserComponent implements OnInit {
       });
 
     if (this.userId) {
-      this.adminApiService
-        .adminGetUsers({ ids: this.userId, includeSoftDeleted: true })
+      this.usersApiService
+        .getUsers({ ids: this.userId, includeSoftDeleted: true })
         .pipe(
           tap((users) => {
             if (users.data && users.data[0]) {
-              console.log(users);
-                            
               this.user = users.data[0];
               this.fetchAuth0Data(this.user.email);
 
               this.userForm = this.fb.group<UserFormView>({
                 firstname: [this.user.firstname || '', [Validators.required]],
                 lastname: [this.user.lastname || '', [Validators.required]],
-                teamId: [this.user.teamId || '', [Validators.required]],
                 email: [this.user.email || '', [Validators.required, Validators.email]],
                 roles: [this.user.roles as unknown as Array<RoleEnumApi>, []],
-              });
-
+              });              
               
-              this.trainxURL = `${environment.trainxURL}/impersonate/${this.user.email}?auto=true`;
+              
+              this.applicationsApiService.applicationsControllerGetAllPaginated({})
+              .subscribe((res) => {
+                this.applicationList = (res.data) ? res.data : [];
+                this.listOfApplications();
+                this.hasTrainXUpdate()
+              })
               
 
             } else {
@@ -128,9 +128,8 @@ export class CompanyUserComponent implements OnInit {
       this.userForm = this.fb.group<UserFormView>({
         firstname: ['', [Validators.required]],
         lastname: ['', [Validators.required]],
-        teamId : ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
-        roles: [[RoleEnumApi.CompanyUser], []],
+        roles: [[], []],
       });
     }
 
@@ -157,9 +156,26 @@ export class CompanyUserComponent implements OnInit {
           email: email,
         },
       })
-      .subscribe((res) => this.toastService.show({
-        text: res.data,
-        type: 'success',
-      }));
+      .subscribe((res) => {
+        this.toastService.show({
+          text: res.data,
+          type: 'success',
+        })
+        this.btnClicked = true;
+      });
   }
+
+  listOfApplications() {
+    return this.user.applicationIds?.map((app) => this.applicationList.find((a) => a.id === app))
+  }
+
+  hasTrainXUpdate() {
+    this.hasTrainX = this.applicationList?.filter((app) => app.name === 'trainx').length > 0;
+  }
+
+  // trainxInfoModal() {
+    // const modalRef = this.modalService.open(UserTrainxComponent, { size: 'lg' });
+    // todo chage to the userid from trainX and not the one from theoffice
+    // modalRef.componentInstance.userId = this.userId;
+  // }
 }

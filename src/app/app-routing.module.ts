@@ -16,6 +16,7 @@ import { CompaniesCreateComponent } from './modules/companies-create/companies-c
 import { CompanyUsersComponent } from './modules/company-users/company-users.component';
 import { CompanyUserComponent } from './modules/company-user/company-user.component';
 import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
+import { CreateUserTrainxComponent } from './modules/create-user-trainx/create-user-trainx.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,15 @@ const routes: Routes = [
       {
         path: AltoRoutes.companies + '/:companyId/users/:userId',
         component: CompanyUserComponent,
+      },
+      {
+        path: AltoRoutes.companies + '/:companyId/users/create/trainx',
+        component: CreateUserTrainxComponent,
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        component: CompaniesComponent,
       },
     ],
     canActivate: [AuthGuard, noSmallScreen, canActivateAdmin],

@@ -5,7 +5,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { ApiModule, BASE_PATH } from '@usealto/sdk-ts-angular';
+import { ApiModule as ApiModule_trainx, BASE_PATH as BASE_PATH_TRAINX } from '@usealto/sdk-ts-angular';
+import { ApiModule as ApiModule_theoffice, BASE_PATH as BASE_PATH_THEOFFICE } from '@usealto/the-office-sdk-angular';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { ApiErrorInterceptor } from './core/interceptors/api-error.interceptor';
@@ -28,6 +29,8 @@ import { CompaniesCreateComponent } from './modules/companies-create/companies-c
 import { CompanyUsersComponent } from './modules/company-users/company-users.component';
 import { CompanyUserComponent } from './modules/company-user/company-user.component';
 import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
+import { CreateUserTrainxComponent } from './modules/create-user-trainx/create-user-trainx.component';
+import { UserTrainxComponent } from './modules/company-user/user-trainx/user-trainx.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,9 +43,12 @@ import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.compo
     CompanyUsersComponent,
     CompanyUserComponent,
     UnauthorizedComponent,
+    CreateUserTrainxComponent,
+    UserTrainxComponent,
   ],
   imports: [
-    ApiModule,
+    ApiModule_trainx,
+    ApiModule_theoffice,
     BrowserModule,
     HttpClientModule,
     FormsModule,
@@ -65,7 +71,10 @@ import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.compo
         redirect_uri: window.location.origin,
       },
       httpInterceptor: {
-        allowedList: [`${environment.apiURL}/*`],
+        allowedList: [
+          `${environment.trainxapiURL}/*`,
+          `${environment.theofficeURL}/*`
+        ],
       },
     }),
     ToastComponent,
@@ -83,8 +92,12 @@ import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.compo
       multi: true,
     },
     {
-      provide: BASE_PATH,
-      useValue: environment.apiURL,
+      provide: BASE_PATH_TRAINX,
+      useValue: environment.trainxapiURL,
+    },
+    {
+      provide: BASE_PATH_THEOFFICE,
+      useValue: environment.theofficeURL,
     },
     {
       provide: HTTP_INTERCEPTORS,

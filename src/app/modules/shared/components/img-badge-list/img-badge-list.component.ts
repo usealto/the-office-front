@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { UserDtoApi, UserLightDtoApi } from '@usealto/sdk-ts-angular';
+import { UserDtoApi, UserLightDtoApi } from '@usealto/the-office-sdk-angular';
 
 /**
  * !DEPRECATED To delete after V3.2

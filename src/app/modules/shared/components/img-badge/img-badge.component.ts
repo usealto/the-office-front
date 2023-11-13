@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { UserDtoApi, UserLightDtoApi } from '@usealto/sdk-ts-angular';
+import { UserDtoApi, UserLightDtoApi } from '@usealto/the-office-sdk-angular';
 import { memoize } from 'src/app/core/utils/memoize/memoize';
 import { I18ns } from 'src/app/core/utils/i18n/I18n';
 

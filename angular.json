@@ -80,7 +80,7 @@
               ],
               "outputHashing": "all"
             },
-            "preprod": {
+            "develop": {
               "budgets": [
                 {
                   "type": "initial",
@@ -91,33 +91,6 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "10kb",
                   "maximumError": "20kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.preprod.ts"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "sandbox": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "4mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "10kb",
-                  "maximumError": "20kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.sandbox.ts"
                 }
               ],
               "outputHashing": "all"
@@ -139,8 +112,8 @@
             "production": {
               "browserTarget": "assessment-front:build:production"
             },
-            "preprod": {
-              "browserTarget": "assessment-front:build:preprod"
+            "develop": {
+              "browserTarget": "assessment-front:build:develop"
             },
             "development": {
               "browserTarget": "assessment-front:build:development"
