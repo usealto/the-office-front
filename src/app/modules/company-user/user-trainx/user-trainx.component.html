@@ -1,4 +1,17 @@
-<h2>Trainx Information</h2>
+<div class="d-flex justify-content-between">
+  <h2>Trainx Specific Information</h2>
+  <div *ngIf="user && !user.deletedAt">
+    <a
+      type="button"
+      class="btn btn-primary d-inline-flex align-items-center"
+      [href]="trainxURL"
+      target="_blank"
+    >
+    <i class="bi bi-incognito fs-5 text-white"></i>
+      Impersonnate to TrainX      
+    </a>
+  </div>
+</div>
 <form *ngIf="user">
   <!-- Team -->
   <div class="py-4 border-bottom">
@@ -25,9 +38,27 @@
           <alto-colored-pill-list *ngIf="isConnectorActive; else emailVerifiedElse"
           [data]="[{name: 'Active', id: '9DAA38asdfr4'}]"
           [hasDynamicColor]="true"
-          ></alto-colored-pill-list>
+          ></alto-colored-pill-list> <span> ({{user.company.connector}}) </span>
         </span>
           <ng-template #emailVerifiedElse><span><i class="bi bi-x-circle-fill fs-4 fw-bolder alto-red"></i></span></ng-template>
+          <ng-template #noconnection><span>connection problem...</span></ng-template>
+        </div>
+    </div>
+  </div>
+  <!-- Connector Type -->
+  <div class="py-4 border-bottom">
+    <div class="w-80 row">
+      <div class="col-5 mb-2">
+        <label for="name">Has web access</label>
+      </div>
+      <div class="col-7 form-group">
+        <span *ngIf="user.company.usersHaveWebAccess !== undefined; else noconnection">
+          <alto-colored-pill-list *ngIf="user.company.usersHaveWebAccess; else usersHaveWebAccessElse"
+          [data]="[{name: 'Has access', id: '9DAA38asdfr4'}]"
+          [hasDynamicColor]="true"
+          ></alto-colored-pill-list>
+        </span>
+          <ng-template #usersHaveWebAccessElse><span><i class="bi bi-x-circle-fill fs-4 fw-bolder alto-red"></i></span></ng-template>
           <ng-template #noconnection><span>connection problem...</span></ng-template>
         </div>
     </div>

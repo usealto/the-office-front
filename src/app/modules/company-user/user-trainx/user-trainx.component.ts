@@ -6,6 +6,7 @@ import {
   UserDtoApi,
   UsersApiService,
 } from '@usealto/sdk-ts-angular';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'alto-user-trainx',
@@ -13,10 +14,11 @@ import {
   styleUrls: ['./user-trainx.component.scss']
 })
 export class UserTrainxComponent implements OnInit {
-  userId!: string;
+  @Input() userEmail!: string;
   user!: UserDtoApi;
   team: string = '';
   isConnectorActive?: boolean | undefined;
+  trainxURL: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -26,18 +28,16 @@ export class UserTrainxComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     // this.userId = this.route.snapshot.paramMap.get('userId') || '';
-    console.log('this.userId', this.userId);
-    
-
-    if (this.userId) {
+    if (this.userEmail) {
       this.usersApiService
-        .getUsers({ ids: this.userId, includeSoftDeleted: true })
+        .getUsers({ emails: this.userEmail, includeSoftDeleted: true })
         .pipe(
           tap((users) => {
             if (users.data && users.data[0]) {                            
               this.user = users.data[0];
               this.team = this.user.team?.name || 'NA';
               this.isConnectorActive = this.user.isConnectorActive
+              this.trainxURL = `${environment.trainxURL}/impersonate/${this.userEmail}?auto=true`;
             } else {
               throw new Error('User not found');
             }

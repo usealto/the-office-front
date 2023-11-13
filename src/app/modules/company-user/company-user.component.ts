@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, take, tap } from 'rxjs';
 import { IFormBuilder, IFormGroup } from 'src/app/core/form-types';
 import {
+  ApplicationDtoApi,
+  ApplicationsApiService,
   AuthApiService,
   CompanyDtoApi,
   RoleEnumApi,
@@ -12,10 +14,7 @@ import {
   UsersApiService,
 } from '@usealto/the-office-sdk-angular';
 import { CompaniesRestService } from 'src/app/modules/companies/service/companies-rest.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/app/core/toast/toast.service';
-import { environment } from 'src/environments/environment';
-import { UserTrainxComponent } from './user-trainx/user-trainx.component';
 
 interface UserFormView {
   firstname: string;
@@ -61,9 +60,10 @@ export class CompanyUserComponent implements OnInit {
   userId!: string;
   userAuth0!: AuthUserGet;
   user!: UserDtoApi;
-  company!: CompanyDtoApi;
-  trainxURL?: string; 
+  company!: CompanyDtoApi; 
   btnClicked = false;
+  hasTrainX = false;
+  applicationList: ApplicationDtoApi[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -72,7 +72,7 @@ export class CompanyUserComponent implements OnInit {
     private readonly companiesRestService: CompaniesRestService,
     private readonly usersApiService: UsersApiService,
     private readonly toastService: ToastService,
-    private modalService: NgbModal,
+    private readonly applicationsApiService: ApplicationsApiService,
   ) {
     this.fb = fob;
   }
@@ -103,10 +103,15 @@ export class CompanyUserComponent implements OnInit {
                 lastname: [this.user.lastname || '', [Validators.required]],
                 email: [this.user.email || '', [Validators.required, Validators.email]],
                 roles: [this.user.roles as unknown as Array<RoleEnumApi>, []],
-              });
-
+              });              
               
-              this.trainxURL = `${environment.trainxURL}/impersonate/${this.user.email}?auto=true`;
+              
+              this.applicationsApiService.applicationsControllerGetAllPaginated({})
+              .subscribe((res) => {
+                this.applicationList = (res.data) ? res.data : [];
+                this.listOfApplications();
+                this.hasTrainXUpdate()
+              })
               
 
             } else {
@@ -160,9 +165,17 @@ export class CompanyUserComponent implements OnInit {
       });
   }
 
-  trainxInfoModal() {
-    const modalRef = this.modalService.open(UserTrainxComponent, { size: 'lg' });
-    // todo chage to the userid from trainX and not the one from theoffice
-    modalRef.componentInstance.userId = this.userId;
+  listOfApplications() {
+    return this.user.applicationIds?.map((app) => this.applicationList.find((a) => a.id === app))
   }
+
+  hasTrainXUpdate() {
+    this.hasTrainX = this.applicationList?.filter((app) => app.name === 'trainx').length > 0;
+  }
+
+  // trainxInfoModal() {
+    // const modalRef = this.modalService.open(UserTrainxComponent, { size: 'lg' });
+    // todo chage to the userid from trainX and not the one from theoffice
+    // modalRef.componentInstance.userId = this.userId;
+  // }
 }
