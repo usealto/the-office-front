@@ -3,8 +3,8 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs';
 import {
+  AdminApiService,
   UserDtoApi,
-  UsersApiService,
 } from '@usealto/sdk-ts-angular';
 import { environment } from 'src/environments/environment';
 
@@ -23,14 +23,14 @@ export class UserTrainxComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     readonly fob: UntypedFormBuilder,
-    private readonly usersApiService: UsersApiService,
+    private readonly adminApiService: AdminApiService,
   ) {}
 
   async ngOnInit(): Promise<void> {
     // this.userId = this.route.snapshot.paramMap.get('userId') || '';
     if (this.userEmail) {
-      this.usersApiService
-        .getUsers({ emails: this.userEmail, includeSoftDeleted: true })
+      this.adminApiService
+        .adminGetUsers({ emails: this.userEmail, includeSoftDeleted: true })
         .pipe(
           tap((users) => {
             if (users.data && users.data[0]) {                            
