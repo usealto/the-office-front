@@ -167,6 +167,7 @@
     </div>
   </div>
 
-  <alto-user-trainx *ngIf="hasTrainX" [userEmail]="user.email"></alto-user-trainx>
+  <alto-user-trainx *ngIf="hasTrainX; else noTrainx" [userEmail]="user.email"></alto-user-trainx>
+  <ng-template #noTrainx>TrainX not setup for this user</ng-template>
 
 </form>
