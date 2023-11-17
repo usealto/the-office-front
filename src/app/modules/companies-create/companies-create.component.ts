@@ -57,10 +57,6 @@ export class CompaniesCreateComponent implements OnInit {
     }
   }
 
-  onSelectLogo(event: any) {
-    console.log(event);
-  }
-
   isFormDisabled(): boolean {
     return !this.companyForm.valid || this.companyForm.pristine || !this.companyForm.dirty;
   }
