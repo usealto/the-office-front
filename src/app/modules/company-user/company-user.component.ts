@@ -173,9 +173,4 @@ export class CompanyUserComponent implements OnInit {
     this.hasTrainX = this.applicationList?.filter((app) => app.name === 'trainx').length > 0;
   }
 
-  // trainxInfoModal() {
-    // const modalRef = this.modalService.open(UserTrainxComponent, { size: 'lg' });
-    // todo chage to the userid from trainX and not the one from theoffice
-    // modalRef.componentInstance.userId = this.userId;
-  // }
 }

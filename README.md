@@ -61,9 +61,6 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Push to Staging
-
-Merge `develop` branch into `admin`
 
 ## Push to Prod
 
