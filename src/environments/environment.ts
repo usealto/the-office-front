@@ -4,12 +4,12 @@
 
 export const environment = {
   production: false,
-  trainxapiURL: 'https://api-test-develop.usealto.com',
+  trainxapiURL: 'http://localhost:3000',
   auth0Domain: 'dev-bmttww5s.eu.auth0.com',
   auth0ClientId: 'ThcIBQZrRso5QaZq67kCU5eFYTfZwTSK',
   audience: 'https://api.usealto.com',
   trainxURL: 'https://app-develop.usealto.com',
-  theofficeURL: 'https://theoffice-api-develop.usealto.com',
+  theofficeURL: 'http://localhost:3001',
   // audience: 'https://dev-bmttww5s.eu.auth0.com/api/v2',
 };
 

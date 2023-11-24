@@ -6,7 +6,10 @@ import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ApiModule as ApiModule_trainx, BASE_PATH as BASE_PATH_TRAINX } from '@usealto/sdk-ts-angular';
-import { ApiModule as ApiModule_theoffice, BASE_PATH as BASE_PATH_THEOFFICE } from '@usealto/the-office-sdk-angular';
+import {
+  ApiModule as ApiModule_theoffice,
+  BASE_PATH as BASE_PATH_THEOFFICE,
+} from '@usealto/the-office-sdk-angular';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { ApiErrorInterceptor } from './core/interceptors/api-error.interceptor';
@@ -71,10 +74,7 @@ import { UserTrainxComponent } from './modules/company-user/user-trainx/user-tra
         redirect_uri: window.location.origin,
       },
       httpInterceptor: {
-        allowedList: [
-          `${environment.trainxapiURL}/*`,
-          `${environment.theofficeURL}/*`
-        ],
+        allowedList: [`${environment.trainxapiURL}/*`, `${environment.theofficeURL}/*`],
       },
     }),
     ToastComponent,
@@ -82,7 +82,7 @@ import { UserTrainxComponent } from './modules/company-user/user-trainx/user-tra
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
   providers: [
