@@ -4,8 +4,6 @@
     type="search"
     class="form-control"
     [placeholder]="placeholder"
-    #qSearch
-    (keyup)="searchReq(qSearch.value)"
-    (search)="searchReq(qSearch.value)"
+    [formControl]="searchControl"
   />
 </div>

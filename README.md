@@ -36,7 +36,6 @@ Files will be placed in _dist/alto_
 - ng bootstrap (https://ng-bootstrap.github.io/#/components/accordion/examples)
 - bootstrap (https://getbootstrap.com/docs/5.1/utilities/api/)
 - bootstrap icons (https://icons.getbootstrap.com/)
-- until-destroy (https://www.npmjs.com/package/@ngneat/until-destroy)
 
 ### VS code extensions
 
@@ -61,7 +60,6 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-
 ## Push to Prod
 
 - Create a tag with '3.x.x' and push it
@@ -82,7 +80,6 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 - Create a commit on `main` with the hotfix
 - Make a 'git cherry pick' to bring the hot fix on `develop`
-
 
 ### Emojis
 

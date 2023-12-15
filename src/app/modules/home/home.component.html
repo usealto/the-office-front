@@ -1,0 +1,59 @@
+<div class="header-panel">
+  <img [src]="Emoji.WavingHand | emoji" height="48" width="48"/>
+  <div>
+    <h1>
+     {{'Hello ' + me.firstname + '!'}}
+    </h1>
+    <p>Welcome to The Office</p>
+  </div>
+</div>
+
+<!-- header company -->
+
+<div class="row">
+  <div class="col-4">
+    <!-- searchbar -->
+    <alto-search [searchControl]="searchTerm"></alto-search>
+  </div>
+  <div class="col text-end">
+    <button class="btn btn-primary">Create a company</button>
+  </div>
+</div>
+
+<alto-placeholder-manager [status]="companiesDataStatus">
+  <div class="table-panel">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="col w-20">Name</th>
+          <th class="col w-15">Created at</th>
+          <th class="col">Created by</th>
+          <th class="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let company of filteredCompanies">
+          <td>
+            <p class="fw-bold">{{company.name}}</p>
+          </td>
+          <td>{{company.createdAt| date : 'fullDate'}}</td>
+          <td>{{company.createdBy ?? 'mising data'}}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="nodata-placeholder d-flex justify-content-center align-items-center" noData>
+    <div class="text-center">
+      <img [src]="Emoji.Eyes | emoji" height="24" width="24" />
+      <h2 class="mt-3"> There is no company at the moment</h2>
+      <button class="mt-4 btn btn-primary">Create the first company</button>
+    </div>
+  </div>  <div class="nodata-placeholder d-flex justify-content-center align-items-center" noResult>
+    <div class="text-center">
+      <img [src]="Emoji.MagnifyingGlassTiltedRight | emoji" height="24" width="24" />
+      <h2 class="mt-3"> Your filters doesn't match any company</h2>
+      <button class="mt-4 btn btn-primary" (click)="resetSearch()">Clean filters</button>
+    </div>
+  </div>
+</alto-placeholder-manager>

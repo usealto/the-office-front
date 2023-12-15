@@ -19,13 +19,16 @@
     <span class="fs-6">{{ users.length }} user accounts</span>
   </div>
 </div>
-<div class="d-flex justify-content-end gap-2 pb-4">
-  <a class="btn btn-primary" *ngIf="!hasTrainXLead" [routerLink]="['/', 'companies', company.id, 'users', 'create', 'trainx']"><i class="bi bi-plus-lg pe-2"></i>Create the first TrainX lead</a>
-  <a class="btn btn-primary disabled" *ngIf="!hasRecordXLead" [routerLink]="['/', 'companies', company.id, 'users', 'create', 'recordx']"><i class="bi bi-plus-lg pe-2"></i>Create the first RecordX lead</a>
-</div>
+
 <div *ngIf="users.length > 0; else elseBlock">
-  <div class="d-flex justify-content-end gap-2 pb-4">
-    <alto-search (searchChange)="onSearch($event)"></alto-search>
+  <div class="d-flex justify-content-between gap-2 pb-4">
+    <!-- <alto-search (searchChange)="onSearch($event)"></alto-search> -->
+
+    <div class="d-flex justify-content-end gap-2 pb-4">
+      <a class="btn btn-primary" *ngIf="!hasBillingAdmin" [routerLink]="['/', 'companies', company.id, 'users', 'create', 'billing-admin']"><i class="bi bi-plus-lg pe-2"></i>Create billing admin</a>
+      <a class="btn btn-primary" *ngIf="!hasTrainXLead" [routerLink]="['/', 'companies', company.id, 'users', 'create', 'trainx']"><i class="bi bi-plus-lg pe-2"></i>Create the first TrainX lead</a>
+      <a class="btn btn-primary disabled" *ngIf="!hasRecordXLead" [routerLink]="['/', 'companies', company.id, 'users', 'create', 'recordx']"><i class="bi bi-plus-lg pe-2"></i>Create the first RecordX lead</a>
+    </div>
   </div>
   <div class="table-container table-panel mb-5">
     <table class="table table-hover">
@@ -46,19 +49,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of displayedUsers" 
-          [routerLink]="['/', 'companies', company.id, 'users', user.id]" 
+        <tr *ngFor="let user of displayedUsers"
+          [routerLink]="['/', 'companies', company.id, 'users', user.id]"
           routerLinkActive="menu-selected">
           <th scope="row">
             <div class="d-flex align-items-center name-cell">
-                {{ user.firstname }} {{ user.lastname }} 
-                <alto-colored-pill-list 
-                  *ngIf="user.deletedAt" 
+                {{ user.firstname }} {{ user.lastname }}
+                <alto-colored-pill-list
+                  *ngIf="user.deletedAt"
                   class="mx-3"
                   [data]="[{name: 'Deleted', id: 'FF1238asdfr4'}]"
                   [hasDynamicColor]="true"
                   [limit]="0"
-                ></alto-colored-pill-list>              
+                ></alto-colored-pill-list>
             </div>
           </th>
           <td>{{ user.email }}</td>
