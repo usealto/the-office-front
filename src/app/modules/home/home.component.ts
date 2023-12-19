@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { EResolverData, ResolversService } from '../../core/resolvers/resolvers.service';
-import { Company } from '../../core/models/company.model';
-import { IAppData } from '../../core/resolvers/app.resolver';
-import { EmojiName } from '../../core/utils/emoji/data';
-import { User } from '../../core/models/user.model';
 import { FormControl } from '@angular/forms';
-import { EPlaceholderStatus } from '../shared/models/placeholder.model';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Company } from '../../core/models/company.model';
+import { User } from '../../core/models/user.model';
+import { IAppData } from '../../core/resolvers/app.resolver';
+import { EResolverData, ResolversService } from '../../core/resolvers/resolvers.service';
+import { EmojiName } from '../../core/utils/emoji/data';
+import { EPlaceholderStatus } from '../shared/models/placeholder.model';
 
 @Component({
   selector: 'alto-home',

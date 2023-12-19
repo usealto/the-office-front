@@ -10,24 +10,25 @@ import { Injectable } from '@angular/core';
 })
 export class LocaleService {
   getLocale(): string {
-    if (typeof window === 'undefined' || typeof window.navigator === 'undefined') {
-      return 'en';
-    }
+    // if (typeof window === 'undefined' || typeof window.navigator === 'undefined') {
+    //   return 'en';
+    // }
 
-    let browserLang: any = window.navigator['languages'] ? window.navigator['languages'][0] : null;
-    browserLang = browserLang || window.navigator.language;
+    // let browserLang: any = window.navigator['languages'] ? window.navigator['languages'][0] : null;
+    // browserLang = browserLang || window.navigator.language;
 
-    if (browserLang.indexOf('-') !== -1) {
-      browserLang = browserLang.split('-')[0];
-    }
+    // if (browserLang.indexOf('-') !== -1) {
+    //   browserLang = browserLang.split('-')[0];
+    // }
 
-    if (browserLang.indexOf('_') !== -1) {
-      browserLang = browserLang.split('_')[0];
-    }
+    // if (browserLang.indexOf('_') !== -1) {
+    //   browserLang = browserLang.split('_')[0];
+    // }
 
-    // ! To Remove for multi-lang support
-    return 'fr';
-    return browserLang || 'en';
+    // // ! To Remove for multi-lang support
+    // return 'fr';
+    // return browserLang || 'en';
+    return 'en';
   }
 }
 

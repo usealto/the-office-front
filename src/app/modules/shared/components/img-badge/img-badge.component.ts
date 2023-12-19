@@ -1,16 +1,15 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { UserDtoApi, UserLightDtoApi } from '@usealto/the-office-sdk-angular';
-import { memoize } from 'src/app/core/utils/memoize/memoize';
+import { Component, Input } from '@angular/core';
 import { I18ns } from 'src/app/core/utils/i18n/I18n';
+import { memoize } from 'src/app/core/utils/memoize/memoize';
+import { User } from '../../../../core/models/user.model';
 
 @Component({
   selector: 'alto-img-badge',
   templateUrl: './img-badge.component.html',
   styleUrls: ['./img-badge.component.scss'],
 })
-export class ImgBadgeComponent implements OnChanges {
-  @Input() user: UserDtoApi | UserLightDtoApi | null | undefined;
-  @Input() url: string | null | undefined;
+export class ImgBadgeComponent {
+  @Input() user?: User;
   @Input() size = 32;
   @Input() hasBorder = false;
   @Input() toggleTooltip = true;
@@ -22,25 +21,17 @@ export class ImgBadgeComponent implements OnChanges {
 
   I18ns = I18ns;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['url']?.currentValue) {
-      this.thumb = this.url;
-    } else {
-      this.thumb = this.getAvatar(this.user?.id);
-    }
-  }
-
   @memoize()
   getStyle(size: number): string {
     return `width: ${size}px; height: ${size}px;`;
   }
 
   @memoize()
-  getUserName(user: UserDtoApi | UserLightDtoApi | null | undefined) {
+  getUserName(user?: User) {
     if (!user) {
       return I18ns.shared.deletedUsername;
     }
-    return user?.firstname + ' ' + user?.lastname;
+    return user.fullname;
   }
 
   @memoize()
