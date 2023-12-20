@@ -1,8 +1,8 @@
 <div class="header-panel">
-  <img [src]="Emoji.WavingHand | emoji" height="48" width="48"/>
+  <img [src]="Emoji.WavingHand | emoji" height="48" width="48" />
   <div>
     <h1>
-     {{'Hello ' + me.firstname + '!'}}
+      {{ 'Hello ' + me.firstname + '!' }}
     </h1>
     <p>Welcome to The Office</p>
   </div>
@@ -27,33 +27,74 @@
         <tr>
           <th class="col w-20">Name</th>
           <th class="col">Billing admin</th>
-          <th class="col w-10">Trainx licenses status</th>
-          <th class="col w-10">Recordx licenses status</th>
+          <th class="col w-10 text-center">Trainx licenses status</th>
+          <th class="col w-10 text-center">Recordx licenses status</th>
           <th class="col w-10"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let company of filteredCompanies" style="height: 53px">
+        <tr *ngFor="let company of filteredCompaniesDisplay" style="height: 53px">
           <td>
             <ng-template #popContent>
-              <p>Created at:  {{company.createdAt | date}}</p>
-              <p>Created by: {{company.createdBy}}</p>
+              <p>Created at: {{ company.company.createdAt | date }}</p>
+              <p>Created by: {{ company.company.createdBy }}</p>
             </ng-template>
-            <div placement="bottom" [ngbTooltip]="popContent">
-              <p class="fw-bold">{{company.name}}</p>
-              <p class="fw-lighter alto-grey smaller fst-italic"> {{company.users.length + ' ' + (company.users.length > 1 ? 'users' : 'user')}} </p>
-            </div>
+            <span placement="left" [ngbTooltip]="popContent">
+              <p class="fw-bold">{{ company.company.name }}</p>
+              <p class="fw-lighter alto-grey smaller fst-italic">
+                {{
+                  company.company.users.length + ' ' + (company.company.users.length > 1 ? 'users' : 'user')
+                }}
+              </p>
+            </span>
           </td>
           <td></td>
-          <td></td>
-          <td></td>
+          <td scope="col" class="text-center">
+            <p
+              class="licenses-status rounded-circle"
+              [class]="
+                company.trainxAvailableLicenses > 0
+                  ? 'valid'
+                  : company.trainxAvailableLicenses < 0
+                  ? 'warning'
+                  : 'danger'
+              "
+            ></p>
+          </td>
+          <td scope="col" class="text-center">
+            <p
+              class="licenses-status rounded-circle"
+              [class]="
+                company.recordxAvailableLicenses > 0
+                  ? 'valid'
+                  : company.recordxAvailableLicenses < 0
+                  ? 'warning'
+                  : 'danger'
+              "
+            ></p>
+          </td>
           <td class="text-end px-4">
-            <i class="fs-4 bi bi-stripe cursor-pointer me-4"></i>
-            <i class="fs-4 bi bi-pen cursor-pointer"></i>
+            <a
+              *ngIf="company.company.stripeId; else noStripeId"
+              [href]="environment.stripeCustomerURL + company.company.stripeId"
+              target="_blank"
+            >
+              <i class="fs-4 bi bi-stripe cursor-pointer me-4"></i>
+            </a>
+            <ng-template #noStripeId>
+              <i class="fs-3 bi bi-exclamation-triangle-fill me-4 alto-warning"></i>
+            </ng-template>
+            <i (click)="openCompanyEditForm(company.company)" class="fs-4 bi bi-pen cursor-pointer"></i>
           </td>
         </tr>
       </tbody>
     </table>
+    <alto-pagination class="mx-4 d-block"
+      [collectionSize]="filteredCompanies.length"
+      [pageSize]="companiesPageSize"
+      [(page)]="companiesPage"
+      (pageChange)="changeCompaniesPage($event)"
+    ></alto-pagination>
   </div>
   <div class="nodata-placeholder d-flex justify-content-center align-items-center" noData>
     <div class="text-center">
@@ -61,7 +102,8 @@
       <h2 class="mt-3">There is no company at the moment</h2>
       <button class="mt-4 btn btn-primary">Create the first company</button>
     </div>
-  </div>  <div class="nodata-placeholder d-flex justify-content-center align-items-center" noResult>
+  </div>
+  <div class="nodata-placeholder d-flex justify-content-center align-items-center" noResult>
     <div class="text-center">
       <img [src]="Emoji.MagnifyingGlassTiltedRight | emoji" height="24" width="24" />
       <h2 class="mt-3">Your filters doesn't match any company</h2>

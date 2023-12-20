@@ -2,3 +2,15 @@
   display: block;
   padding: 2rem;
 }
+
+.licenses-status {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: orange;
+  &.valid {
+    background-color: green;
+  }
+  &.danger {
+    background-color: red;
+  }
+}

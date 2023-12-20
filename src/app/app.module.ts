@@ -34,6 +34,7 @@ import { CreateUserTrainxComponent } from './modules/create-user-trainx/create-u
 import { UserTrainxComponent } from './modules/company-user/user-trainx/user-trainx.component';
 import { CoreModule } from './core/core.module';
 import { HomeComponent } from './modules/home/home.component';
+import { EditCompanyComponent } from './modules/home/edit-company/edit-company.component';
 @NgModule({
   declarations: [
     HomeComponent,
@@ -49,6 +50,7 @@ import { HomeComponent } from './modules/home/home.component';
     UnauthorizedComponent,
     CreateUserTrainxComponent,
     UserTrainxComponent,
+    EditCompanyComponent,
   ],
   imports: [
     CoreModule,

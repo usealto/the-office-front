@@ -1,6 +1,7 @@
 import { CompanyDtoApi as TrainxCompanyDtoApi } from '@usealto/sdk-ts-angular';
 import { CompanyDtoApi as theOfficeCompanyDtoApi } from '@usealto/the-office-sdk-angular';
 import { IUser, User } from './user.model';
+import { environment } from '../../../environments/environment';
 
 export interface ITrainxCompanySettings {
   licenseCount: number;
@@ -40,6 +41,7 @@ export interface ICompany {
   deletedAt?: Date;
   createdBy?: string;
   users: IUser[];
+  stripeId?: string;
   trainxSettings: ITrainxCompanySettings;
   recordxSettings: IRecordxCompanySettings;
 }
@@ -52,6 +54,7 @@ export class Company implements ICompany {
   deletedAt?: Date;
   createdBy?: string;
   users: User[];
+  stripeId?: string;
   trainxSettings: TrainxCompanySettings;
   recordxSettings: RecordxCompanySettings;
 
@@ -63,8 +66,9 @@ export class Company implements ICompany {
     this.deletedAt = data.deletedAt;
     this.createdBy = data.createdBy;
     this.users = data.users.map((u) => new User(u));
-    this.trainxSettings = {} as TrainxCompanySettings;
-    this.recordxSettings = {} as RecordxCompanySettings;
+    this.stripeId = data.stripeId;
+    this.trainxSettings = new TrainxCompanySettings(data.trainxSettings);
+    this.recordxSettings = new RecordxCompanySettings(data.recordxSettings);
   }
 
   static fromDto(theofficeData: theOfficeCompanyDtoApi): Company {
@@ -76,12 +80,15 @@ export class Company implements ICompany {
       deletedAt: theofficeData.deletedAt,
       createdBy: theofficeData.createdByUser
         ? theofficeData.createdByUser.firstname + ' ' + theofficeData.createdByUser.lastname
-        : undefined, //?
+        : undefined,
       users: [],
+      stripeId: theofficeData.stripeId,
       trainxSettings: {
-        licenseCount: theofficeData.licenses.find((l) => l.applicationId === 'trainx')?.quantity ?? 0,
+        licenseCount: theofficeData.licenses.find((l) => l.applicationId === environment.trainxTheOfficeId)?.quantity ?? 0,
       },
-      recordxSettings: {} as RecordxCompanySettings,
+      recordxSettings: {
+        licenseCount: theofficeData.licenses.find((l) => l.applicationId === environment.recordxTheOfficeId)?.quantity ?? 0,
+      }
     });
   }
 
@@ -94,6 +101,7 @@ export class Company implements ICompany {
       deletedAt: this.deletedAt,
       createdBy: this.createdBy,
       users: this.users.map((u) => u.rawData),
+      stripeId: this.stripeId,
       trainxSettings: this.trainxSettings,
       recordxSettings: this.recordxSettings,
     };
