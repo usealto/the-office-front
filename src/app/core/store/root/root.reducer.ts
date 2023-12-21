@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { Company } from '../../models/company.model';
 import { IUser, User } from '../../models/user.model';
-import { setCompanies, setUserMe } from '../root/root.action';
+import { addCompanies, setUserMe } from '../root/root.action';
 
 export class TimestampedEntity<T> {
   data: T;
@@ -38,7 +38,7 @@ export const rootReducer = createReducer(
     }),
   ),
   on(
-    setCompanies,
+    addCompanies,
     (state, { companies }): RootState => ({
       ...state,
       companiesById: new TimestampedEntity<Map<string, Company>>(

@@ -11,9 +11,9 @@ import { EResolverData, ResolversService } from '../../core/resolvers/resolvers.
 import { EmojiName } from '../../core/utils/emoji/data';
 import { CompaniesRestService } from '../companies/service/companies-rest.service';
 import { EPlaceholderStatus } from '../shared/models/placeholder.model';
-import { EditCompanyComponent } from './edit-company/edit-company.component';
+import { CompanyFormComponent } from './company-form/company-form.component';
 
-interface ICompanyDisplay {
+interface ICompanyInfos {
   company: Company;
   trainxAvailableLicenses: number;
   recordxAvailableLicenses: number;
@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   environment = environment;
 
   me!: User;
-  filteredCompanies: ICompanyDisplay[] = [];
+  filteredCompanies: ICompanyInfos[] = [];
 
   readonly companiesPageSize = 5;
   pageControl = new FormControl(1, { nonNullable: true });
@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   openCompanyEditForm(company: Company): void {
-    const canvaRef = this.offcanvasService.open(EditCompanyComponent, {
+    const canvaRef = this.offcanvasService.open(CompanyFormComponent, {
       position: 'end',
       panelClass: 'overflow-auto',
     });

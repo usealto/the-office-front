@@ -6,4 +6,4 @@ import { User } from '../../models/user.model';
 export const setUserMe = createAction('[User] Set me', props<{ user: User }>());
 
 // Company
-export const setCompanies = createAction('[Company] Set Companies', props<{ companies: Company[] }>());
+export const addCompanies = createAction('[Company] Set Companies', props<{ companies: Company[] }>());

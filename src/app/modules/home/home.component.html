@@ -33,18 +33,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let company of filteredCompanies" style="height: 53px">
+        <tr *ngFor="let companyInfos of filteredCompanies" style="height: 53px">
           <td>
-            <ng-template #popContent>
-              <p>Created at: {{ company.company.createdAt | date }}</p>
-              <p>Created by: {{ company.company.createdBy }}</p>
-            </ng-template>
-            <span placement="left" [ngbTooltip]="popContent">
-              <p class="fw-bold">{{ company.company.name }}</p>
+            <span placement="left">
+              <p class="fw-bold">{{ companyInfos.company.name }}</p>
               <p class="fw-lighter alto-grey smaller fst-italic">
-                {{
-                  company.company.users.length + ' ' + (company.company.users.length > 1 ? 'users' : 'user')
-                }}
+                created by {{ companyInfos.company.createdBy }}
+              </p>
+              <p class="fw-lighter alto-grey smaller fst-italic">
+                ({{ companyInfos.company.createdAt | date: 'MM/dd/yyyy' }})
               </p>
             </span>
           </td>
@@ -53,7 +50,7 @@
             <div
               class="licenses-status rounded-circle"
               [class]="
-                company.trainxAvailableLicenses < 0
+                companyInfos.trainxAvailableLicenses < 0
                   ? 'danger'
                   : 'valid'
               "
@@ -63,7 +60,7 @@
             <div
               class="licenses-status rounded-circle"
               [class]="
-                company.recordxAvailableLicenses < 0
+                companyInfos.recordxAvailableLicenses < 0
                   ? 'danger'
                   : 'valid'
               "
@@ -71,8 +68,8 @@
           </td>
           <td class="text-end px-4">
             <a
-              *ngIf="company.company.stripeId; else noStripeId"
-              [href]="environment.stripeCustomerURL + company.company.stripeId"
+              *ngIf="companyInfos.company.stripeId; else noStripeId"
+              [href]="environment.stripeCustomerURL + companyInfos.company.stripeId"
               target="_blank"
             >
               <i class="fs-4 bi bi-stripe cursor-pointer me-4"></i>
@@ -80,7 +77,7 @@
             <ng-template #noStripeId>
               <i class="fs-3 bi bi-exclamation-triangle-fill me-4 alto-warning"></i>
             </ng-template>
-            <i (click)="openCompanyEditForm(company.company)" class="fs-4 bi bi-pen cursor-pointer"></i>
+            <i (click)="openCompanyEditForm(companyInfos.company)" class="fs-4 bi bi-pen cursor-pointer"></i>
           </td>
         </tr>
       </tbody>
