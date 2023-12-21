@@ -29,6 +29,77 @@ export class UsersRestService {
     );
   }
 
+  getUsersByCompany(companyId: string): Observable<User[]> {
+    return this.theofficeUserApi
+      .getUsers({ page: 1, sortBy: 'createdAt:asc', itemsPerPage: 1000, companyId })
+      .pipe(
+        switchMap(({ data, meta }) => {
+          const reqs: Observable<TheOfficeUserDtoApi[]>[] = [of(data ? data : [])];
+          let totalPages = meta.totalPage ?? 1;
+
+          for (let i = 2; i <= totalPages; i++) {
+            reqs.push(
+              this.theofficeUserApi
+                .getUsers({ page: i, sortBy: 'createdAt:asc', itemsPerPage: 1000, companyId })
+                .pipe(
+                  tap(({ meta }) => {
+                    if (meta.totalPage !== totalPages) {
+                      totalPages = meta.totalPage;
+                    }
+                  }),
+                  map(({ data }) => (data ? data : [])),
+                ),
+            );
+          }
+          return combineLatest(reqs);
+        }),
+        switchMap((usersDtos) => {
+          return combineLatest([
+            of(usersDtos.flat()),
+            this.trainxUserApi
+              .getUsers({
+                page: 1,
+                itemsPerPage: 1000,
+                emails: usersDtos
+                  .flat()
+                  .map(({ email }) => email)
+                  .join(','),
+              })
+              .pipe(
+                switchMap(({ data, meta }) => {
+                  const reqs: Observable<TrainXUserDtoApi[]>[] = [of(data ? data : [])];
+                  let totalPages = meta.totalPage ?? 1;
+
+                  for (let i = 2; i <= totalPages; i++) {
+                    reqs.push(
+                      this.trainxUserApi
+                        .getUsers({ page: i, sortBy: 'createdAt:asc', itemsPerPage: 1000 })
+                        .pipe(
+                          tap(({ meta }) => {
+                            if (meta.totalPage !== totalPages) {
+                              totalPages = meta.totalPage;
+                            }
+                          }),
+                          map(({ data }) => (data ? data : [])),
+                        ),
+                    );
+                  }
+                  return combineLatest(reqs);
+                }),
+              ),
+          ]);
+        }),
+        map(([theofficeUsers, trainxUsers]) => {
+          return theofficeUsers.map((theofficeUser) => {
+            const trainxUser = trainxUsers
+              .flat()
+              .find((trainxUser) => trainxUser.email === theofficeUser.email);
+            return User.fromDtos(theofficeUser, trainxUser);
+          });
+        }),
+      );
+  }
+
   getUsers(): Observable<User[]> {
     return this.theofficeUserApi.getUsers({ page: 1, sortBy: 'createdAt:asc', itemsPerPage: 1000 }).pipe(
       switchMap(({ data, meta }) => {

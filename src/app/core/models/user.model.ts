@@ -155,4 +155,20 @@ export class User implements IUser {
   isBillingAdmin(): boolean {
     return this.roles.includes(UserDtoApiRolesEnumApi.BillingAdmin);
   }
+
+  hasTrainxAccess(): boolean {
+    return this.isTrainxLead() || this.isTrainxUser();
+  }
+
+  hasRecordxAccess(): boolean {
+    return this.isRecordxLead() || this.isRecordxUser();
+  }
+
+  hasTrainxLicense(): boolean {
+    return this.trainxSettings.hasLicense;
+  }
+
+  hasRecordxLicense(): boolean {
+    return this.recordxSettings.hasLicense;
+  }
 }

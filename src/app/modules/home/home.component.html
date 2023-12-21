@@ -33,7 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let company of filteredCompaniesDisplay" style="height: 53px">
+        <tr *ngFor="let company of filteredCompanies" style="height: 53px">
           <td>
             <ng-template #popContent>
               <p>Created at: {{ company.company.createdAt | date }}</p>
@@ -49,29 +49,25 @@
             </span>
           </td>
           <td></td>
-          <td scope="col" class="text-center">
-            <p
+          <td scope="col">
+            <div
               class="licenses-status rounded-circle"
               [class]="
-                company.trainxAvailableLicenses > 0
-                  ? 'valid'
-                  : company.trainxAvailableLicenses < 0
-                  ? 'warning'
-                  : 'danger'
+                company.trainxAvailableLicenses < 0
+                  ? 'danger'
+                  : 'valid'
               "
-            ></p>
+            ></div>
           </td>
-          <td scope="col" class="text-center">
-            <p
+          <td scope="col">
+            <div
               class="licenses-status rounded-circle"
               [class]="
-                company.recordxAvailableLicenses > 0
-                  ? 'valid'
-                  : company.recordxAvailableLicenses < 0
-                  ? 'warning'
-                  : 'danger'
+                company.recordxAvailableLicenses < 0
+                  ? 'danger'
+                  : 'valid'
               "
-            ></p>
+            ></div>
           </td>
           <td class="text-end px-4">
             <a
@@ -90,10 +86,9 @@
       </tbody>
     </table>
     <alto-pagination class="mx-4 d-block"
-      [collectionSize]="filteredCompanies.length"
-      [pageSize]="companiesPageSize"
-      [(page)]="companiesPage"
-      (pageChange)="changeCompaniesPage($event)"
+      [pageControl]="pageControl"
+      [pageCount]="pageCount"
+      [itemsCount]="companiesCount"
     ></alto-pagination>
   </div>
   <div class="nodata-placeholder d-flex justify-content-center align-items-center" noData>

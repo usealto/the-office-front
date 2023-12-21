@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription, combineLatest, debounce, of, startWith, switchMap, timer } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { Company } from '../../core/models/company.model';
 import { User } from '../../core/models/user.model';
 import { IAppData } from '../../core/resolvers/app.resolver';
 import { EResolverData, ResolversService } from '../../core/resolvers/resolvers.service';
 import { EmojiName } from '../../core/utils/emoji/data';
+import { CompaniesRestService } from '../companies/service/companies-rest.service';
 import { EPlaceholderStatus } from '../shared/models/placeholder.model';
-import { UserDtoApiRolesEnumApi } from '@usealto/the-office-sdk-angular';
-import { environment } from '../../../environments/environment';
-import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { EditCompanyComponent } from './edit-company/edit-company.component';
 
 interface ICompanyDisplay {
@@ -18,6 +18,7 @@ interface ICompanyDisplay {
   trainxAvailableLicenses: number;
   recordxAvailableLicenses: number;
 }
+
 @Component({
   selector: 'alto-home',
   templateUrl: './home.component.html',
@@ -28,11 +29,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   environment = environment;
 
   me!: User;
-  companiesById = new Map<string, Company>();
   filteredCompanies: ICompanyDisplay[] = [];
-  filteredCompaniesDisplay: ICompanyDisplay[] = [];
-  companiesPage = 1;
-  companiesPageSize = 3;
+
+  readonly companiesPageSize = 5;
+  pageControl = new FormControl(1, { nonNullable: true });
+  pageCount = 1;
+  companiesCount = 0;
+
   companiesDataStatus = EPlaceholderStatus.Good;
 
   searchTerm: FormControl<string | null> = new FormControl(null);
@@ -42,66 +45,59 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly resolverService: ResolversService,
     private readonly offcanvasService: NgbOffcanvas,
+    private readonly companiesRestService: CompaniesRestService,
   ) {}
 
   ngOnInit(): void {
     const data = this.resolverService.getDataFromPathFromRoot(this.activatedRoute.pathFromRoot);
-    this.companiesById = (data[EResolverData.AppData] as IAppData).companiesById;
     this.me = (data[EResolverData.AppData] as IAppData).me;
-    const companies = Array.from(this.companiesById.values());
-    this.filteredCompanies = companies.map((company) => ({
-      company,
-      trainxAvailableLicenses: this.getCompanyTrainxAvailableLicenses(company),
-      recordxAvailableLicenses: this.getCompanyRecordxAvailableLicenses(company),
-    }));
-    this.changeCompaniesPage(1);
-
-    this.companiesDataStatus = this.companiesById.size ? EPlaceholderStatus.Good : EPlaceholderStatus.NoData;
 
     this.homeSubscription.add(
-      this.searchTerm.valueChanges.subscribe((searchTerm) => {
-        this.filteredCompanies = Array.from(this.companiesById.values())
-          .filter((company) => {
-            if (!searchTerm) return true;
-            return company.name.toLowerCase().includes(searchTerm.toLowerCase());
-          })
-          .map((company) => ({
+      combineLatest([
+        this.pageControl.valueChanges.pipe(startWith(1)),
+        this.searchTerm.valueChanges.pipe(
+          startWith(null),
+          debounce((searchTerm) => (searchTerm ? timer(500) : of(null))),
+        ),
+      ])
+        .pipe(
+          switchMap(([page, searchTerm]) => {
+            return this.companiesRestService.getPaginatedCompanies(
+              page,
+              this.companiesPageSize,
+              searchTerm ? searchTerm : undefined,
+            );
+          }),
+        )
+        .subscribe(({ companies, itemCount, pageCount }) => {
+          this.filteredCompanies = companies.map((company) => ({
             company,
             trainxAvailableLicenses: this.getCompanyTrainxAvailableLicenses(company),
             recordxAvailableLicenses: this.getCompanyRecordxAvailableLicenses(company),
           }));
-        this.changeCompaniesPage(1);
-        this.companiesDataStatus = this.filteredCompanies.length
-          ? EPlaceholderStatus.Good
-          : EPlaceholderStatus.NoResult;
-      }),
+          this.companiesCount = itemCount;
+          this.pageCount = pageCount;
+          this.companiesDataStatus = this.filteredCompanies.length
+            ? EPlaceholderStatus.Good
+            : EPlaceholderStatus.NoResult;
+        }),
     );
-  }
-
-  changeCompaniesPage(page: number): void {
-    this.companiesPage = page;
-    this.filteredCompaniesDisplay = this.filteredCompanies.slice(
-      (this.companiesPage - 1) * this.companiesPageSize,
-      this.companiesPage * this.companiesPageSize,
-    );
-  }
-
-  getCompanyTrainxAvailableLicenses(company: Company): number {
-    const companyTrainxUsers = company.users.filter((u) =>
-      u.roles.includes(UserDtoApiRolesEnumApi.TrainxUser),
-    );
-    return company.trainxSettings.licenseCount - companyTrainxUsers.length;
-  }
-
-  getCompanyRecordxAvailableLicenses(company: Company): number {
-    const companyRecordxUsers = company.users.filter((u) =>
-      u.roles.includes(UserDtoApiRolesEnumApi.RecordxUser),
-    );
-    return company.recordxSettings.licenseCount - companyRecordxUsers.length;
   }
 
   ngOnDestroy(): void {
     this.homeSubscription.unsubscribe();
+  }
+
+  getCompanyTrainxAvailableLicenses(company: Company): number {
+    const companyTrainxUsersWithLicense = company.users.filter(
+      (u) => u.hasTrainxAccess() && u.hasTrainxLicense(),
+    );
+    return company.trainxSettings.licenseCount - companyTrainxUsersWithLicense.length;
+  }
+
+  getCompanyRecordxAvailableLicenses(company: Company): number {
+    const companyRecordxUsers = company.users.filter((u) => u.hasRecordxAccess() && u.hasRecordxLicense());
+    return company.recordxSettings.licenseCount - companyRecordxUsers.length;
   }
 
   resetSearch(): void {

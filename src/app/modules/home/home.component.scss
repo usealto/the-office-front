@@ -6,11 +6,12 @@
 .licenses-status {
   width: 1.5rem;
   height: 1.5rem;
-  background-color: orange;
+  margin: auto;
+
   &.valid {
-    background-color: green;
+    background-color: var(--bs-success);
   }
   &.danger {
-    background-color: red;
+    background-color: var(--bs-danger);
   }
 }

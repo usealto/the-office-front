@@ -1,8 +1,8 @@
 <ngb-pagination
   (pageChange)="paginate($event)"
-  [page]="page"
-  [pageSize]="pageSize"
-  [collectionSize]="collectionSize"
+  [page]="pageControl.value"
+  [pageSize]="itemsPerPage"
+  [collectionSize]="itemsCount"
 >
   <ng-template ngbPaginationPrevious let-disabled="disabled">
     <button [disabled]="disabled" class="btn btn-outline-secondary">
@@ -11,9 +11,9 @@
   </ng-template>
 
   <ng-template ngbPaginationPages let-page let-pages="pages">
-    <div class="ngb-custom-pages-item mt-3" *ngIf="collectionSize > pageSize">
+    <div class="ngb-custom-pages-item mt-3" *ngIf="itemsCount > itemsPerPage">
       <span id="paginationDescription" class="col-form-label text-nowrap numbers">
-        {{ page + ' ' + I18ns.shared.pagination.on + ' ' + lastPage }}
+        {{ page + ' ' + I18ns.shared.pagination.on + ' ' + pageCount }}
       </span>
     </div>
   </ng-template>
