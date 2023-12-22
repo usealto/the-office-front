@@ -2,13 +2,16 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@auth0/auth0-angular';
 
+import { AppGuard } from './core/guards/app.guard';
 import { FlagBasedPreloadingStrategy } from './core/interceptors/module-loading-strategy';
 import { appResolver } from './core/resolvers/app.resolver';
 import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
+import { HomeComponent } from './modules/home/home.component';
 import { AltoRoutes } from './modules/shared/constants/routes';
 import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
-import { HomeComponent } from './modules/home/home.component';
-import { AppGuard } from './core/guards/app.guard';
+import { CompanyUsersComponent } from './modules/company-users/company-users.component';
+import { companyUsersResolver } from './core/resolvers/companyUsers.resolver';
+import { EResolverData } from './core/resolvers/resolvers.service';
 
 const routes: Routes = [
   {
@@ -16,7 +19,7 @@ const routes: Routes = [
     component: AppLayoutComponent,
     canActivate: [AuthGuard, AppGuard],
     resolve: {
-      appData: appResolver,
+      [EResolverData.AppData]: appResolver,
     },
     canActivateChild: [AuthGuard, AppGuard],
     children: [
@@ -24,12 +27,15 @@ const routes: Routes = [
         path: AltoRoutes.home,
         component: HomeComponent,
       },
+      {
+        path: AltoRoutes.companies + '/:id',
+        component: CompanyUsersComponent,
+        resolve: {
+          [EResolverData.CompanyUsersData]: companyUsersResolver,
+        },
+      },
       // {
       //   path: AltoRoutes.companies + '/create',
-      //   component: CompaniesCreateComponent,
-      // },
-      // {
-      //   path: AltoRoutes.companies + '/:id',
       //   component: CompaniesCreateComponent,
       // },
       // {

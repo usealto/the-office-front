@@ -15,6 +15,12 @@ import { Company } from '../../../core/models/company.model';
 export class CompaniesRestService {
   constructor(private readonly theofficeCompanyApi: TheofficeCompanyApiService) {}
 
+  getCompanyById(companyId: string): Observable<Company> {
+    return this.theofficeCompanyApi
+      .getCompanyById({ id: companyId })
+      .pipe(map(({ data }) => Company.fromDto(data as CompanyDtoApi)));
+  }
+
   getPaginatedCompanies(
     page: number,
     itemsPerPage: number,

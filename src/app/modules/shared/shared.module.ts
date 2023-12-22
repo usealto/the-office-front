@@ -32,6 +32,7 @@ import { TabsComponent } from './components/tabs/tabs.component';
 import { ProgressionPillArrowPipe } from './helpers/progression-pill-arrow.pipe';
 import { ProgressionPillPipe } from './helpers/progression-pill.pipe';
 import { TeamColorPipe } from './helpers/team-color.pipe';
+import { InputTextComponent } from './components/forms/input-text/input-text.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { TeamColorPipe } from './helpers/team-color.pipe';
     DeleteModalComponent,
     PlaceholderManagerComponent,
     HeaderComponent,
+    InputTextComponent,
   ],
   imports: [
     CommonModule,
@@ -97,6 +99,7 @@ import { TeamColorPipe } from './helpers/team-color.pipe';
     DeleteModalComponent,
     PlaceholderManagerComponent,
     HeaderComponent,
+    InputTextComponent,
   ],
   providers: [NgbActiveModal],
 })

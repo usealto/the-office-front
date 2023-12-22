@@ -14,8 +14,6 @@ export class ImgBadgeComponent {
   @Input() hasBorder = false;
   @Input() toggleTooltip = true;
 
-  thumb: string | null | undefined = '';
-
   avatarsFolder = 'assets/avatars/';
   avatarsCount = 71;
 

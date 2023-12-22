@@ -5,12 +5,11 @@
 <form (submit)="submit()">
   <div class="px-6 sidebar-body">
     <label class="form-label required">Name</label>
-    <input type="text" class="form-control" [formControl]="nameControl" placeholder="Company name" />
-    <p *ngIf="nameControl.invalid">Name is mandatory</p>
+    <alto-input-text [control]="nameControl" placeholder="Company name" ></alto-input-text>
   </div>
   <div class="footer">
-      <button type="submit" class="btn btn-primary float-end" [disabled]="nameControl.invalid">
-        <i class="bi bi-plus-lg"></i><span>Save</span>
-      </button>
+    <button type="submit" class="btn btn-primary float-end" [disabled]="nameControl.invalid">
+      <i class="bi bi-plus-lg"></i><span>Save</span>
+    </button>
   </div>
 </form>

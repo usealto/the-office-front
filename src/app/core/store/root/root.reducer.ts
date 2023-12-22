@@ -37,13 +37,14 @@ export const rootReducer = createReducer(
       me: new TimestampedEntity<User>(user),
     }),
   ),
-  on(
-    addCompanies,
-    (state, { companies }): RootState => ({
+  on(addCompanies, (state, { companies }): RootState => {
+    const companiesById = new Map<string, Company>(
+      [...state.companiesById.data.values()].map((company) => [company.id, company]),
+    );
+    companies.forEach((company) => companiesById.set(company.id, company));
+    return {
       ...state,
-      companiesById: new TimestampedEntity<Map<string, Company>>(
-        new Map<string, Company>(companies.map((c) => [c.id, new Company(c)])),
-      ),
-    }),
-  ),
+      companiesById: new TimestampedEntity<Map<string, Company>>(companiesById),
+    };
+  }),
 );

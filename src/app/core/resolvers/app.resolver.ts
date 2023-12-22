@@ -6,6 +6,7 @@ import { map } from 'rxjs';
 import { User } from '../models/user.model';
 import * as FromRoot from '../store/store.reducer';
 import { EmojiMap, emojiData } from '../utils/emoji/data';
+
 export interface IAppData {
   me: User;
 }

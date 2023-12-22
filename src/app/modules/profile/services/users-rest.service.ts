@@ -29,7 +29,7 @@ export class UsersRestService {
     );
   }
 
-  getUsersByCompany(companyId: string): Observable<User[]> {
+  getUsersByCompanyId(companyId: string): Observable<User[]> {
     return this.theofficeUserApi
       .getUsers({ page: 1, sortBy: 'createdAt:asc', itemsPerPage: 1000, companyId })
       .pipe(

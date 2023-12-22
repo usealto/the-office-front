@@ -16,7 +16,7 @@
     <alto-search style="width: 400px" [searchControl]="searchTerm"></alto-search>
   </div>
   <div class="col text-end">
-    <button class="btn btn-primary">Create a company</button>
+    <button class="btn btn-primary" (click)="openCompanyEditForm()"><i class="bi bi-plus-lg"></i>Create a company</button>
   </div>
 </div>
 
@@ -33,51 +33,49 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let companyInfos of filteredCompanies" style="height: 53px">
-          <td>
-            <span placement="left">
-              <p class="fw-bold">{{ companyInfos.company.name }}</p>
-              <p class="fw-lighter alto-grey smaller fst-italic">
-                created by {{ companyInfos.company.createdBy }}
-              </p>
-              <p class="fw-lighter alto-grey smaller fst-italic">
-                ({{ companyInfos.company.createdAt | date: 'MM/dd/yyyy' }})
-              </p>
-            </span>
-          </td>
-          <td></td>
-          <td scope="col">
-            <div
+        <tr *ngFor="let companyInfos of filteredCompanies" style="height: 53px" class="cursor-pointer" [routerLink]="['/', AltoRoutes.companies, companyInfos.company.id]">
+            <td>
+              <span placement="left">
+                <p class="fw-bold">{{ companyInfos.company.name }}</p>
+                <p class="fw-lighter alto-grey smaller fst-italic">
+                  {{ companyInfos.company.users.length }} user{{ companyInfos.company.users.length > 1 ? 's' : '' }}
+                </p>
+              </span>
+            </td>
+            <td></td>
+            <td scope="col">
+              <div
               class="licenses-status rounded-circle"
               [class]="
                 companyInfos.trainxAvailableLicenses < 0
-                  ? 'danger'
-                  : 'valid'
-              "
+                ? 'danger'
+                : 'valid'
+                "
             ></div>
           </td>
           <td scope="col">
             <div
-              class="licenses-status rounded-circle"
-              [class]="
+            class="licenses-status rounded-circle"
+            [class]="
                 companyInfos.recordxAvailableLicenses < 0
-                  ? 'danger'
-                  : 'valid'
-              "
+                ? 'danger'
+                : 'valid'
+                "
             ></div>
           </td>
           <td class="text-end px-4">
             <a
-              *ngIf="companyInfos.company.stripeId; else noStripeId"
-              [href]="environment.stripeCustomerURL + companyInfos.company.stripeId"
-              target="_blank"
+            *ngIf="companyInfos.company.stripeId; else noStripeId"
+            [href]="environment.stripeCustomerURL + companyInfos.company.stripeId"
+            target="_blank"
+            (click)="$event.stopPropagation()"
             >
-              <i class="fs-4 bi bi-stripe cursor-pointer me-4"></i>
-            </a>
+            <i class="fs-4 bi bi-stripe cursor-pointer me-4"></i>
+          </a>
             <ng-template #noStripeId>
               <i class="fs-3 bi bi-exclamation-triangle-fill me-4 alto-warning"></i>
             </ng-template>
-            <i (click)="openCompanyEditForm(companyInfos.company)" class="fs-4 bi bi-pen cursor-pointer"></i>
+            <i (click)="openCompanyEditForm(companyInfos.company)" class="fs-4 bi bi-pen cursor-pointer" (click)="$event.stopPropagation()"></i>
           </td>
         </tr>
       </tbody>

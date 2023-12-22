@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { I18ns } from 'src/app/core/utils/i18n/I18n';
 
 @Component({
   selector: 'alto-pagination',
@@ -13,9 +12,9 @@ export class PaginationComponent {
   @Input() itemsCount = 0;
   @Input() itemsPerPage = 0;
 
-  I18ns = I18ns;
-
   paginate(page: number): void {
-    this.pageControl.patchValue(page);
+    if (page > 0 && page <= this.pageCount) {
+      this.pageControl.patchValue(page);
+    }
   }
 }

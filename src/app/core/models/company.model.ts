@@ -84,11 +84,15 @@ export class Company implements ICompany {
       users: [],
       stripeId: theofficeData.stripeId,
       trainxSettings: {
-        licenseCount: theofficeData.licenses.find((l) => l.applicationId === environment.trainxTheOfficeId)?.quantity ?? 0,
+        licenseCount:
+          theofficeData.licenses.find((l) => l.applicationId === environment.trainxTheOfficeId)?.quantity ??
+          0,
       },
       recordxSettings: {
-        licenseCount: theofficeData.licenses.find((l) => l.applicationId === environment.recordxTheOfficeId)?.quantity ?? 0,
-      }
+        licenseCount:
+          theofficeData.licenses.find((l) => l.applicationId === environment.recordxTheOfficeId)?.quantity ??
+          0,
+      },
     });
   }
 
@@ -105,9 +109,5 @@ export class Company implements ICompany {
       trainxSettings: this.trainxSettings,
       recordxSettings: this.recordxSettings,
     };
-  }
-
-  get isTrainxEnabled(): boolean {
-    return this.trainxSettings.licenseCount > 0;
   }
 }

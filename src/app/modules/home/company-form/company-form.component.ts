@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { of, tap } from 'rxjs';
+
 import { Company } from '../../../core/models/company.model';
-import { CompaniesRestService } from '../../companies/service/companies-rest.service';
 import { ToastService } from '../../../core/toast/toast.service';
-import { tap } from 'rxjs';
+import { CompaniesRestService } from '../../companies/service/companies-rest.service';
 
 @Component({
   selector: 'alto-company-form',
@@ -13,7 +14,7 @@ import { tap } from 'rxjs';
 })
 export class CompanyFormComponent implements OnInit {
   @Input() company?: Company;
-  nameControl = new FormControl('', { nonNullable: true, validators: [Validators.required] });
+  nameControl = new FormControl('', { nonNullable: true, validators: [this.mandatoryNameValidator()] });
 
   constructor(
     public activeOffcanvas: NgbActiveOffcanvas,
@@ -27,9 +28,17 @@ export class CompanyFormComponent implements OnInit {
     }
   }
 
+  private mandatoryNameValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return Validators.required(control) ? { error: 'Name is mandatory' } : null;
+    };
+  }
+
   submit(): void {
     (this.company
-      ? this.companiesRestService.updateCompany(this.company.id, this.nameControl.value)
+      ? this.nameControl.value !== this.company.name
+        ? this.companiesRestService.updateCompany(this.company.id, this.nameControl.value)
+        : of(this.company)
       : this.companiesRestService.createCompany(this.nameControl.value)
     )
       .pipe(tap(() => this.activeOffcanvas.close()))
