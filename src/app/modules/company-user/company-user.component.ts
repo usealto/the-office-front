@@ -25,32 +25,32 @@ interface UserFormView {
 
 interface AuthUserMetadata {
   bubbleId: string;
-  companyId: string;  
+  companyId: string;
   altoId: string;
-} 
+}
 
 interface AuthUserGet {
   app_metadata: string;
   created_at: string;
   email: string;
-  email_verified : string;
-  identities: string[]
+  email_verified: string;
+  identities: string[];
   last_ip: string;
-  last_login: string; 
-  logins_count: number
-  name: string; 
-  nickname  : string;
+  last_login: string;
+  logins_count: number;
+  name: string;
+  nickname: string;
   picture: string;
-  updated_at :  string;
+  updated_at: string;
   user_id: string;
   user_metadata: AuthUserMetadata;
-  username: string; 
-} 
+  username: string;
+}
 
 @Component({
   selector: 'alto-company-user',
   templateUrl: './company-user.component.html',
-  styleUrls: ['./company-user.component.scss']
+  styleUrls: ['./company-user.component.scss'],
 })
 export class CompanyUserComponent implements OnInit {
   companyId!: string;
@@ -60,7 +60,7 @@ export class CompanyUserComponent implements OnInit {
   userId!: string;
   userAuth0!: AuthUserGet;
   user!: UserDtoApi;
-  company!: CompanyDtoApi; 
+  company!: CompanyDtoApi;
   btnClicked = false;
   hasTrainX = false;
   applicationList: ApplicationDtoApi[] = [];
@@ -81,13 +81,13 @@ export class CompanyUserComponent implements OnInit {
     this.companyId = this.route.snapshot.paramMap.get('companyId') || '';
     this.userId = this.route.snapshot.paramMap.get('userId') || '';
 
-    combineLatest({
-      company: this.companiesRestService.getCompanyById(this.companyId),
-    })
-      .pipe(take(1))
-      .subscribe(({ company }) => {
-        this.company = company; 
-      });
+    // combineLatest({
+    //   company: this.companiesRestService.getCompanyById(this.companyId),
+    // })
+    //   .pipe(take(1))
+    //   .subscribe(({ company }) => {
+    //     this.company = company;
+    //   });
 
     if (this.userId) {
       this.usersApiService
@@ -103,17 +103,13 @@ export class CompanyUserComponent implements OnInit {
                 lastname: [this.user.lastname || '', [Validators.required]],
                 email: [this.user.email || '', [Validators.required, Validators.email]],
                 roles: [this.user.roles as unknown as Array<RoleEnumApi>, []],
-              });              
-              
-              
-              this.applicationsApiService.applicationsControllerGetAllPaginated({})
-              .subscribe((res) => {
-                this.applicationList = (res.data) ? res.data : [];
-                this.listOfApplications();
-                this.hasTrainXUpdate()
-              })
-              
+              });
 
+              this.applicationsApiService.applicationsControllerGetAllPaginated({}).subscribe((res) => {
+                this.applicationList = res.data ? res.data : [];
+                this.listOfApplications();
+                this.hasTrainXUpdate();
+              });
             } else {
               throw new Error('User not found');
             }
@@ -132,8 +128,6 @@ export class CompanyUserComponent implements OnInit {
         roles: [[], []],
       });
     }
-
-    
   }
 
   fetchAuth0Data(email: string) {
@@ -160,17 +154,16 @@ export class CompanyUserComponent implements OnInit {
         this.toastService.show({
           text: res.data,
           type: 'success',
-        })
+        });
         this.btnClicked = true;
       });
   }
 
   listOfApplications() {
-    return this.user.applicationIds?.map((app) => this.applicationList.find((a) => a.id === app))
+    return this.user.applicationIds?.map((app) => this.applicationList.find((a) => a.id === app));
   }
 
   hasTrainXUpdate() {
     this.hasTrainX = this.applicationList?.filter((app) => app.name === 'trainx').length > 0;
   }
-
 }

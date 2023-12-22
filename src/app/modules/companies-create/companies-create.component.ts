@@ -2,9 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CompaniesRestService } from 'src/app/modules/companies/service/companies-rest.service';
 import { IFormBuilder, IFormGroup } from 'src/app/core/form-types';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import {
-  CompanyDtoApi,
-} from '@usealto/the-office-sdk-angular';
+import { CompanyDtoApi } from '@usealto/the-office-sdk-angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 
@@ -15,7 +13,7 @@ interface CompanyForm {
 @Component({
   selector: 'alto-companies-create',
   templateUrl: './companies-create.component.html',
-  styleUrls: ['./companies-create.component.scss']
+  styleUrls: ['./companies-create.component.scss'],
 })
 export class CompaniesCreateComponent implements OnInit {
   edit = false;
@@ -45,15 +43,15 @@ export class CompaniesCreateComponent implements OnInit {
     });
     if (this.id) {
       this.edit = true;
-      this.companiesRestService
-        .getCompanyById(this.id)
-        .pipe(take(1))
-        .subscribe((company) => {
-          this.company = company;
-          this.companyForm = this.fb.group<CompanyForm>({
-            name: [this.company.name, [Validators.required]],
-          });
-        });
+      // this.companiesRestService
+      //   .getCompanyById(this.id)
+      //   .pipe(take(1))
+      //   .subscribe((company) => {
+      //     this.company = company;
+      //     this.companyForm = this.fb.group<CompanyForm>({
+      //       name: [this.company.name, [Validators.required]],
+      //     });
+      //   });
     }
   }
 
@@ -64,27 +62,25 @@ export class CompaniesCreateComponent implements OnInit {
   async submit() {
     if (!this.companyForm.value) return;
 
-    const { name } =
-      this.companyForm.value;
+    const { name } = this.companyForm.value;
 
     if (this.edit && this.id) {
-      this.companiesRestService
-        .patchCompany(this.id, {
-          name,
-        })
-        .subscribe(() => {
-          this.initComponent();
-          this.router.navigate(['/home/']);
-        });
+      // this.companiesRestService
+      //   .patchCompany(this.id, {
+      //     name,
+      //   })
+      //   .subscribe(() => {
+      //     this.initComponent();
+      //     this.router.navigate(['/home/']);
+      //   });
     } else {
-      this.companiesRestService
-        .createCompany({
-          name,
-        })
-        .subscribe((company) => {
-          this.router.navigate(['/home/']);
-        });
+      // this.companiesRestService
+      //   .createCompany({
+      //     name,
+      //   })
+      //   .subscribe((company) => {
+      //     this.router.navigate(['/home/']);
+      //   });
     }
   }
 }
-

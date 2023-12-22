@@ -17,27 +17,27 @@
         <i class="bi bi-house-door"></i>
       </a>
     </div>
-    
+
   </div>
 
   <div class="bottom-block">
     <ng-template #popContent>
       <a>
-        <div><i class="bi bi-person"></i>{{ userStore.user.value.firstname }}</div>
+        <div><i class="bi bi-person"></i>{{ me.fullname }}</div>
       </a>
       <a class="logout" (click)="logOut()">
         <div><i class="bi bi-box-arrow-right"></i>{{ I18ns.menu.disconnect }}</div>
       </a>
     </ng-template>
     <alto-img-badge
-      [toggleTooltip]="toggleTooltip"
+      [toggleTooltip]="false"
       class="img-badge-menu"
       type="button"
       placement="right"
       [ngbPopover]="popContent"
       popoverClass="menu-popover"
       placement="right-bottom"
-      [user]="userStore.user.value$ | async"
+      [user]="me"
       [size]="40"
     >
     </alto-img-badge>

@@ -1,50 +1,64 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
 import {
-  CompaniesApiService,
-  GetCompaniesRequestParams,
   CompanyDtoApi,
-  CreateCompanyDtoApi,
-  CompanyDtoResponseApi,
-  PatchCompanyDtoApi,
-  DeleteResponseApi,
+  CreateCompanyRequestParams,
+  GetCompaniesRequestParams,
+  PatchCompanyRequestParams,
+  CompaniesApiService as TheofficeCompanyApiService,
 } from '@usealto/the-office-sdk-angular';
-import { ProfileStore } from '../../profile/profile.store';
+import { Observable, map } from 'rxjs';
+import { Company } from '../../../core/models/company.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompaniesRestService {
-  constructor(
-    private readonly companyApi: CompaniesApiService,
-    private readonly userStore: ProfileStore,
-  ) {}
+  constructor(private readonly theofficeCompanyApi: TheofficeCompanyApiService) {}
 
-  getCompanies(req?: GetCompaniesRequestParams): Observable<CompanyDtoApi[]> {
-    return this.companyApi.getCompanies({ ...req }).pipe(map((companies) => companies.data ?? []));
+  getCompanyById(companyId: string): Observable<Company> {
+    return this.theofficeCompanyApi
+      .getCompanyById({ id: companyId })
+      .pipe(map(({ data }) => Company.fromDto(data as CompanyDtoApi)));
   }
 
-  getCompanyById(id: string): Observable<CompanyDtoApi> {
-    return this.companyApi
-      .getCompanyById({ id })
-      .pipe(map((company) => company.data ?? ({} as CompanyDtoApi)));
-  }
+  getPaginatedCompanies(
+    page: number,
+    itemsPerPage: number,
+    searchTerm?: string,
+  ): Observable<{ companies: Company[]; itemCount: number; pageCount: number }> {
+    const req: GetCompaniesRequestParams = {
+      page,
+      sortBy: 'createdAt:asc',
+      itemsPerPage,
+      search: searchTerm,
+    };
 
-  getMyCompany(): Observable<CompanyDtoApi> {
-    return this.companyApi.getCompanyById({ id: this.userStore.user.value.companyId }).pipe(
-      map((company) => company.data ?? ({} as CompanyDtoApi)),
+    return this.theofficeCompanyApi.getCompanies(req).pipe(
+      map(({ data, meta }) => ({
+        companies: data ? data.map(Company.fromDto) : [],
+        itemCount: meta.totalItems,
+        pageCount: meta.totalPage,
+      })),
     );
   }
 
-  patchCompany(id: string, patchCompanyDtoApi: PatchCompanyDtoApi): Observable<CompanyDtoResponseApi> {
-    return this.companyApi.patchCompany({ id, patchCompanyDtoApi });
+  createCompany(name: string): Observable<Company> {
+    const req: CreateCompanyRequestParams = {
+      createCompanyDtoApi: { name },
+    };
+
+    return this.theofficeCompanyApi
+      .createCompany(req)
+      .pipe(map(({ data }) => Company.fromDto(data as CompanyDtoApi)));
   }
 
-  createCompany(createCompanyDtoApi: CreateCompanyDtoApi) {
-    return this.companyApi.createCompany({ createCompanyDtoApi });
-  }
-
-  deleteCompany(id: string): Observable<DeleteResponseApi> {
-    return this.companyApi.deleteCompany({ id });
+  updateCompany(companyId: string, name: string): Observable<Company> {
+    const req: PatchCompanyRequestParams = {
+      id: companyId,
+      patchCompanyDtoApi: { name },
+    };
+    return this.theofficeCompanyApi
+      .patchCompany(req)
+      .pipe(map(({ data }) => Company.fromDto(data as CompanyDtoApi)));
   }
 }

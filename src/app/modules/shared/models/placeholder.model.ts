@@ -1,1 +1,7 @@
-export type PlaceholderDataStatus = 'good' | 'noResult' | 'noData' | 'empty' | 'loading';
+export enum EPlaceholderStatus {
+  Good = 'good',
+  NoResult = 'noResult',
+  NoData = 'noData',
+  Empty = 'empty',
+  Loading = 'loading',
+}

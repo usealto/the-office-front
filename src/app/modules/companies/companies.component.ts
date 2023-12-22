@@ -1,13 +1,11 @@
-
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs';
 import { CompaniesApiService, CompanyDtoApi } from '@usealto/the-office-sdk-angular';
 
-
 @Component({
   selector: 'alto-companies',
   templateUrl: './companies.component.html',
-  styleUrls: ['./companies.component.scss']
+  styleUrls: ['./companies.component.scss'],
 })
 export class CompaniesComponent implements OnInit {
   companies: CompanyDtoApi[] = [];
@@ -17,14 +15,12 @@ export class CompaniesComponent implements OnInit {
   pageCount = 0;
   searchString = '';
 
-  constructor(
-    private readonly companiesApiService: CompaniesApiService,
-  ) {}
+  constructor(private readonly companiesApiService: CompaniesApiService) {}
 
   ngOnInit(): void {
     this.companiesApiService
-      .getCompanies({itemsPerPage: 1000 })
-      .pipe(tap((companies) => (this.companies = (companies?.data) ? companies?.data : [])))
+      .getCompanies({ itemsPerPage: 1000 })
+      .pipe(tap((companies) => (this.companies = companies?.data ? companies?.data : [])))
       .subscribe(() => {
         this.pageCount = Math.ceil(this.companies.length / this.pageSize);
         this.refreshCompanies();

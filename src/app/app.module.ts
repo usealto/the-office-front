@@ -18,7 +18,6 @@ import { AppErrorHandler } from './core/interceptors/app-error.handler';
 import { MsgModule } from './core/message/msg.module';
 import { ToastComponent } from './core/toast/toast.component';
 import { LocaleService, localeIdFactory, localeInitializer } from './core/utils/i18n/locale.service';
-import { TranslationModule } from './core/utils/i18n/translation.module';
 import { LoadingModule } from './core/utils/loading/loading.module';
 import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
 import { AppComponent } from './layout/app/app.component';
@@ -26,7 +25,6 @@ import { MenuComponent } from './layout/menu/menu.component';
 import { NoSmallScreenComponent } from './layout/no-small-screen/no-small-screen.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { SharedModule } from './modules/shared/shared.module';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { CompaniesComponent } from './modules/companies/companies.component';
 import { CompaniesCreateComponent } from './modules/companies-create/companies-create.component';
 import { CompanyUsersComponent } from './modules/company-users/company-users.component';
@@ -34,8 +32,12 @@ import { CompanyUserComponent } from './modules/company-user/company-user.compon
 import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
 import { CreateUserTrainxComponent } from './modules/create-user-trainx/create-user-trainx.component';
 import { UserTrainxComponent } from './modules/company-user/user-trainx/user-trainx.component';
+import { CoreModule } from './core/core.module';
+import { HomeComponent } from './modules/home/home.component';
+import { CompanyFormComponent } from './modules/home/company-form/company-form.component';
 @NgModule({
   declarations: [
+    HomeComponent,
     AppComponent,
     AppLayoutComponent,
     MenuComponent,
@@ -48,8 +50,10 @@ import { UserTrainxComponent } from './modules/company-user/user-trainx/user-tra
     UnauthorizedComponent,
     CreateUserTrainxComponent,
     UserTrainxComponent,
+    CompanyFormComponent,
   ],
   imports: [
+    CoreModule,
     ApiModule_trainx,
     ApiModule_theoffice,
     BrowserModule,
@@ -60,7 +64,6 @@ import { UserTrainxComponent } from './modules/company-user/user-trainx/user-tra
     NgbModule,
     NgSelectModule,
     LoadingModule,
-    TranslationModule,
     SharedModule,
     MsgModule,
     AuthModule.forRoot({
@@ -78,12 +81,6 @@ import { UserTrainxComponent } from './modules/company-user/user-trainx/user-tra
       },
     }),
     ToastComponent,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
   ],
   providers: [
     {

@@ -5,7 +5,7 @@
 </ng-template>
 <img
   [ngbTooltip]="toggleTooltip ? toolTip : null"
-  src="{{ thumb }}"
+  src="{{ getAvatar(user?.id) }}"
   alt="Profile Picture"
   [style]="getStyle(size)"
   [ngClass]="{ 'white-border': hasBorder }"

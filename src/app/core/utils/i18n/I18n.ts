@@ -19,7 +19,6 @@ export const allLangs: I18n[] = [defaultLang, EN as unknown as I18n];
 function getLang(lg: string | null): I18n {
   switch (lg) {
     case 'fr':
-      return FR;
     case 'en':
     case 'uk':
     case 'us':
