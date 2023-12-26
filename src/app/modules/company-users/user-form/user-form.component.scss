@@ -1,0 +1,12 @@
+label {
+  font-weight: 600;
+  margin-bottom: 0.667rem;
+}
+.footer {
+  padding: 1.143rem 2.286rem;
+  position: fixed;
+  width: var(--bs-offcanvas-width);
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}

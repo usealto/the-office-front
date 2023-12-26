@@ -35,6 +35,7 @@ import { UserTrainxComponent } from './modules/company-user/user-trainx/user-tra
 import { CoreModule } from './core/core.module';
 import { HomeComponent } from './modules/home/home.component';
 import { CompanyFormComponent } from './modules/home/company-form/company-form.component';
+import { UserFormComponent } from './modules/company-users/user-form/user-form.component';
 @NgModule({
   declarations: [
     HomeComponent,
@@ -51,6 +52,7 @@ import { CompanyFormComponent } from './modules/home/company-form/company-form.c
     CreateUserTrainxComponent,
     UserTrainxComponent,
     CompanyFormComponent,
+    UserFormComponent,
   ],
   imports: [
     CoreModule,

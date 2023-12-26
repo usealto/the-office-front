@@ -1,0 +1,48 @@
+<div class="mx-6 my-4">
+  <alto-icon-badge icon="bi-person-circle" [size]="4" class="me-4"></alto-icon-badge>
+  <h1 class="title d-inline-block">Create a user</h1>
+</div>
+
+<form [formGroup]="userFormGroup">
+  <div class="px-6 sidebar-body">
+    <div class="mb-4">
+      <label class="form-label required">Firstname</label>
+      <alto-input-text placeholder="John" [control]="userFormGroup.controls.firstname"></alto-input-text>
+    </div>
+    <div class="mb-4">
+      <label class="form-label required">Lastname</label>
+      <alto-input-text placeholder="Doe" [control]="userFormGroup.controls.lastname"></alto-input-text>
+    </div>
+    <div class="mb-4">
+      <label class="form-label required">Email</label>
+      <alto-input-text
+        placeholder="John.doe@getcockpit.io"
+        [control]="userFormGroup.controls.email"
+      ></alto-input-text>
+    </div>
+    <div class="mb-4">
+      <label class="form-label required">Roles</label>
+      <ng-select
+        class="alto-form"
+        [items]="roles"
+        placeholder="Select an application"
+        [formControl]="userFormGroup.controls.roles"
+        [searchable]="false"
+        [multiple]="false"
+        [clearable]="false"
+        [closeOnSelect]="true"
+      >
+        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+          <div class="alto-badge" [style]="item | teamColor">
+            <span>{{ item }}</span>
+          </div>
+        </ng-template>
+      </ng-select>
+    </div>
+  </div>
+  <div class="footer">
+    <button type="submit" class="btn btn-primary float-end" [disabled]="userFormGroup.invalid">
+      <i class="bi bi-plus-lg"></i><span>Save</span>
+    </button>
+  </div>
+</form>

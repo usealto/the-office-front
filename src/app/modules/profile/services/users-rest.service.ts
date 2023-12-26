@@ -6,6 +6,7 @@ import {
 import {
   UserDtoApi as TheOfficeUserDtoApi,
   UsersApiService as TheofficeUsersApiService,
+  UserDtoApiRolesEnumApi,
 } from '@usealto/the-office-sdk-angular';
 import { Observable, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { User } from '../../../core/models/user.model';
@@ -166,4 +167,23 @@ export class UsersRestService {
       }),
     );
   }
+
+  // createUser(
+  //   firstname: string,
+  //   lastname: string,
+  //   email: string,
+  //   roles: UserDtoApiRolesEnumApi[],
+  //   companyId: string,
+  // ): Observable<User> {
+  //   return this.theofficeUserApi
+  //     .createUser({
+  //       createUserDtoApi: {
+  //         firstname,
+  //         lastname,
+  //         email,
+  //         companyId,
+  //       },
+  //     })
+  //     .pipe();
+  // }
 }

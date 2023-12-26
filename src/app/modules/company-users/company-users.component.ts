@@ -8,6 +8,8 @@ import { User } from '../../core/models/user.model';
 import { ICompanyUsersData } from '../../core/resolvers/companyUsers.resolver';
 import { EResolverData, ResolversService } from '../../core/resolvers/resolvers.service';
 import { EPlaceholderStatus } from '../shared/models/placeholder.model';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { UserFormComponent } from './user-form/user-form.component';
 
 @Component({
   selector: 'alto-company-users',
@@ -32,6 +34,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly resolverService: ResolversService,
+    private readonly offcanvasService: NgbOffcanvas,
   ) {}
 
   ngOnInit(): void {
@@ -65,5 +68,17 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
 
   resetSearch(): void {
     this.searchTerm.setValue(null);
+  }
+
+  openUserForm(user?: User): void {
+    const canvaRef = this.offcanvasService.open(UserFormComponent, {
+      position: 'end',
+      panelClass: 'overflow-auto',
+    });
+
+    canvaRef.componentInstance.user = user;
+
+    canvaRef.closed.subscribe(() => {
+    });
   }
 }
