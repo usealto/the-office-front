@@ -139,7 +139,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     canvaRef.componentInstance.company = company;
 
     canvaRef.closed.subscribe(() => {
-      this.pageControl.patchValue(1);
+      this.pageControl.patchValue(this.pageControl.value);
     });
   }
 }
