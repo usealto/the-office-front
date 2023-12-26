@@ -168,6 +168,12 @@ export class UsersRestService {
     );
   }
 
+  getUsersCountByEmails(emails: string[]): Observable<number> {
+    return this.theofficeUserApi
+      .getUsers({ emails: emails.join(',') })
+      .pipe(map(({ meta }) => meta.totalItems));
+  }
+
   // createUser(
   //   firstname: string,
   //   lastname: string,

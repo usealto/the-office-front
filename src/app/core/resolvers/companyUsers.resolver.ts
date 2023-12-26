@@ -3,11 +3,11 @@ import { ResolveFn } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { combineLatest, map, of, switchMap } from 'rxjs';
 
-import { Company } from '../models/company.model';
-import * as FromRoot from '../store/store.reducer';
 import { CompaniesRestService } from '../../modules/companies/service/companies-rest.service';
 import { UsersRestService } from '../../modules/profile/services/users-rest.service';
+import { Company } from '../models/company.model';
 import { addCompanies } from '../store/root/root.action';
+import * as FromRoot from '../store/store.reducer';
 
 export interface ICompanyUsersData {
   company: Company;
@@ -28,8 +28,11 @@ export const companyUsersResolver: ResolveFn<ICompanyUsersData> = (activatedRout
           usersRestService.getUsersByCompanyId(activatedRoute.params['id']),
         ]).pipe(
           map(([company, users]) => {
-            company.users = users;
-            store.dispatch(addCompanies({ companies: [company] }));
+            const updatedCompany = new Company({
+              ...company,
+              users: users.map((user) => user.rawData),
+            });
+            store.dispatch(addCompanies({ companies: [updatedCompany] }));
             return { company };
           }),
         );

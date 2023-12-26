@@ -54,6 +54,7 @@ export class Company implements ICompany {
   deletedAt?: Date;
   createdBy?: string;
   users: User[];
+  usersById: Map<string, User>;
   stripeId?: string;
   trainxSettings: TrainxCompanySettings;
   recordxSettings: RecordxCompanySettings;
@@ -66,6 +67,7 @@ export class Company implements ICompany {
     this.deletedAt = data.deletedAt;
     this.createdBy = data.createdBy;
     this.users = data.users.map((u) => new User(u));
+    this.usersById = new Map(this.users.map((u) => [u.id, u]));
     this.stripeId = data.stripeId;
     this.trainxSettings = new TrainxCompanySettings(data.trainxSettings);
     this.recordxSettings = new RecordxCompanySettings(data.recordxSettings);
@@ -94,6 +96,10 @@ export class Company implements ICompany {
           0,
       },
     });
+  }
+
+  getUserById(id: string): User | undefined {
+    return this.usersById.get(id);
   }
 
   get rawData(): ICompany {

@@ -5,13 +5,14 @@ import { AuthGuard } from '@auth0/auth0-angular';
 import { AppGuard } from './core/guards/app.guard';
 import { FlagBasedPreloadingStrategy } from './core/interceptors/module-loading-strategy';
 import { appResolver } from './core/resolvers/app.resolver';
+import { companyUsersResolver } from './core/resolvers/companyUsers.resolver';
+import { EResolverData } from './core/resolvers/resolvers.service';
 import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
+import { CompanyUsersComponent } from './modules/company-users/company-users.component';
 import { HomeComponent } from './modules/home/home.component';
 import { AltoRoutes } from './modules/shared/constants/routes';
 import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
-import { CompanyUsersComponent } from './modules/company-users/company-users.component';
-import { companyUsersResolver } from './core/resolvers/companyUsers.resolver';
-import { EResolverData } from './core/resolvers/resolvers.service';
+import { UserComponent } from './modules/user/user.component';
 
 const routes: Routes = [
   {
@@ -29,31 +30,21 @@ const routes: Routes = [
       },
       {
         path: AltoRoutes.companies + '/:id',
-        component: CompanyUsersComponent,
         resolve: {
           [EResolverData.CompanyUsersData]: companyUsersResolver,
         },
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            component: CompanyUsersComponent,
+          },
+          {
+            path: AltoRoutes.user + '/:userId',
+            component: UserComponent,
+          },
+        ],
       },
-      // {
-      //   path: AltoRoutes.companies + '/create',
-      //   component: CompaniesCreateComponent,
-      // },
-      // {
-      //   path: AltoRoutes.companies + '/:id/users',
-      //   component: CompanyUsersComponent,
-      // },
-      // {
-      //   path: AltoRoutes.companies + '/:companyId/users/:userId',
-      //   component: CompanyUserComponent,
-      // },
-      // {
-      //   path: AltoRoutes.companies + '/:companyId/users/create/billing-admin',
-      //   component: CreateBillingAdminComponent,
-      // },
-      // {
-      //   path: AltoRoutes.companies + '/:companyId/users/create/trainx',
-      //   component: CreateUserTrainxComponent,
-      // },
       {
         path: '',
         pathMatch: 'full',

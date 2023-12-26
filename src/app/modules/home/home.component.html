@@ -25,11 +25,11 @@
     <table class="table">
       <thead>
         <tr>
-          <th class="col w-20">Name</th>
-          <th class="col">Billing admin</th>
-          <th class="col w-10 text-center">Trainx licenses status</th>
-          <th class="col w-10 text-center">Recordx licenses status</th>
-          <th class="col w-10"></th>
+          <th scope="col" class="w-20">Name</th>
+          <th scope="col">Billing admin</th>
+          <th scope="col" class="w-10 text-center">Trainx licenses status</th>
+          <th scope="col" class="w-10 text-center">Recordx licenses status</th>
+          <th scope="col" class="w-10"></th>
         </tr>
       </thead>
       <tbody>
@@ -63,19 +63,19 @@
                 "
             ></div>
           </td>
-          <td class="text-end px-4">
+          <td class="text-end">
             <a
             *ngIf="companyInfos.company.stripeId; else noStripeId"
             [href]="environment.stripeCustomerURL + companyInfos.company.stripeId"
             target="_blank"
             (click)="$event.stopPropagation()"
             >
-            <i class="fs-4 bi bi-stripe cursor-pointer me-4"></i>
-          </a>
+              <i class="fs-4 bi bi-stripe cursor-pointer p-3"></i>
+            </a>
             <ng-template #noStripeId>
-              <i class="fs-3 bi bi-exclamation-triangle-fill me-4 alto-warning"></i>
+              <i class="fs-3 bi bi-exclamation-triangle-fill alto-warning p-3"></i>
             </ng-template>
-            <i (click)="openCompanyEditForm(companyInfos.company)" class="fs-4 bi bi-pen cursor-pointer" (click)="$event.stopPropagation()"></i>
+            <i (click)="$event.stopPropagation(); openCompanyEditForm(companyInfos.company)" class="fs-4 bi bi-pen cursor-pointer me-3 p-3"></i>
           </td>
         </tr>
       </tbody>

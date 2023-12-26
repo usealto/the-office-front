@@ -1,0 +1,62 @@
+<div class="header-panel">
+  <img [src]="Emoji.OfficeWorker | emoji" height="48" width="48" />
+  <div>
+    <h1>{{ user.fullname }}</h1>
+    <p>{{company.name}}</p>
+  </div>
+</div>
+
+<div class="row py-4">
+  <h3 class="col-4">
+    <img class="me-3" [src]="Emoji.PageFacingUp | emoji" width="20" height="20" />
+    Firstname
+  </h3>
+  <div class="col">
+    <p>{{user.firstname}}</p>
+  </div>
+</div>
+<hr>
+<div class="row py-4">
+  <h3 class="col-4">
+    <img class="me-3" [src]="Emoji.PageFacingUp | emoji" width="20" height="20" />
+    Lastname
+  </h3>
+  <div class="col">
+    <p>{{user.lastname}}</p>
+  </div>
+</div>
+<hr>
+<div class="row py-4">
+  <h3 class="col-4">
+    <img class="me-3" [src]="Emoji.LoveLetter | emoji" width="20" height="20" />
+    Email address
+  </h3>
+  <div class="col">
+    <p>{{user.email}}</p>
+  </div>
+</div>
+<hr>
+<div class="row py-4">
+  <h3 class="col-4">
+    <img class="me-3" [src]="Emoji.Label | emoji" width="20" height="20" />
+    Roles
+  </h3>
+  <div class="col-6">
+    <ng-select
+    class="alto-form"
+    [items]="roles"
+    placeholder="Select some roles"
+    [searchable]="false"
+    [multiple]="true"
+    [clearable]="false"
+    [(ngModel)]="user.roles"
+  >
+    <ng-template ng-label-tmp let-item="item">
+      <div class="alto-badge" [style]="item | teamColor">
+        <span>{{ item }}</span>
+      </div>
+    </ng-template>
+  </ng-select>
+  </div>
+</div>
+<hr>

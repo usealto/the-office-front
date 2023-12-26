@@ -1,5 +1,5 @@
 <div class="header-panel">
-  <img [src]="Emoji.BustsInSilhouette | emoji" height="48" width="48" />
+  <img [src]="Emoji.OfficeBuilding | emoji" height="48" width="48" />
   <div>
     <h1>{{ company.name }}</h1>
     <p>Users list</p>
@@ -23,12 +23,13 @@
           <th scope="col" class="w-20">Name</th>
           <th scope="col">Email address</th>
           <th scope="col">Roles</th>
-          <th scope="col" class="text-center">Trainx license</th>
-          <th scope="col" class="text-center">Recordx license</th>
+          <th scope="col" class="w-10 text-center">Trainx license</th>
+          <th scope="col" class="w-10 text-center">Recordx license</th>
+          <th scope="col" class="w-10"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of filteredUsers" style="height: 53px" class="cursor-pointer">
+        <tr *ngFor="let user of filteredUsers" style="height: 53px" class="cursor-pointer" [routerLink]="['/', AltoRoutes.companies, company.id, AltoRoutes.user, user.id]">
           <td>
             <p class="fw-bold">{{user.fullname}}</p>
           </td>
@@ -56,6 +57,9 @@
                   ? 'valid'
                   : 'danger'
               "></div>
+          </td>
+          <td class="text-end">
+            <i (click)="$event.stopPropagation(); openUserForm(user)" class="fs-4 bi bi-pen cursor-pointer me-3 p-3"></i>
           </td>
         </tr>
       </tbody>

@@ -10,6 +10,7 @@ import { EResolverData, ResolversService } from '../../core/resolvers/resolvers.
 import { EPlaceholderStatus } from '../shared/models/placeholder.model';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { UserFormComponent } from './user-form/user-form.component';
+import { AltoRoutes } from '../shared/constants/routes';
 
 @Component({
   selector: 'alto-company-users',
@@ -18,8 +19,10 @@ import { UserFormComponent } from './user-form/user-form.component';
 })
 export class CompanyUsersComponent implements OnInit, OnDestroy {
   readonly Emoji = EmojiName;
+  readonly AltoRoutes = AltoRoutes;
 
   company!: Company;
+  allCompanies: Company[] = [];
   filteredUsers: User[] = [];
   usersDataStatus = EPlaceholderStatus.Good;
 
@@ -76,9 +79,10 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
       panelClass: 'overflow-auto',
     });
 
-    canvaRef.componentInstance.user = user;
+    const instance = canvaRef.componentInstance as UserFormComponent;
+    instance.user = user;
+    instance.companyId = this.company.id;
 
-    canvaRef.closed.subscribe(() => {
-    });
+    canvaRef.closed.subscribe(() => {});
   }
 }

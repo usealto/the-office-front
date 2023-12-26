@@ -4,4 +4,5 @@ export const AltoRoutes = {
   profile: 'profile',
   notFound: '404',
   unauthorized: 'unauthorized',
+  user: 'user',
 };
