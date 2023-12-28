@@ -197,8 +197,8 @@ h2 {
     --bs-table-bg: transparent;
 
     th {
-      font-weight: 600;
-      font-size: 0.833rem;
+      font-weight: 400;
+      font-size: 0.9rem;
       padding: 0.5rem;
     }
     thead tr {
@@ -242,6 +242,12 @@ h2 {
   i {
     font-size: 1.9rem;
     line-height: 2.5rem;
+  }
+}
+
+.hover-red {
+  &:hover {
+    color: var(--error-400);
   }
 }
 

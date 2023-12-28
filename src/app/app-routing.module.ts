@@ -3,10 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@auth0/auth0-angular';
 
 import { AppGuard } from './core/guards/app.guard';
+import { CompanyGuard } from './core/guards/company.guard';
+import { UserGuard } from './core/guards/user.guard';
 import { FlagBasedPreloadingStrategy } from './core/interceptors/module-loading-strategy';
 import { appResolver } from './core/resolvers/app.resolver';
 import { companyUsersResolver } from './core/resolvers/companyUsers.resolver';
 import { EResolverData } from './core/resolvers/resolvers.service';
+import { userResolver } from './core/resolvers/user.resolver';
 import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
 import { CompanyUsersComponent } from './modules/company-users/company-users.component';
 import { HomeComponent } from './modules/home/home.component';
@@ -30,6 +33,7 @@ const routes: Routes = [
       },
       {
         path: AltoRoutes.companies + '/:id',
+        canActivateChild: [CompanyGuard],
         resolve: {
           [EResolverData.CompanyUsersData]: companyUsersResolver,
         },
@@ -41,6 +45,10 @@ const routes: Routes = [
           },
           {
             path: AltoRoutes.user + '/:userId',
+            canActivate: [UserGuard],
+            resolve: {
+              [EResolverData.UserData]: userResolver,
+            },
             component: UserComponent,
           },
         ],

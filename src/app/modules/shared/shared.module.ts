@@ -18,7 +18,6 @@ import { I18ns } from 'src/app/core/utils/i18n/I18n';
 import { LoadingModule } from 'src/app/core/utils/loading/loading.module';
 import { UtilsPipeModule } from 'src/app/core/utils/pipe/utils-pipe.module';
 import { ButtonGroupComponent } from './components/button-group/button-group.component';
-import { ColoredPillListComponent } from './components/colored-pill/colored-pill.component';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import { DropdownFilterComponent } from './components/dropdown-filter/dropdown-filter.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -33,12 +32,13 @@ import { ProgressionPillArrowPipe } from './helpers/progression-pill-arrow.pipe'
 import { ProgressionPillPipe } from './helpers/progression-pill.pipe';
 import { TeamColorPipe } from './helpers/team-color.pipe';
 import { InputTextComponent } from './components/forms/input-text/input-text.component';
+import { InputPillsComponent } from './components/forms/input-pills/input-pills.component';
+import { InputSearchComponent } from './components/forms/input-search/input-search.component';
 
 @NgModule({
   declarations: [
     ProgressionPillPipe,
     ProgressionPillArrowPipe,
-    ColoredPillListComponent,
     ImgBadgeComponent,
     DropdownFilterComponent,
     SearchComponent,
@@ -52,6 +52,8 @@ import { InputTextComponent } from './components/forms/input-text/input-text.com
     PlaceholderManagerComponent,
     HeaderComponent,
     InputTextComponent,
+    InputPillsComponent,
+    InputSearchComponent,
   ],
   imports: [
     CommonModule,
@@ -72,7 +74,6 @@ import { InputTextComponent } from './components/forms/input-text/input-text.com
   ],
   exports: [
     NgbNavModule,
-    ColoredPillListComponent,
     DropdownFilterComponent,
     ProfileCardComponent,
     TabsComponent,
@@ -100,6 +101,8 @@ import { InputTextComponent } from './components/forms/input-text/input-text.com
     PlaceholderManagerComponent,
     HeaderComponent,
     InputTextComponent,
+    InputPillsComponent,
+    InputSearchComponent,
   ],
   providers: [NgbActiveModal],
 })

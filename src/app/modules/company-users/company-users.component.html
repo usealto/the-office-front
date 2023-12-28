@@ -2,7 +2,7 @@
   <img [src]="Emoji.OfficeBuilding | emoji" height="48" width="48" />
   <div>
     <h1>{{ company.name }}</h1>
-    <p>Users list</p>
+    <p>{{ company.users.length }} members</p>
   </div>
 </div>
 
@@ -31,16 +31,17 @@
       <tbody>
         <tr *ngFor="let user of filteredUsers" style="height: 53px" class="cursor-pointer" [routerLink]="['/', AltoRoutes.companies, company.id, AltoRoutes.user, user.id]">
           <td>
-            <p class="fw-bold">{{user.fullname}}</p>
+            <p>{{user.fullname}}</p>
           </td>
           <td>
-            <p class="">{{user.email}}</p>
+            <p class="fw-lighter alto-grey smaller fst-italic">{{user.email}}</p>
           </td>
           <td>
-            <alto-colored-pill-list *ngFor="let role of user.roles"
-            [data]="[{name: role, id: role}]"
-            [hasDynamicColor]="true"
-          ></alto-colored-pill-list>
+            <div class="d-flex gap-2">
+              <div *ngFor="let role of user.roles" class="alto-badge" [style]="'color: white; background-color: ' + User.getRoleColor(role)">
+                <span>{{ role }}</span>
+              </div>
+            </div>
           </td>
           <td>
             <div class="licenses-status rounded-circle"

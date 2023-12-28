@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 
 import { Company } from '../../models/company.model';
 import { IUser, User } from '../../models/user.model';
-import { addCompanies, setUserMe } from '../root/root.action';
+import { addCompanies, addUser, setUserMe, updateUser } from '../root/root.action';
 
 export class TimestampedEntity<T> {
   data: T;
@@ -42,6 +42,34 @@ export const rootReducer = createReducer(
       [...state.companiesById.data.values()].map((company) => [company.id, company]),
     );
     companies.forEach((company) => companiesById.set(company.id, company));
+    return {
+      ...state,
+      companiesById: new TimestampedEntity<Map<string, Company>>(companiesById),
+    };
+  }),
+  on(addUser, (state, { user }): RootState => {
+    const companiesById = new Map<string, Company>(
+      [...state.companiesById.data.values()].map((company) => [company.id, company]),
+    );
+    const company = companiesById.get(user.companyId);
+    if (company) {
+      company.usersById.set(user.id, user);
+    }
+    return {
+      ...state,
+      companiesById: new TimestampedEntity<Map<string, Company>>(companiesById),
+    };
+  }),
+  on(updateUser, (state, { user }): RootState => {
+    const companiesById = new Map<string, Company>(
+      [...state.companiesById.data.values()].map((company) => [company.id, company]),
+    );
+    const company = companiesById.get(user.companyId);
+
+    if (company) {
+      company.usersById.set(user.id, user);
+      companiesById.set(company.id, company);
+    }
     return {
       ...state,
       companiesById: new TimestampedEntity<Map<string, Company>>(companiesById),

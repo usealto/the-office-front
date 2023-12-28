@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, combineLatest, debounce, of, startWith, timer } from 'rxjs';
+import { Subscription, combineLatest, debounce, of, startWith, tap, timer } from 'rxjs';
 import { EmojiName } from 'src/app/core/utils/emoji/data';
 import { Company } from '../../core/models/company.model';
 import { User } from '../../core/models/user.model';
@@ -20,6 +20,7 @@ import { AltoRoutes } from '../shared/constants/routes';
 export class CompanyUsersComponent implements OnInit, OnDestroy {
   readonly Emoji = EmojiName;
   readonly AltoRoutes = AltoRoutes;
+  readonly User = User;
 
   company!: Company;
   allCompanies: Company[] = [];
@@ -32,7 +33,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
   readonly usersPageSize = 10;
 
   searchTerm: FormControl<string | null> = new FormControl(null);
-  companyUsersSubscription = new Subscription();
+  private readonly companyUsersSubscription = new Subscription();
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -50,6 +51,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
         this.searchTerm.valueChanges.pipe(
           startWith(null),
           debounce((searchTerm) => (searchTerm ? timer(500) : of(null))),
+          tap(() => this.pageControl.setValue(1)),
         ),
       ]).subscribe(([page, searchTerm]) => {
         this.filteredUsers = this.company.users

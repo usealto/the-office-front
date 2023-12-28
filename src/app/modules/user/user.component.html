@@ -1,62 +1,148 @@
 <div class="header-panel">
-  <img [src]="Emoji.OfficeWorker | emoji" height="48" width="48" />
+  <alto-img-badge
+    [toggleTooltip]="false"
+    class="img-badge-menu"
+    placement="right"
+    [user]="user"
+    [size]="40"
+  >
+  </alto-img-badge>
   <div>
     <h1>{{ user.fullname }}</h1>
-    <p>{{company.name}}</p>
+    <p>{{ company.name }}</p>
   </div>
 </div>
 
 <div class="row py-4">
   <h3 class="col-4">
-    <img class="me-3" [src]="Emoji.PageFacingUp | emoji" width="20" height="20" />
+    <img
+      class="me-3"
+      [src]="Emoji.PageFacingUp | emoji"
+      width="20"
+      height="20"
+    />
     Firstname
   </h3>
   <div class="col">
-    <p>{{user.firstname}}</p>
+    <p>{{ user.firstname }}</p>
   </div>
 </div>
-<hr>
+<hr />
 <div class="row py-4">
   <h3 class="col-4">
-    <img class="me-3" [src]="Emoji.PageFacingUp | emoji" width="20" height="20" />
+    <img
+      class="me-3"
+      [src]="Emoji.PageFacingUp | emoji"
+      width="20"
+      height="20"
+    />
     Lastname
   </h3>
   <div class="col">
-    <p>{{user.lastname}}</p>
+    <p>{{ user.lastname }}</p>
   </div>
 </div>
-<hr>
+<hr />
 <div class="row py-4">
   <h3 class="col-4">
     <img class="me-3" [src]="Emoji.LoveLetter | emoji" width="20" height="20" />
     Email address
   </h3>
   <div class="col">
-    <p>{{user.email}}</p>
+    <p>{{ user.email }}</p>
   </div>
 </div>
-<hr>
+<hr />
 <div class="row py-4">
   <h3 class="col-4">
     <img class="me-3" [src]="Emoji.Label | emoji" width="20" height="20" />
     Roles
   </h3>
   <div class="col-6">
-    <ng-select
-    class="alto-form"
-    [items]="roles"
-    placeholder="Select some roles"
-    [searchable]="false"
-    [multiple]="true"
-    [clearable]="false"
-    [(ngModel)]="user.roles"
-  >
-    <ng-template ng-label-tmp let-item="item">
-      <div class="alto-badge" [style]="item | teamColor">
-        <span>{{ item }}</span>
-      </div>
-    </ng-template>
-  </ng-select>
+    <alto-input-pills
+      placeholder="Select roles"
+      [control]="rolesFa"
+      [options]="rolesOptions"
+    >
+    </alto-input-pills>
   </div>
 </div>
-<hr>
+<hr />
+<div class="mt-4 d-flex justify-content-between">
+  <!-- Auth0 card -->
+  <div class="panel m-3">
+    <h2>Auth0</h2>
+  </div>
+
+  <!-- Trainx card -->
+  <div class="panel m-3">
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+      <h2 class="m-0">Trainx</h2>
+      <a [href]="environment.trainxURL + '/impersonate/' + user.email + '?auto=true'" target="_blank"></a>
+      <i class="rounded-circle icon-btn fs-5 bi bi-incognito cursor-pointer"></i>
+    </div>
+      <p class="py-3">
+        <span>
+          <img
+            class="me-1"
+            [src]="Emoji.BookmarkTabs | emoji"
+            height="16"
+            width="16"
+          />
+          Has license:
+        </span>
+        <span
+          class="float-end alto-badge fs-6"
+          [class]="user.hasTrainxLicense() ? 'green' : 'red'"
+          >{{ user.hasTrainxLicense() ? "Yes" : "No" }}</span
+        >
+      </p>
+      <p class="py-3">
+        <span>
+          <img class="me-1" [src]="Emoji.Link | emoji" height="16" width="16" />
+          Is connector active:
+        </span>
+        <span
+          class="float-end alto-badge fs-6"
+          [class]="user.trainxSettings.isConnectorActive ? 'green' : 'red'"
+          >{{ user.trainxSettings.isConnectorActive ? "Yes" : "No" }}</span
+        >
+      </p>
+      <p class="py-3">
+        <span>
+          <img
+            class="me-1"
+            [src]="Emoji.Wastebasket | emoji"
+            height="16"
+            width="16"
+          />
+          Is user deleted:
+        </span>
+        <span
+          class="float-end alto-badge fs-6"
+          [class]="user.trainxSettings.deletedAt ? 'green' : 'red'"
+          >{{ user.trainxSettings.deletedAt ? "Yes" : "No" }}</span
+        >
+      </p>
+  </div>
+  <!-- Recordx card -->
+  <div class="panel m-3">
+    <h2 class="mb-3">Recordx</h2>
+    <p class="py-3">
+      <span>
+        <img
+          class="me-1"
+          [src]="Emoji.BookmarkTabs | emoji"
+          height="16"
+          width="16"
+        />
+        Has license:
+      </span>
+      <span
+        class="float-end alto-badge fs-6"
+        [class]="user.hasRecordxLicense() ? 'green' : 'red'"
+        >{{ user.hasRecordxLicense() ? "Yes" : "No" }}</span
+      >
+    </p>
+  </div>
+</div>

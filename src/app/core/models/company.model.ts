@@ -1,7 +1,29 @@
 import { CompanyDtoApi as TrainxCompanyDtoApi } from '@usealto/sdk-ts-angular';
 import { CompanyDtoApi as theOfficeCompanyDtoApi } from '@usealto/the-office-sdk-angular';
-import { IUser, User } from './user.model';
 import { environment } from '../../../environments/environment';
+import { IUser, User } from './user.model';
+
+export interface IStripeSettings {
+  stripeId?: string;
+  billingAdmin?: IUser;
+}
+
+export class StripeSettings implements IStripeSettings {
+  stripeId?: string;
+  billingAdmin?: User;
+
+  constructor(data: IStripeSettings) {
+    this.stripeId = data.stripeId;
+    this.billingAdmin = data.billingAdmin ? new User(data.billingAdmin) : undefined;
+  }
+
+  get rawData(): IStripeSettings {
+    return {
+      stripeId: this.stripeId,
+      billingAdmin: this.billingAdmin,
+    };
+  }
+}
 
 export interface ITrainxCompanySettings {
   licenseCount: number;
@@ -19,6 +41,12 @@ export class TrainxCompanySettings implements ITrainxCompanySettings {
       licenseCount: data.licenseCount,
     });
   }
+
+  get rawData(): ITrainxCompanySettings {
+    return {
+      licenseCount: this.licenseCount,
+    };
+  }
 }
 
 export interface IRecordxCompanySettings {
@@ -31,6 +59,18 @@ export class RecordxCompanySettings implements IRecordxCompanySettings {
   constructor(data: IRecordxCompanySettings) {
     this.licenseCount = data.licenseCount;
   }
+
+  static fromDto(data: TrainxCompanyDtoApi): RecordxCompanySettings {
+    return new RecordxCompanySettings({
+      licenseCount: data.licenseCount,
+    });
+  }
+
+  get rawData(): IRecordxCompanySettings {
+    return {
+      licenseCount: this.licenseCount,
+    };
+  }
 }
 
 export interface ICompany {
@@ -41,9 +81,9 @@ export interface ICompany {
   deletedAt?: Date;
   createdBy?: string;
   users: IUser[];
-  stripeId?: string;
   trainxSettings: ITrainxCompanySettings;
   recordxSettings: IRecordxCompanySettings;
+  stripeSettings: IStripeSettings;
 }
 
 export class Company implements ICompany {
@@ -55,9 +95,9 @@ export class Company implements ICompany {
   createdBy?: string;
   users: User[];
   usersById: Map<string, User>;
-  stripeId?: string;
   trainxSettings: TrainxCompanySettings;
   recordxSettings: RecordxCompanySettings;
+  stripeSettings: StripeSettings;
 
   constructor(data: ICompany) {
     this.id = data.id;
@@ -68,9 +108,12 @@ export class Company implements ICompany {
     this.createdBy = data.createdBy;
     this.users = data.users.map((u) => new User(u));
     this.usersById = new Map(this.users.map((u) => [u.id, u]));
-    this.stripeId = data.stripeId;
     this.trainxSettings = new TrainxCompanySettings(data.trainxSettings);
     this.recordxSettings = new RecordxCompanySettings(data.recordxSettings);
+    this.stripeSettings = new StripeSettings({
+      stripeId: data.stripeSettings.stripeId,
+      billingAdmin: data.stripeSettings.billingAdmin,
+    });
   }
 
   static fromDto(theofficeData: theOfficeCompanyDtoApi): Company {
@@ -84,17 +127,19 @@ export class Company implements ICompany {
         ? theofficeData.createdByUser.firstname + ' ' + theofficeData.createdByUser.lastname
         : undefined,
       users: [],
-      stripeId: theofficeData.stripeId,
-      trainxSettings: {
+      trainxSettings: new TrainxCompanySettings({
         licenseCount:
           theofficeData.licenses.find((l) => l.applicationId === environment.trainxTheOfficeId)?.quantity ??
           0,
-      },
-      recordxSettings: {
+      }),
+      recordxSettings: new RecordxCompanySettings({
         licenseCount:
           theofficeData.licenses.find((l) => l.applicationId === environment.recordxTheOfficeId)?.quantity ??
           0,
-      },
+      }),
+      stripeSettings: new StripeSettings({
+        stripeId: theofficeData.stripeId,
+      }),
     });
   }
 
@@ -111,9 +156,9 @@ export class Company implements ICompany {
       deletedAt: this.deletedAt,
       createdBy: this.createdBy,
       users: this.users.map((u) => u.rawData),
-      stripeId: this.stripeId,
-      trainxSettings: this.trainxSettings,
-      recordxSettings: this.recordxSettings,
+      trainxSettings: this.trainxSettings.rawData,
+      recordxSettings: this.recordxSettings.rawData,
+      stripeSettings: this.stripeSettings.rawData,
     };
   }
 }

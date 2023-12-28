@@ -36,7 +36,7 @@
         <tr *ngFor="let companyInfos of filteredCompanies" style="height: 53px" class="cursor-pointer" [routerLink]="['/', AltoRoutes.companies, companyInfos.company.id]">
             <td>
               <span placement="left">
-                <p class="fw-bold">{{ companyInfos.company.name }}</p>
+                <p>{{ companyInfos.company.name }}</p>
                 <p class="fw-lighter alto-grey smaller fst-italic">
                   {{ companyInfos.company.users.length }} user{{ companyInfos.company.users.length > 1 ? 's' : '' }}
                 </p>
@@ -65,8 +65,8 @@
           </td>
           <td class="text-end">
             <a
-            *ngIf="companyInfos.company.stripeId; else noStripeId"
-            [href]="environment.stripeCustomerURL + companyInfos.company.stripeId"
+            *ngIf="companyInfos.company.stripeSettings.stripeId; else noStripeId"
+            [href]="environment.stripeCustomerURL + companyInfos.company.stripeSettings.stripeId"
             target="_blank"
             (click)="$event.stopPropagation()"
             >
