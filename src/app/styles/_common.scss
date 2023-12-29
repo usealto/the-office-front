@@ -71,6 +71,10 @@
     color: var(--primary-700);
     background-color: var(--primary-50);
   }
+  &.purple {
+    color: var(--purple-600);
+    background-color: var(--purple-50);
+  }
 }
 
 .alto-badge-big {
@@ -147,6 +151,7 @@
   }
   h1 {
     margin: 0;
+    font-weight: 500;
   }
 }
 

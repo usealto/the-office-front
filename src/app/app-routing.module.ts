@@ -21,6 +21,7 @@ const routes: Routes = [
   {
     path: '',
     component: AppLayoutComponent,
+    runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard, AppGuard],
     resolve: {
       [EResolverData.AppData]: appResolver,
@@ -33,6 +34,7 @@ const routes: Routes = [
       },
       {
         path: AltoRoutes.companies + '/:id',
+        runGuardsAndResolvers: 'always',
         canActivateChild: [CompanyGuard],
         resolve: {
           [EResolverData.CompanyUsersData]: companyUsersResolver,

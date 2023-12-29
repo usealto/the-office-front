@@ -1,16 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, combineLatest, debounce, of, startWith, tap, timer } from 'rxjs';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { Subscription, combineLatest, debounce, map, of, startWith, switchMap, tap, timer } from 'rxjs';
+
 import { EmojiName } from 'src/app/core/utils/emoji/data';
 import { Company } from '../../core/models/company.model';
 import { User } from '../../core/models/user.model';
 import { ICompanyUsersData } from '../../core/resolvers/companyUsers.resolver';
 import { EResolverData, ResolversService } from '../../core/resolvers/resolvers.service';
-import { EPlaceholderStatus } from '../shared/models/placeholder.model';
-import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
-import { UserFormComponent } from './user-form/user-form.component';
+import * as FromRoot from '../../core/store/store.reducer';
 import { AltoRoutes } from '../shared/constants/routes';
+import { EPlaceholderStatus } from '../shared/models/placeholder.model';
+import { UserFormComponent } from './user-form/user-form.component';
+import { setUser, updateUserRoles } from '../../core/store/root/root.action';
+import { ToastService } from '../../core/toast/toast.service';
 
 @Component({
   selector: 'alto-company-users',
@@ -23,7 +28,6 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
   readonly User = User;
 
   company!: Company;
-  allCompanies: Company[] = [];
   filteredUsers: User[] = [];
   usersDataStatus = EPlaceholderStatus.Good;
 
@@ -39,6 +43,8 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly resolverService: ResolversService,
     private readonly offcanvasService: NgbOffcanvas,
+    private readonly store: Store<FromRoot.AppState>,
+    private readonly toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -83,8 +89,30 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
 
     const instance = canvaRef.componentInstance as UserFormComponent;
     instance.user = user;
-    instance.companyId = this.company.id;
+    instance.company = this.company;
 
-    canvaRef.closed.subscribe(() => {});
+    canvaRef.closed
+      .pipe(
+        switchMap((user) => {
+          if (user) {
+            this.store.dispatch(updateUserRoles({ userId: user.id, roles: user.roles }));
+          } else {
+            this.store.dispatch(setUser({ user }));
+          }
+
+          return this.store.select(FromRoot.selectCompanies);
+        }),
+        tap(({ data: companiesById }) => {
+          this.company = companiesById.get(this.company.id) as Company;
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.toastService.show({
+            text: user ? 'User successfully updated' : 'User successfully created',
+            type: 'success',
+          });
+        },
+      });
   }
 }

@@ -1,7 +1,7 @@
 import { CompanyDtoApi as TrainxCompanyDtoApi } from '@usealto/sdk-ts-angular';
 import { CompanyDtoApi as theOfficeCompanyDtoApi } from '@usealto/the-office-sdk-angular';
 import { environment } from '../../../environments/environment';
-import { IUser, User } from './user.model';
+import { EUserRole, IUser, User } from './user.model';
 
 export interface IStripeSettings {
   stripeId?: string;
@@ -112,7 +112,7 @@ export class Company implements ICompany {
     this.recordxSettings = new RecordxCompanySettings(data.recordxSettings);
     this.stripeSettings = new StripeSettings({
       stripeId: data.stripeSettings.stripeId,
-      billingAdmin: data.stripeSettings.billingAdmin,
+      billingAdmin: data.users.find((u) => u.roles.some((r) => r === EUserRole.BillingAdmin)),
     });
   }
 
@@ -145,6 +145,33 @@ export class Company implements ICompany {
 
   getUserById(id: string): User | undefined {
     return this.usersById.get(id);
+  }
+
+  addUser(user: User): void {
+    this.usersById.set(user.id, user);
+    if (user.roles.some((role) => role === EUserRole.BillingAdmin)) {
+      const oldBillingAdmin = this.billingAdmin;
+      if (oldBillingAdmin) {
+        this.usersById.set(
+          oldBillingAdmin.id,
+          new User({
+            ...oldBillingAdmin.rawData,
+            roles: oldBillingAdmin.roles.filter((r) => r !== EUserRole.BillingAdmin),
+          }),
+        );
+      }
+
+      this.users = [...this.usersById.values()];
+      this.setBillingAdmin(user);
+    }
+  }
+
+  setBillingAdmin(user: User): void {
+    this.stripeSettings.billingAdmin = user;
+  }
+
+  get billingAdmin(): User | undefined {
+    return this.stripeSettings.billingAdmin;
   }
 
   get rawData(): ICompany {

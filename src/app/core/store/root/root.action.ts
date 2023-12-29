@@ -1,11 +1,27 @@
 import { createAction, props } from '@ngrx/store';
 import { Company } from '../../models/company.model';
-import { IAuth0UserSettings, User } from '../../models/user.model';
+import { EUserRole, User } from '../../models/user.model';
+import { IBreadcrumbItem } from '../../../modules/shared/models/breadcrumb-item.model';
+
+// Breadcrumb
+export const setBreadcrumbItems = createAction(
+  '[Breadcrumb] Set breadcrumb items',
+  props<{ breadcrumbItems: IBreadcrumbItem[] }>(),
+);
+export const addBreadcrumbItem = createAction(
+  '[Breadcrumb] Add breadcrumb item',
+  props<{ breadcrumbItem: IBreadcrumbItem }>(),
+);
 
 // Me
 export const setUserMe = createAction('[User] Set me', props<{ user: User }>());
 
-// Company
+// Companies
 export const addCompanies = createAction('[Company] Set Companies', props<{ companies: Company[] }>());
-export const addUser = createAction('[Company] Add User', props<{ user: User }>());
-export const updateUser = createAction('[Company] Update User', props<{ user: User }>());
+
+// Users
+export const setUser = createAction('[Company] Add User', props<{ user: User }>());
+export const updateUserRoles = createAction(
+  '[Company] Update User Roles',
+  props<{ userId: string; roles: EUserRole[] }>(),
+);

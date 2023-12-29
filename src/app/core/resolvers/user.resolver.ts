@@ -1,13 +1,15 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { first, map, of, switchMap } from 'rxjs';
+import { map, of, switchMap, tap } from 'rxjs';
 
 import { UsersRestService } from '../../modules/profile/services/users-rest.service';
-import { Auth0UserSettings, User } from '../models/user.model';
-import { updateUser } from '../store/root/root.action';
-import * as FromRoot from '../store/store.reducer';
 import { Company } from '../models/company.model';
+import { Auth0UserSettings, User } from '../models/user.model';
+import { addBreadcrumbItem, setUser } from '../store/root/root.action';
+import * as FromRoot from '../store/store.reducer';
+import { AltoRoutes } from '../../modules/shared/constants/routes';
+import { EmojiName } from '../utils/emoji/data';
 
 export interface IUserData {
   user: User;
@@ -35,7 +37,7 @@ export const userResolver: ResolveFn<IUserData> = (activatedRoute) => {
             });
 
             const newUser = new User({ ...user, auth0Settings });
-            store.dispatch(updateUser({ user: newUser }));
+            store.dispatch(setUser({ user: newUser }));
             return store.select(FromRoot.selectCompanies);
           }),
           map(({ data: companiesById }) => {
@@ -49,6 +51,17 @@ export const userResolver: ResolveFn<IUserData> = (activatedRoute) => {
       }
 
       return of({ user });
+    }),
+    tap(({ user }) => {
+      store.dispatch(
+        addBreadcrumbItem({
+          breadcrumbItem: {
+            name: user.fullname,
+            url: `${AltoRoutes.companies}/${user.companyId}/${AltoRoutes.user}/${user.id}`,
+            icon: EmojiName.OfficeWorker,
+          },
+        }),
+      );
     }),
   );
 };

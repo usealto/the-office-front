@@ -1,0 +1,68 @@
+:host {
+  display: block;
+  padding: 2rem 2rem 0;
+}
+.breadcrumb {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    padding: 4px 20px 4px 40px;
+    border-radius: 5px 24px 24px 5px;
+    margin-left: -24px;
+    background-color: var(--gray-100);
+    box-shadow: 5px 0px 10px 0px rgba(0,0,0,.05);
+
+    img {
+      filter: grayscale(100%);
+    }
+
+    p {
+      color: var(--alto-grey);
+    }
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        z-index: 10 - $i;
+      }
+    }
+
+    &.first {
+      margin-left: 0;
+      padding-left: 12px;
+      left: 0;
+    }
+
+    &.last {
+      background-color: var(--blue-gray-300);
+
+      img {
+        filter: grayscale(0%);
+      }
+
+      p {
+        color: white;
+      }
+    }
+
+    a {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .icon {
+      font-size: 1.5rem;
+      color: var(--color-text-primary);
+    }
+  }
+}

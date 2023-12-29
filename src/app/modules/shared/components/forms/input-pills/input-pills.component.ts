@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Subscription, startWith } from 'rxjs';
 
 import { PillOption } from '../../../models/select-option.model';
@@ -11,12 +11,14 @@ import { PillOption } from '../../../models/select-option.model';
 })
 export class InputPillsComponent implements OnInit, OnDestroy {
   @Input() placeholder = '';
-  @Input() control: FormArray = new FormArray([] as FormControl[]);
+  @Input() controls: FormControl<FormControl<PillOption>[]> = new FormControl(
+    [] as FormControl<PillOption>[],
+    { nonNullable: true },
+  );
   @Input() options: PillOption[] = [];
 
   isDropdownOpen = false;
   filteredOptions: PillOption[] = [];
-  private readonly controlDisabled = this.control.disabled;
 
   private readonly inputPillsSubscription = new Subscription();
 
@@ -24,13 +26,8 @@ export class InputPillsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.inputPillsSubscription.add(
-      this.control.valueChanges.pipe(startWith(null)).subscribe(() => {
+      this.controls.valueChanges.pipe(startWith(null)).subscribe(() => {
         this.setFilteredOptions();
-        if (this.control.disabled !== this.controlDisabled) {
-          this.controlDisabled
-            ? this.control.disable({ emitEvent: false })
-            : this.control.enable({ emitEvent: false });
-        }
       }),
     );
   }
@@ -49,42 +46,44 @@ export class InputPillsComponent implements OnInit, OnDestroy {
   private setFilteredOptions(): void {
     this.filteredOptions = this.options
       .filter(({ value }) => {
-        return (this.control.value as PillOption[]).every((opt) => opt.value !== value);
+        return this.controls.value.map((ctrl) => ctrl.value).every((opt) => opt.value !== value);
       })
       .map((option) => new PillOption(option.rawData));
+
     if (this.filteredOptions.length === 0) {
       this.isDropdownOpen = false;
     }
   }
 
   toggleDropdown(): void {
-    if (this.control.enabled) {
+    if (this.controls.enabled) {
       this.isDropdownOpen = !this.isDropdownOpen;
     }
   }
 
   addPill(value: PillOption): void {
-    this.control.push(new FormControl(value));
+    this.controls.patchValue([...this.controls.value, new FormControl(value, { nonNullable: true })]);
   }
 
   removePill(index: number): void {
-    if (this.control.at(index).enabled) {
-      this.control.removeAt(index);
+    if (this.controls.value[index].enabled) {
+      this.controls.patchValue(this.controls.value.filter((_, i) => i !== index));
     }
   }
 
   addAll(): void {
-    this.filteredOptions.forEach((option) => {
-      this.control.push(new FormControl(option));
-    });
+    this.controls.patchValue([
+      ...this.controls.value,
+      ...this.filteredOptions.map((option) => new FormControl(option, { nonNullable: true })),
+    ]);
 
     this.isDropdownOpen = false;
   }
 
   removeAll(): void {
-    const filteredControls = this.control.controls.filter((control) => control.enabled);
+    const filteredControls = this.controls.value.filter((control) => control.enabled);
     filteredControls.forEach((control) => {
-      this.control.removeAt(this.control.controls.indexOf(control));
+      this.removePill(this.controls.value.findIndex((ctrl) => ctrl.value === control.value));
     });
   }
 }

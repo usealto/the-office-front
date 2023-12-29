@@ -8,13 +8,14 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { Observable, debounceTime, first, map, of, switchMap, tap } from 'rxjs';
+import { Observable, Subscription, debounceTime, first, map, of, switchMap, tap } from 'rxjs';
 import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 import { EUserRole, User } from '../../../core/models/user.model';
 import { UsersRestService } from '../../profile/services/users-rest.service';
 import { PillOption } from '../../shared/models/select-option.model';
 import { ValidatorsService } from '../../shared/services/validators.service';
+import { Company } from '../../../core/models/company.model';
 
 @Component({
   selector: 'alto-user-form',
@@ -22,13 +23,14 @@ import { ValidatorsService } from '../../shared/services/validators.service';
   styleUrls: ['./user-form.component.scss'],
 })
 export class UserFormComponent implements OnInit {
+  @Input() company!: Company;
   @Input() user?: User;
-  @Input() companyId!: string;
 
   readonly roles = User.getRoleList();
   readonly rolesOptions: PillOption[] = this.roles
     .filter((role) => role === EUserRole.AltoAdmin || role === EUserRole.BillingAdmin)
     .map((role) => new PillOption({ label: role, value: role, color: User.getRoleColor(role) }));
+  differentBillingAdmin?: User;
 
   userFormGroup = new FormGroup({
     firstname: new FormControl('', {
@@ -43,7 +45,8 @@ export class UserFormComponent implements OnInit {
       nonNullable: true,
       validators: [this.validatorsService.requiredValidator('Email is mandatory')],
     }),
-    roles: new FormArray<FormControl<PillOption>>([], {
+    roles: new FormControl<FormControl<PillOption>[]>([], {
+      nonNullable: true,
       validators: [this.validatorsService.minLengthValidator(1, 'At least one role is required')],
     }),
   });
@@ -60,9 +63,11 @@ export class UserFormComponent implements OnInit {
     return this.userFormGroup.controls.email;
   }
 
-  get rolesCtrl(): FormArray<FormControl<PillOption>> {
+  get rolesCtrl(): FormControl<FormControl<PillOption>[]> {
     return this.userFormGroup.controls.roles;
   }
+
+  userFormSubscription = new Subscription();
 
   constructor(
     private readonly usersRestService: UsersRestService,
@@ -77,19 +82,19 @@ export class UserFormComponent implements OnInit {
         lastname: this.user.lastname,
         email: this.user.email,
       });
-      this.user.roles.forEach((role) => {
-        this.rolesCtrl.push(
-          new FormControl(
-            {
-              value: new PillOption({ label: role, value: role, color: User.getRoleColor(role) }),
-              disabled: role !== EUserRole.AltoAdmin && role !== EUserRole.BillingAdmin,
-            },
-            {
-              nonNullable: true,
-            },
-          ),
-        );
-      });
+
+      this.rolesCtrl.patchValue(
+        this.user.roles.map(
+          (role) =>
+            new FormControl<PillOption>(
+              {
+                value: new PillOption({ label: role, value: role, color: User.getRoleColor(role) }),
+                disabled: role !== EUserRole.AltoAdmin && role !== EUserRole.BillingAdmin,
+              },
+              { nonNullable: true },
+            ),
+        ),
+      );
 
       this.userFormGroup.controls.firstname.disable();
       this.userFormGroup.controls.lastname.disable();
@@ -98,6 +103,21 @@ export class UserFormComponent implements OnInit {
       this.userFormGroup.controls.email.setAsyncValidators(this.emailValidator());
       this.userFormGroup.updateValueAndValidity();
     }
+
+    this.userFormSubscription.add(
+      this.rolesCtrl.valueChanges.subscribe((roles) => {
+        const companyBillingAdmin = this.company.billingAdmin;
+        if (
+          companyBillingAdmin &&
+          (!this.user || companyBillingAdmin.id !== this.user.id) &&
+          roles.some(({ value }) => value.value === EUserRole.BillingAdmin)
+        ) {
+          this.differentBillingAdmin = companyBillingAdmin;
+        } else {
+          this.differentBillingAdmin = undefined;
+        }
+      }),
+    );
   }
 
   private emailValidator(): AsyncValidatorFn {
@@ -125,7 +145,7 @@ export class UserFormComponent implements OnInit {
   }
 
   submit(): void {
-    const roles = User.mapRoles(this.rolesCtrl.value.map((role) => role.value));
+    const roles = User.mapRoles(this.rolesCtrl.value.map((control) => control.value.value));
 
     (this.user
       ? this.usersRestService.updateUser(this.user.id, roles)
@@ -134,12 +154,12 @@ export class UserFormComponent implements OnInit {
           this.lastnameCtrl.value,
           this.emailCtrl.value,
           roles,
-          this.companyId,
+          this.company.id,
         )
     )
       .pipe(
-        tap(() => {
-          this.activeOffcanvas.close();
+        tap((user) => {
+          this.activeOffcanvas.close(user);
         }),
       )
       .subscribe({

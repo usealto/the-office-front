@@ -177,4 +177,14 @@ export class UsersRestService {
       }),
     );
   }
+
+  auth0ResetPassword(userEmail: string): Observable<Auth0User> {
+    return this.auth0Api
+      .resetUserPassword({
+        auth0ResetPasswordParamsDtoApi: {
+          email: userEmail,
+        },
+      })
+      .pipe(tap((res) => console.log(res)));
+  }
 }

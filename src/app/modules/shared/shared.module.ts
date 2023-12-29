@@ -20,7 +20,6 @@ import { UtilsPipeModule } from 'src/app/core/utils/pipe/utils-pipe.module';
 import { ButtonGroupComponent } from './components/button-group/button-group.component';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import { DropdownFilterComponent } from './components/dropdown-filter/dropdown-filter.component';
-import { HeaderComponent } from './components/header/header.component';
 import { IconBadgeComponent } from './components/icon-badge/icon-badge.component';
 import { ImgBadgeComponent } from './components/img-badge/img-badge.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
@@ -34,6 +33,7 @@ import { TeamColorPipe } from './helpers/team-color.pipe';
 import { InputTextComponent } from './components/forms/input-text/input-text.component';
 import { InputPillsComponent } from './components/forms/input-pills/input-pills.component';
 import { InputSearchComponent } from './components/forms/input-search/input-search.component';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 
 @NgModule({
   declarations: [
@@ -50,10 +50,10 @@ import { InputSearchComponent } from './components/forms/input-search/input-sear
     IconBadgeComponent,
     DeleteModalComponent,
     PlaceholderManagerComponent,
-    HeaderComponent,
     InputTextComponent,
     InputPillsComponent,
     InputSearchComponent,
+    ConfirmModalComponent,
   ],
   imports: [
     CommonModule,
@@ -99,10 +99,10 @@ import { InputSearchComponent } from './components/forms/input-search/input-sear
     EmojiPipe,
     DeleteModalComponent,
     PlaceholderManagerComponent,
-    HeaderComponent,
     InputTextComponent,
     InputPillsComponent,
     InputSearchComponent,
+    ConfirmModalComponent,
   ],
   providers: [NgbActiveModal],
 })

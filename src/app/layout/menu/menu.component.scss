@@ -99,9 +99,14 @@
         color: var(--gray-100);
       }
     }
-    &.menu-selected,
-    &:active {
+    &.menu-selected {
       background-color: var(--alto-blue-second);
+      i {
+        color: var(--gray-100);
+      }
+    }
+    &:active {
+      background-color: var(--gray-700);
       i {
         color: var(--gray-100);
       }
