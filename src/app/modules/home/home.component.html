@@ -1,0 +1,103 @@
+<div class="header-panel">
+  <img [src]="Emoji.WavingHand | emoji" height="48" width="48" />
+  <div>
+    <h1>
+      {{ 'Hello ' + me.firstname + '!' }}
+    </h1>
+    <p>Welcome to The Office</p>
+  </div>
+</div>
+
+<!-- header company -->
+
+<div class="row mb-4">
+  <div class="col-4">
+    <!-- searchbar -->
+    <alto-search style="width: 400px" [searchControl]="searchTerm"></alto-search>
+  </div>
+  <div class="col text-end">
+    <button class="btn btn-primary" (click)="openCompanyEditForm()"><i class="bi bi-plus-lg"></i>Create a company</button>
+  </div>
+</div>
+
+<alto-placeholder-manager [status]="companiesDataStatus">
+  <div class="table-panel">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" class="w-20">Name</th>
+          <th scope="col">Billing admin</th>
+          <th scope="col" class="w-10 text-center">Trainx licenses status</th>
+          <th scope="col" class="w-10 text-center">Recordx licenses status</th>
+          <th scope="col" class="w-10"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let companyInfos of filteredCompanies" style="height: 53px" class="cursor-pointer" [routerLink]="['/', AltoRoutes.companies, companyInfos.company.id]">
+            <td>
+              <span placement="left">
+                <p>{{ companyInfos.company.name }}</p>
+                <p class="fw-lighter alto-grey smaller fst-italic">
+                  {{ companyInfos.company.users.length }} user{{ companyInfos.company.users.length > 1 ? 's' : '' }}
+                </p>
+              </span>
+            </td>
+            <td></td>
+            <td scope="col">
+              <div
+              class="licenses-status rounded-circle"
+              [class]="
+                companyInfos.trainxAvailableLicenses < 0
+                ? 'danger'
+                : 'valid'
+                "
+            ></div>
+          </td>
+          <td scope="col">
+            <div
+            class="licenses-status rounded-circle"
+            [class]="
+                companyInfos.recordxAvailableLicenses < 0
+                ? 'danger'
+                : 'valid'
+                "
+            ></div>
+          </td>
+          <td class="text-end">
+            <a
+            *ngIf="companyInfos.company.stripeSettings.stripeId; else noStripeId"
+            [href]="environment.stripeCustomerURL + companyInfos.company.stripeSettings.stripeId"
+            target="_blank"
+            (click)="$event.stopPropagation()"
+            >
+              <i class="fs-4 bi bi-stripe cursor-pointer p-3"></i>
+            </a>
+            <ng-template #noStripeId>
+              <i class="fs-3 bi bi-exclamation-triangle-fill alto-warning p-3"></i>
+            </ng-template>
+            <i (click)="$event.stopPropagation(); openCompanyEditForm(companyInfos.company)" class="fs-4 bi bi-pen cursor-pointer me-3 p-3"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <alto-pagination class="mx-4 d-block"
+      [pageControl]="pageControl"
+      [pageCount]="pageCount"
+      [itemsCount]="companiesCount"
+    ></alto-pagination>
+  </div>
+  <div class="nodata-placeholder d-flex justify-content-center align-items-center" noData>
+    <div class="text-center">
+      <img [src]="Emoji.Eyes | emoji" height="24" width="24" />
+      <h2 class="mt-3">There is no company at the moment</h2>
+      <button class="mt-4 btn btn-primary">Create the first company</button>
+    </div>
+  </div>
+  <div class="nodata-placeholder d-flex justify-content-center align-items-center" noResult>
+    <div class="text-center">
+      <img [src]="Emoji.MagnifyingGlassTiltedRight | emoji" height="24" width="24" />
+      <h2 class="mt-3">Your filters doesn't match any company</h2>
+      <button class="mt-4 btn btn-primary" (click)="resetSearch()">Clean filters</button>
+    </div>
+  </div>
+</alto-placeholder-manager>

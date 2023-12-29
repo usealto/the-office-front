@@ -1,0 +1,17 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <ng-container *ngFor="let item of items; let first = first; let last = last">
+      <li class="item" [class.cursor-pointer]="!last" [class.last]="last" [class.first]="first" [routerLink]="item.url">
+        <a *ngIf="!last; else lastItem" >
+          <img [src]="item.icon | emoji" height="20" width="20" />
+          <p>{{item.name}}</p>
+        </a>
+
+        <ng-template #lastItem>
+          <img [src]="item.icon | emoji" height="20" width="20" />
+          <p>{{item.name}}</p>
+        </ng-template>
+      </li>
+    </ng-container>
+  </ol>
+</nav>

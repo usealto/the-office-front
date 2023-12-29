@@ -15,62 +15,48 @@ import { AutoResizeTextareaDirective } from 'src/app/core/utils/directives/auto-
 import { NgVar } from 'src/app/core/utils/directives/ng-var.directive';
 import { EmojiPipe } from 'src/app/core/utils/emoji/emoji.pipe';
 import { I18ns } from 'src/app/core/utils/i18n/I18n';
-import { TranslationModule } from 'src/app/core/utils/i18n/translation.module';
 import { LoadingModule } from 'src/app/core/utils/loading/loading.module';
 import { UtilsPipeModule } from 'src/app/core/utils/pipe/utils-pipe.module';
-import { AnchorNavigatorComponent } from './components/anchor-navigator/anchor-navigator.component';
 import { ButtonGroupComponent } from './components/button-group/button-group.component';
-import { ColoredPillListComponent } from './components/colored-pill/colored-pill.component';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import { DropdownFilterComponent } from './components/dropdown-filter/dropdown-filter.component';
 import { IconBadgeComponent } from './components/icon-badge/icon-badge.component';
-import { ImgBadgeListComponent } from './components/img-badge-list/img-badge-list.component';
 import { ImgBadgeComponent } from './components/img-badge/img-badge.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
-import { PeriodFilterComponent } from './components/period-filter/period-filter.component';
+import { PlaceholderManagerComponent } from './components/placeholder-manager/placeholder-manager.component';
 import { ProfileCardComponent } from './components/profile-card/profile-card.component';
-import { ProgressionBadgeComponent } from './components/progression-badge/progression-badge.component';
-import { ProgressionFilterComponent } from './components/progression-filter/progression-filter.component';
-import { RangeComponent } from './components/range/range.component';
 import { SearchComponent } from './components/search/search.component';
 import { TabsComponent } from './components/tabs/tabs.component';
-import { TextCounterComponent } from './components/text-counter/text-counter.component';
 import { ProgressionPillArrowPipe } from './helpers/progression-pill-arrow.pipe';
 import { ProgressionPillPipe } from './helpers/progression-pill.pipe';
 import { TeamColorPipe } from './helpers/team-color.pipe';
-import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
-import { PlaceholderManagerComponent } from './components/placeholder-manager/placeholder-manager.component';
-import { HeaderComponent } from './components/header/header.component';
+import { InputTextComponent } from './components/forms/input-text/input-text.component';
+import { InputPillsComponent } from './components/forms/input-pills/input-pills.component';
+import { InputSearchComponent } from './components/forms/input-search/input-search.component';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 
 @NgModule({
   declarations: [
     ProgressionPillPipe,
     ProgressionPillArrowPipe,
-    ProgressionBadgeComponent,
-    ColoredPillListComponent,
     ImgBadgeComponent,
-    AnchorNavigatorComponent,
     DropdownFilterComponent,
     SearchComponent,
     TabsComponent,
     ProfileCardComponent,
-    PeriodFilterComponent,
     TeamColorPipe,
     PaginationComponent,
-    ProgressionFilterComponent,
-    ImgBadgeListComponent,
     ButtonGroupComponent,
-    TextCounterComponent,
     IconBadgeComponent,
     DeleteModalComponent,
-    RangeComponent,
-    LeaderboardComponent,
     PlaceholderManagerComponent,
-    HeaderComponent,
+    InputTextComponent,
+    InputPillsComponent,
+    InputSearchComponent,
+    ConfirmModalComponent,
   ],
   imports: [
     CommonModule,
-    TranslationModule,
     NgbNavModule,
     FormsModule,
     ReactiveFormsModule,
@@ -87,16 +73,11 @@ import { HeaderComponent } from './components/header/header.component';
     EmojiPipe,
   ],
   exports: [
-    TranslationModule,
     NgbNavModule,
-    ProgressionBadgeComponent,
-    ColoredPillListComponent,
-    AnchorNavigatorComponent,
     DropdownFilterComponent,
     ProfileCardComponent,
     TabsComponent,
     SearchComponent,
-    PeriodFilterComponent,
     TeamColorPipe,
     ProgressionPillPipe,
     ProgressionPillArrowPipe,
@@ -114,16 +95,14 @@ import { HeaderComponent } from './components/header/header.component';
     NgbDatepickerModule,
     PaginationComponent,
     AutoResizeTextareaDirective,
-    ProgressionFilterComponent,
-    ImgBadgeListComponent,
     ButtonGroupComponent,
-    TextCounterComponent,
     EmojiPipe,
-    RangeComponent,
     DeleteModalComponent,
-    LeaderboardComponent,
     PlaceholderManagerComponent,
-    HeaderComponent,
+    InputTextComponent,
+    InputPillsComponent,
+    InputSearchComponent,
+    ConfirmModalComponent,
   ],
   providers: [NgbActiveModal],
 })

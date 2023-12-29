@@ -1,11 +1,9 @@
 <div class="search-group">
-  <span class="input-group-text"><i class="bi bi-search"></i></span>
+  <span class="input-group-text"><i class="bi bi-search cursor-pointer"></i></span>
   <input
     type="search"
     class="form-control"
     [placeholder]="placeholder"
-    #qSearch
-    (keyup)="searchReq(qSearch.value)"
-    (search)="searchReq(qSearch.value)"
+    [formControl]="searchControl"
   />
 </div>

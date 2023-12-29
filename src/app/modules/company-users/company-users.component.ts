@@ -1,95 +1,118 @@
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest, take } from 'rxjs';
-import { CompaniesApiService, CompanyDtoApi, UserDtoApi, UserDtoApiRolesEnumApi, UsersApiService } from '@usealto/the-office-sdk-angular';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { Subscription, combineLatest, debounce, map, of, startWith, switchMap, tap, timer } from 'rxjs';
+
+import { EmojiName } from 'src/app/core/utils/emoji/data';
+import { Company } from '../../core/models/company.model';
+import { User } from '../../core/models/user.model';
+import { ICompanyUsersData } from '../../core/resolvers/companyUsers.resolver';
+import { EResolverData, ResolversService } from '../../core/resolvers/resolvers.service';
+import * as FromRoot from '../../core/store/store.reducer';
+import { AltoRoutes } from '../shared/constants/routes';
+import { EPlaceholderStatus } from '../shared/models/placeholder.model';
+import { UserFormComponent } from './user-form/user-form.component';
+import { setUser, updateUserRoles } from '../../core/store/root/root.action';
+import { ToastService } from '../../core/toast/toast.service';
 
 @Component({
   selector: 'alto-company-users',
   templateUrl: './company-users.component.html',
-  styleUrls: ['./company-users.component.scss']
+  styleUrls: ['./company-users.component.scss'],
 })
-export class CompanyUsersComponent implements OnInit {
-  company!: CompanyDtoApi;
-  users: UserDtoApi[] = [];
-  hasTrainXLead = true;
-  hasRecordXLead = true;
-  id: string | undefined;
-  eRolesEnum = UserDtoApiRolesEnumApi;
-  displayedUsers: UserDtoApi[] = [];
-  selectedUsers: UserDtoApi[] = [];
-  page = 1;
-  pageSize = 15;
-  pageCount = 0;
-  searchString = '';
-  
+export class CompanyUsersComponent implements OnInit, OnDestroy {
+  readonly Emoji = EmojiName;
+  readonly AltoRoutes = AltoRoutes;
+  readonly User = User;
+
+  company!: Company;
+  filteredUsers: User[] = [];
+  usersDataStatus = EPlaceholderStatus.Good;
+
+  pageControl = new FormControl(1, { nonNullable: true });
+  pageCount = 1;
+  usersCount = 0;
+  readonly usersPageSize = 10;
+
+  searchTerm: FormControl<string | null> = new FormControl(null);
+  private readonly companyUsersSubscription = new Subscription();
+
   constructor(
-    private readonly companiesApiService: CompaniesApiService,
-    private readonly usersApiService: UsersApiService,
-    private route: ActivatedRoute,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly resolverService: ResolversService,
     private readonly offcanvasService: NgbOffcanvas,
+    private readonly store: Store<FromRoot.AppState>,
+    private readonly toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id') || '';
-    this.fetchAll();    
-  }
+    const data = this.resolverService.getDataFromPathFromRoot(this.activatedRoute.pathFromRoot);
+    this.company = (data[EResolverData.CompanyUsersData] as ICompanyUsersData).company;
 
-  fetchAll() {
-    combineLatest({
-      company: this.companiesApiService.getCompanies({ ids: this.id }),
-      users: this.usersApiService.getUsers({ companyId: this.id, itemsPerPage: 1000, includeSoftDeleted: true, sortBy: 'deletedAt:desc,firstname:asc'  })
-    })
-      .pipe(take(1))
-      .subscribe(({ company, users, }) => {
-        this.company = (company?.data) ? company.data[0] : {} as CompanyDtoApi;
-        this.users = users.data || [];
-        this.pageCount = Math.ceil(this.users.length / this.pageSize);
-        this.refreshUsers();
-        this.updateHasLeads()
-      });
-  }
-
-  selectAll(event: any) {
-    this.selectedUsers = event.target.checked ? [...this.users] : [];
-  }
-
-  onPaginator(page: number) {
-    this.page = page;
-    this.refreshUsers();
-  }
-
-  onSearch(search: string) {
-    this.searchString = search;
-    this.refreshUsers();
-  }
-
-  refreshUsers() {
-    let tmpUsers = this.users;
-
-    if (this.searchString !== '') {
-      tmpUsers = tmpUsers.filter((user) => {
-        const term = this.searchString.toLowerCase();
-        return (
-          user.firstname?.toLowerCase().includes(term) ||
-          user.lastname?.toLowerCase().includes(term) ||
-          user.email.toLowerCase().includes(term)
-        );
-      });
-    }
-
-    this.pageCount = Math.ceil(tmpUsers.length / this.pageSize);
-
-    this.displayedUsers = tmpUsers.slice(
-      (this.page - 1) * this.pageSize,
-      (this.page - 1) * this.pageSize + this.pageSize,
+    this.companyUsersSubscription.add(
+      combineLatest([
+        this.pageControl.valueChanges.pipe(startWith(1)),
+        this.searchTerm.valueChanges.pipe(
+          startWith(null),
+          debounce((searchTerm) => (searchTerm ? timer(500) : of(null))),
+          tap(() => this.pageControl.setValue(1)),
+        ),
+      ]).subscribe(([page, searchTerm]) => {
+        this.filteredUsers = this.company.users
+          .filter((user) => {
+            return !searchTerm || user.fullname.toLowerCase().includes(searchTerm.toLowerCase());
+          })
+          .slice((page - 1) * this.usersPageSize, page * this.usersPageSize);
+        this.usersCount = this.filteredUsers.length;
+        this.pageCount = Math.ceil(this.company.users.length / this.usersPageSize);
+        this.usersDataStatus =
+          this.filteredUsers.length > 0 ? EPlaceholderStatus.Good : EPlaceholderStatus.NoResult;
+      }),
     );
   }
 
-  updateHasLeads(){
-    this.hasTrainXLead = this.users.length > 0 && this.users.some(user => user.roles.includes(UserDtoApiRolesEnumApi.TrainxLead))
-    this.hasRecordXLead = this.users.length > 0 && this.users.some(user => user.roles.includes(UserDtoApiRolesEnumApi.RecordxLead))
+  ngOnDestroy(): void {
+    this.companyUsersSubscription.unsubscribe();
   }
 
+  resetSearch(): void {
+    this.searchTerm.setValue(null);
+  }
+
+  openUserForm(user?: User): void {
+    const canvaRef = this.offcanvasService.open(UserFormComponent, {
+      position: 'end',
+      panelClass: 'overflow-auto',
+    });
+
+    const instance = canvaRef.componentInstance as UserFormComponent;
+    instance.user = user;
+    instance.company = this.company;
+
+    canvaRef.closed
+      .pipe(
+        switchMap((user) => {
+          if (user) {
+            this.store.dispatch(updateUserRoles({ userId: user.id, roles: user.roles }));
+          } else {
+            this.store.dispatch(setUser({ user }));
+          }
+
+          return this.store.select(FromRoot.selectCompanies);
+        }),
+        tap(({ data: companiesById }) => {
+          this.company = companiesById.get(this.company.id) as Company;
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.toastService.show({
+            text: user ? 'User successfully updated' : 'User successfully created',
+            type: 'success',
+          });
+        },
+      });
+  }
 }

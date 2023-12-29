@@ -177,11 +177,12 @@
 .alto-primary {
   color: var(--bs-primary);
 }
-
 .alto-success {
   color: var(--bs-success);
 }
-
+.alto-warning {
+  color: var(--bs-warning);
+}
 .alto-text {
   color: var(--gray-900) !important;
 }
@@ -197,11 +198,9 @@
 .alto-dark-grey {
   color: var(--alto-dark-grey);
 }
-
 .alto-second-grey {
   color: var(--alto-text-second-color);
 }
-
 .alto-grey-bg {
   background-color: var(--alto-medium-grey);
 }
