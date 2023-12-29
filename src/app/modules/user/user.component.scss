@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  padding: 0 2rem 2rem;
+}
+
+.panel {
+  width: 420px;
+  min-height: 250px;
+}
+
+.icon-btn {
+  text-align: center;
+  height: 33px;
+  width: 33px;
+  padding: 0.5rem;
+  background-color: var(--alto-medium-grey);
+  &:hover {
+    color: white;
+    background-color: var(--alto-dark-grey);
+  }
+}

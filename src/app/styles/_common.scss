@@ -71,6 +71,10 @@
     color: var(--primary-700);
     background-color: var(--primary-50);
   }
+  &.purple {
+    color: var(--purple-600);
+    background-color: var(--purple-50);
+  }
 }
 
 .alto-badge-big {
@@ -147,6 +151,7 @@
   }
   h1 {
     margin: 0;
+    font-weight: 500;
   }
 }
 
@@ -197,8 +202,8 @@ h2 {
     --bs-table-bg: transparent;
 
     th {
-      font-weight: 600;
-      font-size: 0.833rem;
+      font-weight: 400;
+      font-size: 0.9rem;
       padding: 0.5rem;
     }
     thead tr {
@@ -242,6 +247,12 @@ h2 {
   i {
     font-size: 1.9rem;
     line-height: 2.5rem;
+  }
+}
+
+.hover-red {
+  &:hover {
+    color: var(--error-400);
   }
 }
 

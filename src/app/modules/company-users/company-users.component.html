@@ -1,8 +1,8 @@
 <div class="header-panel">
-  <img [src]="Emoji.BustsInSilhouette | emoji" height="48" width="48" />
+  <img [src]="Emoji.OfficeBuilding | emoji" height="48" width="48" />
   <div>
     <h1>{{ company.name }}</h1>
-    <p>Users list</p>
+    <p>{{ company.users.length }} members</p>
   </div>
 </div>
 
@@ -11,7 +11,7 @@
     <alto-search style="width: 400px" [searchControl]="searchTerm"></alto-search>
   </div>
   <div class="col text-end">
-    <button class="btn btn-primary"><i class="bi bi-plus-lg"></i>Create user</button>
+    <button class="btn btn-primary" (click)="openUserForm()"><i class="bi bi-plus-lg"></i>Create user</button>
   </div>
 </div>
 
@@ -23,23 +23,25 @@
           <th scope="col" class="w-20">Name</th>
           <th scope="col">Email address</th>
           <th scope="col">Roles</th>
-          <th scope="col" class="text-center">Trainx license</th>
-          <th scope="col" class="text-center">Recordx license</th>
+          <th scope="col" class="w-10 text-center">Trainx license</th>
+          <th scope="col" class="w-10 text-center">Recordx license</th>
+          <th scope="col" class="w-10"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of filteredUsers" style="height: 53px" class="cursor-pointer">
+        <tr *ngFor="let user of filteredUsers" style="height: 53px" class="cursor-pointer" [routerLink]="['/', AltoRoutes.companies, company.id, AltoRoutes.user, user.id]">
           <td>
-            <p class="fw-bold">{{user.fullname}}</p>
+            <p>{{user.fullname}}</p>
           </td>
           <td>
-            <p class="">{{user.email}}</p>
+            <p class="fw-lighter alto-grey smaller fst-italic">{{user.email}}</p>
           </td>
           <td>
-            <alto-colored-pill-list *ngFor="let role of user.roles"
-            [data]="[{name: role, id: role}]"
-            [hasDynamicColor]="true"
-          ></alto-colored-pill-list>
+            <div class="d-flex gap-2">
+              <div *ngFor="let role of user.roles" class="alto-badge" [style]="'color: white; background-color: ' + User.getRoleColor(role)">
+                <span>{{ role }}</span>
+              </div>
+            </div>
           </td>
           <td>
             <div class="licenses-status rounded-circle"
@@ -56,6 +58,9 @@
                   ? 'valid'
                   : 'danger'
               "></div>
+          </td>
+          <td class="text-end">
+            <i (click)="$event.stopPropagation(); openUserForm(user)" class="fs-4 bi bi-pen cursor-pointer me-3 p-3"></i>
           </td>
         </tr>
       </tbody>

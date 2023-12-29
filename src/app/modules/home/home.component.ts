@@ -90,6 +90,14 @@ export class HomeComponent implements OnInit, OnDestroy {
               company.users = users[index];
             });
 
+            paginatedCompanies.companies = paginatedCompanies.companies.map((company, index) => {
+              const updatedCompany = new Company({
+                ...company,
+                users: users[index].map((user) => user.rawData),
+              });
+              return updatedCompany;
+            });
+
             return paginatedCompanies;
           }),
           tap(({ companies }) => {
@@ -139,7 +147,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     canvaRef.componentInstance.company = company;
 
     canvaRef.closed.subscribe(() => {
-      this.pageControl.patchValue(1);
+      this.pageControl.patchValue(this.pageControl.value);
     });
   }
 }

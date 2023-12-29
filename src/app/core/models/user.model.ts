@@ -2,17 +2,28 @@ import { UserDtoApi as TrainXUserDto } from '@usealto/sdk-ts-angular';
 import { UserDtoApi as TheOfficeUserDtoApi, UserDtoApiRolesEnumApi } from '@usealto/the-office-sdk-angular';
 import { environment } from '../../../environments/environment';
 
+export enum EUserRole {
+  TrainxLead = 'trainx-lead',
+  TrainxUser = 'trainx-user',
+  RecordxLead = 'recordx-lead',
+  RecordxUser = 'recordx-user',
+  AltoAdmin = 'alto-admin',
+  BillingAdmin = 'billing-admin',
+}
+
 export interface IUser {
   id: string;
   firstname: string;
   lastname: string;
   email: string;
-  roles: Array<UserDtoApiRolesEnumApi>;
+  roles: Array<EUserRole>;
   createdAt: Date;
   updatedAt: Date;
   companyId: string;
+  emailVerified: boolean;
   trainxSettings: ITrainxUserSettings;
   recordxSettings: IRecordxUserSettings;
+  auth0Settings: IAuth0UserSettings;
 }
 
 export interface ITrainxUserSettings {
@@ -59,17 +70,55 @@ export class RecordxUserSettings {
   }
 }
 
+export interface IAuth0UserSettings {
+  id: string;
+  infos?: {
+    loginsCount: number;
+    isConnected: boolean;
+    lastLogin: Date;
+  };
+}
+
+export class Auth0UserSettings implements IAuth0UserSettings {
+  id: string;
+  infos?: {
+    loginsCount: number;
+    isConnected: boolean;
+    lastLogin: Date;
+  };
+
+  constructor(data: IAuth0UserSettings) {
+    this.id = data.id;
+    if (data.infos) {
+      this.infos = {
+        loginsCount: data.infos.loginsCount,
+        isConnected: data.infos.isConnected,
+        lastLogin: data.infos.lastLogin,
+      };
+    }
+  }
+
+  get rawData(): IAuth0UserSettings {
+    return {
+      id: this.id,
+      infos: this.infos,
+    };
+  }
+}
+
 export class User implements IUser {
   id: string;
   firstname: string;
   lastname: string;
   email: string;
-  roles: Array<UserDtoApiRolesEnumApi>;
+  roles: Array<EUserRole>;
   createdAt: Date;
   updatedAt: Date;
   companyId: string;
+  emailVerified: boolean;
   trainxSettings: TrainxUserSettings;
   recordxSettings: RecordxUserSettings;
+  auth0Settings: Auth0UserSettings;
 
   constructor(data: IUser) {
     this.id = data.id ?? '';
@@ -80,6 +129,7 @@ export class User implements IUser {
     this.createdAt = data.createdAt ?? new Date();
     this.updatedAt = data.updatedAt ?? new Date();
     this.companyId = data.companyId ?? '';
+    this.emailVerified = data.emailVerified ?? false;
 
     this.trainxSettings = new TrainxUserSettings({
       deletedAt: data.trainxSettings?.deletedAt,
@@ -90,18 +140,49 @@ export class User implements IUser {
     this.recordxSettings = new RecordxUserSettings({
       hasLicense: data.recordxSettings?.hasLicense,
     });
+
+    this.auth0Settings = new Auth0UserSettings({
+      id: data.auth0Settings?.id ?? '',
+      infos: data.auth0Settings?.infos
+        ? {
+            loginsCount: data.auth0Settings.infos.loginsCount,
+            isConnected: data.auth0Settings.infos.isConnected,
+            lastLogin: data.auth0Settings.infos.lastLogin,
+          }
+        : undefined,
+    });
   }
 
-  static fromDtos(theOfficeData: TheOfficeUserDtoApi, trainxData?: TrainXUserDto): User {
+  static fromDtos(theOfficeData: TheOfficeUserDtoApi, trainxData?: TrainXUserDto, auth0Data?: any): User {
     return new User({
       id: theOfficeData.id,
       firstname: theOfficeData.firstname,
       lastname: theOfficeData.lastname,
       email: theOfficeData.email,
-      roles: theOfficeData.roles,
+      roles: theOfficeData.roles
+        .map((role) => {
+          switch (role) {
+            case UserDtoApiRolesEnumApi.TrainxLead:
+              return EUserRole.TrainxLead;
+            case UserDtoApiRolesEnumApi.TrainxUser:
+              return EUserRole.TrainxUser;
+            case UserDtoApiRolesEnumApi.RecordxUser:
+              return EUserRole.RecordxUser;
+            case UserDtoApiRolesEnumApi.RecordxLead:
+              return EUserRole.RecordxLead;
+            case UserDtoApiRolesEnumApi.AltoAdmin:
+              return EUserRole.AltoAdmin;
+            case UserDtoApiRolesEnumApi.BillingAdmin:
+              return EUserRole.BillingAdmin;
+            default:
+              return null;
+          }
+        })
+        .filter((r) => !!r) as EUserRole[],
       createdAt: theOfficeData.createdAt,
       updatedAt: theOfficeData.updatedAt,
       companyId: theOfficeData.companyId,
+      emailVerified: theOfficeData.emailVerified,
       trainxSettings: {
         deletedAt: trainxData?.deletedAt,
         isConnectorActive: trainxData?.isConnectorActive,
@@ -110,7 +191,44 @@ export class User implements IUser {
       recordxSettings: {
         hasLicense: theOfficeData.licenses.includes(environment.recordxTheOfficeId),
       },
+      auth0Settings: {
+        id: theOfficeData.auth0Id,
+        infos: auth0Data
+          ? {
+              loginsCount: auth0Data.logins_count,
+              isConnected: true,
+              lastLogin: auth0Data.last_login,
+            }
+          : undefined,
+      },
     });
+  }
+
+  static getRoleList(): string[] {
+    return Object.values(EUserRole);
+  }
+
+  static mapRoles(roles: string[]): EUserRole[] {
+    return roles.map((role) => role as EUserRole);
+  }
+
+  static getRoleColor(role: string): string {
+    switch (role) {
+      case EUserRole.TrainxLead:
+        return '#7792E6';
+      case EUserRole.TrainxUser:
+        return '#7FBEE6';
+      case EUserRole.RecordxLead:
+        return '#849B89';
+      case EUserRole.RecordxUser:
+        return '#91979A';
+      case EUserRole.AltoAdmin:
+        return '#E58460';
+      case EUserRole.BillingAdmin:
+        return '#E6BB63';
+      default:
+        return '#344054';
+    }
   }
 
   get fullname(): string {
@@ -127,33 +245,35 @@ export class User implements IUser {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       companyId: this.companyId,
+      emailVerified: this.emailVerified,
       trainxSettings: this.trainxSettings.rawData,
       recordxSettings: this.recordxSettings.rawData,
+      auth0Settings: this.auth0Settings?.rawData,
     };
   }
 
   isAltoAdmin(): boolean {
-    return this.roles.includes(UserDtoApiRolesEnumApi.AltoAdmin);
+    return this.roles.includes(EUserRole.AltoAdmin);
   }
 
   isTrainxLead(): boolean {
-    return this.roles.includes(UserDtoApiRolesEnumApi.TrainxLead);
+    return this.roles.includes(EUserRole.TrainxLead);
   }
 
   isTrainxUser(): boolean {
-    return this.roles.includes(UserDtoApiRolesEnumApi.TrainxUser);
+    return this.roles.includes(EUserRole.TrainxUser);
   }
 
   isRecordxLead(): boolean {
-    return this.roles.includes(UserDtoApiRolesEnumApi.RecordxLead);
+    return this.roles.includes(EUserRole.RecordxLead);
   }
 
   isRecordxUser(): boolean {
-    return this.roles.includes(UserDtoApiRolesEnumApi.RecordxUser);
+    return this.roles.includes(EUserRole.RecordxUser);
   }
 
   isBillingAdmin(): boolean {
-    return this.roles.includes(UserDtoApiRolesEnumApi.BillingAdmin);
+    return this.roles.includes(EUserRole.BillingAdmin);
   }
 
   hasTrainxAccess(): boolean {

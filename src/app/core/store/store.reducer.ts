@@ -11,5 +11,7 @@ export const reducers: ActionReducerMap<AppState> = {
 
 export const selectRoot = (state: AppState) => state.root;
 
+export const selectBreadcrumbItems = createSelector(selectRoot, (state) => state.breadcrumbItems);
+
 export const selectUserMe = createSelector(selectRoot, (state) => state.me);
 export const selectCompanies = createSelector(selectRoot, (state) => state.companiesById);

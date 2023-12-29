@@ -6,6 +6,7 @@ import { of, tap } from 'rxjs';
 import { Company } from '../../../core/models/company.model';
 import { ToastService } from '../../../core/toast/toast.service';
 import { CompaniesRestService } from '../../companies/service/companies-rest.service';
+import { ValidatorsService } from '../../shared/services/validators.service';
 
 @Component({
   selector: 'alto-company-form',
@@ -14,24 +15,22 @@ import { CompaniesRestService } from '../../companies/service/companies-rest.ser
 })
 export class CompanyFormComponent implements OnInit {
   @Input() company?: Company;
-  nameControl = new FormControl('', { nonNullable: true, validators: [this.mandatoryNameValidator()] });
+  nameControl = new FormControl('', {
+    nonNullable: true,
+    validators: [this.validatorsService.requiredValidator('Name is required')],
+  });
 
   constructor(
     public activeOffcanvas: NgbActiveOffcanvas,
     private readonly companiesRestService: CompaniesRestService,
     private readonly toastService: ToastService,
+    private readonly validatorsService: ValidatorsService,
   ) {}
 
   ngOnInit(): void {
     if (this.company) {
       this.nameControl.setValue(this.company.name);
     }
-  }
-
-  private mandatoryNameValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      return Validators.required(control) ? { error: 'Name is mandatory' } : null;
-    };
   }
 
   submit(): void {

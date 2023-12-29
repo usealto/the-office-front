@@ -1,0 +1,210 @@
+<div class="header-panel">
+  <alto-img-badge
+    [toggleTooltip]="false"
+    class="img-badge-menu"
+    placement="right"
+    [user]="user"
+    [size]="40"
+  >
+  </alto-img-badge>
+  <div>
+    <h1>{{ user.fullname }}</h1>
+    <p>{{ company.name }}</p>
+  </div>
+</div>
+
+<div class="row py-4">
+  <h3 class="col-4">
+    <img
+      class="me-3"
+      [src]="Emoji.PageFacingUp | emoji"
+      width="20"
+      height="20"
+    />
+    Firstname
+  </h3>
+  <div class="col">
+    <p>{{ user.firstname }}</p>
+  </div>
+</div>
+<hr />
+<div class="row py-4">
+  <h3 class="col-4">
+    <img
+      class="me-3"
+      [src]="Emoji.PageFacingUp | emoji"
+      width="20"
+      height="20"
+    />
+    Lastname
+  </h3>
+  <div class="col">
+    <p>{{ user.lastname }}</p>
+  </div>
+</div>
+<hr />
+<div class="row py-4">
+  <h3 class="col-4">
+    <img class="me-3" [src]="Emoji.LoveLetter | emoji" width="20" height="20" />
+    Email address
+  </h3>
+  <div class="col">
+    <p>{{ user.email }}</p>
+  </div>
+</div>
+<hr />
+<div class="row py-4">
+  <h3 class="col-4">
+    <img class="me-3" [src]="Emoji.Label | emoji" width="20" height="20" />
+    Roles
+  </h3>
+  <div class="col-6">
+    <alto-input-pills
+      placeholder="Select roles"
+      [controls]="rolesCtrl"
+      [options]="rolesOptions"
+    >
+    </alto-input-pills>
+  </div>
+</div>
+<hr />
+<div class="mt-4 d-flex justify-content-between">
+  <!-- Auth0 card -->
+  <div class="panel m-3 d-flex flex-column">
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+      <h2 class="m-0">Auth0</h2>
+      <a class="rounded-circle icon-btn cursor-pointer" [href]="environment.auth0URL + user.auth0Settings.id" target="_blank">
+        <i class="fs-5 bi bi-box-arrow-up-right"></i>
+      </a>
+    </div>
+    <p class="py-3">
+      <span>
+        <img
+          class="me-1"
+          [src]="Emoji.Link | emoji"
+          height="16"
+          width="16"
+        />
+        Is connected
+      </span>
+      <span
+        class="float-end alto-badge fs-6"
+        [class]="user.auth0Settings.infos?.isConnected ? 'green' : 'red'"
+        >{{ user.auth0Settings.infos?.isConnected ? 'true' : 'false' }}</span
+      >
+    </p>
+    <p class="py-3">
+      <span>
+        <img
+          class="me-1"
+          [src]="Emoji.PuzzlePiece | emoji"
+          height="16"
+          width="16"
+        />
+        Logins count
+      </span>
+      <span class="float-end alto-badge primary fs-6">{{
+        user.auth0Settings.infos?.loginsCount
+      }}</span>
+    </p>
+    <p class="py-3">
+      <span>
+        <img
+          class="me-1"
+          [src]="Emoji.TearOffCalendar | emoji"
+          height="16"
+          width="16"
+        />
+        Last login
+      </span>
+      <span class="float-end alto-badge purple fs-6">{{
+        user.auth0Settings.infos?.lastLogin | date: 'fullDate'
+      }}</span>
+    </p>
+    <div class="mt-auto ms-auto">
+      <button class="btn btn-primary" (click)="sendResetPassword(user.email)">Reset password</button>
+    </div>
+  </div>
+
+  <!-- Trainx card -->
+  <div class="panel m-3">
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+      <h2 class="m-0">Trainx</h2>
+      <a
+        class="rounded-circle icon-btn cursor-pointer"
+        [href]="
+          environment.trainxURL + '/impersonate/' + user.email + '?auto=true'
+        "
+        target="_blank"
+      >
+      <i
+      class="fs-5 bi bi-incognito"
+      ></i>
+    </a>
+    </div>
+    <p class="py-3">
+      <span>
+        <img
+          class="me-1"
+          [src]="Emoji.BookmarkTabs | emoji"
+          height="16"
+          width="16"
+        />
+        Has license:
+      </span>
+      <span
+        class="float-end alto-badge fs-6"
+        [class]="user.hasTrainxLicense() ? 'green' : 'red'"
+        >{{ user.hasTrainxLicense() ? "Yes" : "No" }}</span
+      >
+    </p>
+    <p class="py-3">
+      <span>
+        <img class="me-1" [src]="Emoji.Link | emoji" height="16" width="16" />
+        Is connector active:
+      </span>
+      <span
+        class="float-end alto-badge fs-6"
+        [class]="user.trainxSettings.isConnectorActive ? 'green' : 'red'"
+        >{{ user.trainxSettings.isConnectorActive ? "Yes" : "No" }}</span
+      >
+    </p>
+    <p class="py-3">
+      <span>
+        <img
+          class="me-1"
+          [src]="Emoji.Wastebasket | emoji"
+          height="16"
+          width="16"
+        />
+        Is user deleted:
+      </span>
+      <span
+        class="float-end alto-badge fs-6"
+        [class]="user.trainxSettings.deletedAt ? 'green' : 'red'"
+        >{{ user.trainxSettings.deletedAt ? "Yes" : "No" }}</span
+      >
+    </p>
+  </div>
+
+  <!-- Recordx card -->
+  <div class="panel m-3">
+      <h2 class="mb-4">Recordx</h2>
+    <p class="py-3">
+      <span>
+        <img
+          class="me-1"
+          [src]="Emoji.BookmarkTabs | emoji"
+          height="16"
+          width="16"
+        />
+        Has license:
+      </span>
+      <span
+        class="float-end alto-badge fs-6"
+        [class]="user.hasRecordxLicense() ? 'green' : 'red'"
+        >{{ user.hasRecordxLicense() ? "Yes" : "No" }}</span
+      >
+    </p>
+  </div>
+</div>
