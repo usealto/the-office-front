@@ -62,7 +62,7 @@
               </div>
           </td>
           <td class="centered">
-            <div class="tooltip-container p-4" [class.error]="companyInfos.company.trainxUsedLicenses > companyInfos.company.trainxAvailableLicenses">
+            <div class="tooltip-container p-4" [class.error]="companyInfos.company.recordxUsedLicenses > companyInfos.company.recordxAvailableLicenses">
               <div
               class="licenses-status rounded-circle"
               [class]="
@@ -71,7 +71,7 @@
                 : 'valid'
                 "
             ></div>
-            <div class="tooltip-text" [class.error]="companyInfos.company.trainxUsedLicenses > companyInfos.company.trainxAvailableLicenses">
+            <div class="tooltip-text" [class.error]="companyInfos.company.recordxUsedLicenses > companyInfos.company.recordxAvailableLicenses">
               <p [class.error]="companyInfos.company.recordxUsedLicenses > companyInfos.company.recordxAvailableLicenses">
                 {{companyInfos.company.recordxUsedLicenses}} / {{companyInfos.company.recordxAvailableLicenses}}
               </p>
