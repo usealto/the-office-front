@@ -107,8 +107,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         .subscribe(({ companies, itemCount, pageCount }) => {
           this.filteredCompanies = companies.map((company) => ({
             company,
-            trainxAvailableLicenses: this.getCompanyTrainxAvailableLicenses(company),
-            recordxAvailableLicenses: this.getCompanyRecordxAvailableLicenses(company),
+            trainxAvailableLicenses: company.trainxAvailableLicenses,
+            recordxAvailableLicenses: company.recordxAvailableLicenses,
           }));
           this.companiesCount = itemCount;
           this.pageCount = pageCount;
@@ -121,18 +121,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.homeSubscription.unsubscribe();
-  }
-
-  getCompanyTrainxAvailableLicenses(company: Company): number {
-    const companyTrainxUsersWithLicense = company.users.filter(
-      (u) => u.hasTrainxAccess() && u.hasTrainxLicense(),
-    );
-    return company.trainxSettings.licenseCount - companyTrainxUsersWithLicense.length;
-  }
-
-  getCompanyRecordxAvailableLicenses(company: Company): number {
-    const companyRecordxUsers = company.users.filter((u) => u.hasRecordxAccess() && u.hasRecordxLicense());
-    return company.recordxSettings.licenseCount - companyRecordxUsers.length;
   }
 
   resetSearch(): void {

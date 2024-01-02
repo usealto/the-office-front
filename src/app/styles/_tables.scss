@@ -1,0 +1,49 @@
+
+.table-panel {
+  background-color: white;
+  border-radius: 0.667rem;
+  border: 1px solid var(--alto-border);
+  h2 {
+    padding: 1.4rem 1.7rem;
+    margin: 0;
+  }
+  .table {
+    margin-bottom: 0;
+    --bs-table-bg: transparent;
+
+    th {
+      font-weight: 400;
+      font-size: 0.9rem;
+      padding: 0.5rem;
+    }
+    thead tr {
+      height: 2.667rem;
+    }
+    tbody tr {
+      min-height: 3.333rem;
+    }
+    tr {
+      & * {
+        vertical-align: middle;
+      }
+      th:first-child,
+      td:first-child {
+        padding-left: 1.7rem;
+      }
+    }
+  }
+}
+
+.table-no-last-line {
+  tr:last-child {
+    td {
+      border: 0;
+    }
+  }
+}
+
+.table {
+  .centered {
+    text-align: center;
+  }
+}

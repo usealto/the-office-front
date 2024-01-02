@@ -8,10 +8,15 @@
 
 <div class="row mb-4">
   <div class="col-4">
-    <alto-search style="width: 400px" [searchControl]="searchTerm"></alto-search>
+    <alto-input-search
+      style="width: 400px"
+      [searchControl]="searchTerm"
+    ></alto-input-search>
   </div>
   <div class="col text-end">
-    <button class="btn btn-primary" (click)="openUserForm()"><i class="bi bi-plus-lg"></i>Create user</button>
+    <button class="btn btn-primary" (click)="openUserForm()">
+      <i class="bi bi-plus-lg"></i>Create user
+    </button>
   </div>
 </div>
 
@@ -23,64 +28,101 @@
           <th scope="col" class="w-20">Name</th>
           <th scope="col">Email address</th>
           <th scope="col">Roles</th>
-          <th scope="col" class="w-10 text-center">Trainx license</th>
-          <th scope="col" class="w-10 text-center">Recordx license</th>
+          <th scope="col" class="w-15">
+            <div class="licenses-title">
+              <p>Trainx licenses</p>
+              <p [class.error]="company.trainxUsedLicenses > company.trainxAvailableLicenses">({{company.trainxUsedLicenses + '/' + company.trainxAvailableLicenses}})</p>
+            </div>
+          </th>
+          <th scope="col" class="w-15">
+            <div class="licenses-title">
+              <p>Recordx licenses</p>
+              <p [class.error]="company.recordxUsedLicenses > company.recordxAvailableLicenses">({{company.recordxUsedLicenses + '/' + company.recordxAvailableLicenses}})</p>
+            </div>
+          </th>
           <th scope="col" class="w-10"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of filteredUsers" style="height: 53px" class="cursor-pointer" [routerLink]="['/', AltoRoutes.companies, company.id, AltoRoutes.user, user.id]">
+        <tr
+          *ngFor="let user of filteredUsers"
+          style="height: 53px"
+          class="cursor-pointer"
+          [routerLink]="[
+            '/',
+            AltoRoutes.companies,
+            company.id,
+            AltoRoutes.user,
+            user.id
+          ]"
+        >
           <td>
-            <p>{{user.fullname}}</p>
+            <p>{{ user.fullname }}</p>
           </td>
           <td>
-            <p class="fw-lighter alto-grey smaller fst-italic">{{user.email}}</p>
+            <p class="fw-lighter alto-grey smaller fst-italic">
+              {{ user.email }}
+            </p>
           </td>
           <td>
             <div class="d-flex gap-2">
-              <div *ngFor="let role of user.roles" class="alto-badge" [style]="'color: white; background-color: ' + User.getRoleColor(role)">
+              <div
+                *ngFor="let role of user.roles"
+                class="alto-badge"
+                [style]="
+                  'color: white; background-color: ' + User.getRoleColor(role)
+                "
+              >
                 <span>{{ role }}</span>
               </div>
             </div>
           </td>
-          <td>
-            <div class="licenses-status rounded-circle"
-            [class]="
-                user.trainxSettings.hasLicense
-                  ? 'valid'
-                  : 'danger'
-              "></div>
+          <td class="text-center">
+            <i *ngIf="user.trainxSettings.hasLicense" class="fs-3 bi bi-check-lg alto-success"></i>
           </td>
-          <td>
-            <div class="licenses-status rounded-circle"
-            [class]="
-                user.recordxSettings.hasLicense
-                  ? 'valid'
-                  : 'danger'
-              "></div>
+          <td class="text-center">
+            <i *ngIf="user.recordxSettings.hasLicense" class="fs-3 bi bi-check-lg alto-success"></i>
+
           </td>
           <td class="text-end">
-            <i (click)="$event.stopPropagation(); openUserForm(user)" class="fs-4 bi bi-pen cursor-pointer me-3 p-3"></i>
+            <i
+              (click)="$event.stopPropagation(); openUserForm(user)"
+              class="fs-4 bi bi-pen cursor-pointer me-3 p-3"
+            ></i>
           </td>
         </tr>
       </tbody>
     </table>
-    <alto-pagination class="mx-4 d-block"
-    [pageControl]="pageControl"
-    [pageCount]="pageCount"
-    [itemsCount]="usersCount"></alto-pagination>
+    <alto-pagination
+      class="mx-4 d-block"
+      [pageControl]="pageControl"
+      [pageCount]="pageCount"
+      [itemsCount]="usersCount"
+    ></alto-pagination>
   </div>
-  <div class="nodata-placeholder d-flex justify-content-center align-items-center" noData>
+  <div
+    class="nodata-placeholder d-flex justify-content-center align-items-center"
+    noData
+  >
     <div class="text-center">
       <img [src]="Emoji.Eyes | emoji" height="24" width="24" />
       <h2 class="mt-3">This company contains no users</h2>
     </div>
   </div>
-  <div class="nodata-placeholder d-flex justify-content-center align-items-center" noResult>
+  <div
+    class="nodata-placeholder d-flex justify-content-center align-items-center"
+    noResult
+  >
     <div class="text-center">
-      <img [src]="Emoji.MagnifyingGlassTiltedRight | emoji" height="24" width="24" />
+      <img
+        [src]="Emoji.MagnifyingGlassTiltedRight | emoji"
+        height="24"
+        width="24"
+      />
       <h2 class="mt-3">Your filters doesn't match any user</h2>
-      <button class="mt-4 btn btn-primary" (click)="resetSearch()">Clean filters</button>
+      <button class="mt-4 btn btn-primary" (click)="resetSearch()">
+        Clean filters
+      </button>
     </div>
   </div>
 </alto-placeholder-manager>
