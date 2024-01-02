@@ -161,9 +161,9 @@ export class Company implements ICompany {
         );
       }
 
-      this.users = [...this.usersById.values()];
       this.setBillingAdmin(user);
     }
+    this.users = [...this.usersById.values()];
   }
 
   setBillingAdmin(user: User): void {
