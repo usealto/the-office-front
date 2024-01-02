@@ -188,4 +188,20 @@ export class Company implements ICompany {
       stripeSettings: this.stripeSettings.rawData,
     };
   }
+
+  get trainxUsedLicenses(): number {
+    return this.users.filter((u) => u.trainxSettings.hasLicense).length;
+  }
+
+  get recordxUsedLicenses(): number {
+    return this.users.filter((u) => u.recordxSettings.hasLicense).length;
+  }
+
+  get trainxAvailableLicenses(): number {
+    return this.trainxSettings.licenseCount;
+  }
+
+  get recordxAvailableLicenses(): number {
+    return this.recordxSettings.licenseCount;
+  }
 }

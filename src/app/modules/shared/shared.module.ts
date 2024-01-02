@@ -25,7 +25,6 @@ import { ImgBadgeComponent } from './components/img-badge/img-badge.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { PlaceholderManagerComponent } from './components/placeholder-manager/placeholder-manager.component';
 import { ProfileCardComponent } from './components/profile-card/profile-card.component';
-import { SearchComponent } from './components/search/search.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { ProgressionPillArrowPipe } from './helpers/progression-pill-arrow.pipe';
 import { ProgressionPillPipe } from './helpers/progression-pill.pipe';
@@ -41,7 +40,6 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
     ProgressionPillArrowPipe,
     ImgBadgeComponent,
     DropdownFilterComponent,
-    SearchComponent,
     TabsComponent,
     ProfileCardComponent,
     TeamColorPipe,
@@ -77,7 +75,6 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
     DropdownFilterComponent,
     ProfileCardComponent,
     TabsComponent,
-    SearchComponent,
     TeamColorPipe,
     ProgressionPillPipe,
     ProgressionPillArrowPipe,

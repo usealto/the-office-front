@@ -3,15 +3,10 @@
   padding: 0 2rem 2rem;
 }
 
-.licenses-status {
-  width: 1rem;
-  height: 1rem;
-  margin: auto;
-
-  &.valid {
-    background-color: #70E582;
-  }
-  &.danger {
-    background-color: #E56053;
-  }
+.licenses-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
