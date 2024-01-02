@@ -13,7 +13,7 @@
 <div class="row mb-4">
   <div class="col-4">
     <!-- searchbar -->
-    <alto-search style="width: 400px" [searchControl]="searchTerm"></alto-search>
+    <alto-input-search style="width: 400px" [searchControl]="searchTerm"></alto-input-search>
   </div>
   <div class="col text-end">
     <button class="btn btn-primary" (click)="openCompanyEditForm()"><i class="bi bi-plus-lg"></i>Create a company</button>
@@ -42,26 +42,41 @@
                 </p>
               </span>
             </td>
-            <td></td>
-            <td scope="col">
+            <td>{{ companyInfos.company.billingAdmin?.fullname }}</td>
+            <td class="centered">
+              <div class="tooltip-container p-4" [class.error]="companyInfos.company.trainxUsedLicenses > companyInfos.company.trainxAvailableLicenses">
+                <div
+                class="licenses-status rounded-circle"
+                [class]="
+                  companyInfos.company.trainxUsedLicenses > companyInfos.company.trainxAvailableLicenses
+                  ? 'danger'
+                  : 'valid'
+                  "
+                  >
+                </div>
+                <div class="tooltip-text" [class.error]="companyInfos.company.trainxUsedLicenses > companyInfos.company.trainxAvailableLicenses">
+                  <p >
+                    {{companyInfos.company.trainxUsedLicenses}} / {{companyInfos.company.trainxAvailableLicenses}}
+                  </p>
+                </div>
+              </div>
+          </td>
+          <td class="centered">
+            <div class="tooltip-container p-4" [class.error]="companyInfos.company.recordxUsedLicenses > companyInfos.company.recordxAvailableLicenses">
               <div
               class="licenses-status rounded-circle"
               [class]="
-                companyInfos.trainxAvailableLicenses < 0
+                companyInfos.company.recordxUsedLicenses > companyInfos.company.recordxAvailableLicenses
                 ? 'danger'
                 : 'valid'
                 "
             ></div>
-          </td>
-          <td scope="col">
-            <div
-            class="licenses-status rounded-circle"
-            [class]="
-                companyInfos.recordxAvailableLicenses < 0
-                ? 'danger'
-                : 'valid'
-                "
-            ></div>
+            <div class="tooltip-text" [class.error]="companyInfos.company.recordxUsedLicenses > companyInfos.company.recordxAvailableLicenses">
+              <p [class.error]="companyInfos.company.recordxUsedLicenses > companyInfos.company.recordxAvailableLicenses">
+                {{companyInfos.company.recordxUsedLicenses}} / {{companyInfos.company.recordxAvailableLicenses}}
+              </p>
+            </div>
+          </div>
           </td>
           <td class="text-end">
             <a

@@ -22,7 +22,7 @@
 
   <div class="bottom-block">
     <ng-template #popContent>
-      <a>
+      <a [routerLink]="AltoRoutes.companies + '/' + me.companyId + '/' + AltoRoutes.user + '/' + me.id">
         <div><i class="bi bi-person"></i>{{ me.fullname }}</div>
       </a>
       <a class="logout" (click)="logOut()">

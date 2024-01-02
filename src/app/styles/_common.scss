@@ -189,49 +189,6 @@ h2 {
   border-radius: 1.143rem;
 }
 
-.table-panel {
-  background-color: white;
-  border-radius: 0.667rem;
-  border: 1px solid var(--alto-border);
-  h2 {
-    padding: 1.4rem 1.7rem;
-    margin: 0;
-  }
-  .table {
-    margin-bottom: 0;
-    --bs-table-bg: transparent;
-
-    th {
-      font-weight: 400;
-      font-size: 0.9rem;
-      padding: 0.5rem;
-    }
-    thead tr {
-      height: 2.667rem;
-    }
-    tbody tr {
-      min-height: 3.333rem;
-    }
-    tr {
-      & * {
-        vertical-align: middle;
-      }
-      th:first-child,
-      td:first-child {
-        padding-left: 1.7rem;
-      }
-    }
-  }
-}
-
-.table-no-last-line {
-  tr:last-child {
-    td {
-      border: 0;
-    }
-  }
-}
-
 .vertical-divider {
   display: inline-block;
   border-left: 2px solid var(--alto-medium-grey);
@@ -250,10 +207,81 @@ h2 {
   }
 }
 
+.error {
+  color: var(--bs-danger);
+}
+
 .hover-red {
   &:hover {
     color: var(--error-400);
   }
+}
+
+
+/* Tooltip container */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+/* Tooltip text */
+.tooltip-container .tooltip-text {
+  visibility: hidden;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 100%);
+
+  &.top {
+    top: -5px;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+  }
+
+  &.error {
+    background-color: var(--error-400);
+  }
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip-container .tooltip-text::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color:  transparent transparent #555 transparent;
+
+  &.top {
+    top: 100%;
+    bottom: auto;
+    border-color: #555 transparent transparent transparent;
+  }
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-container .tooltip-text.error::after {
+  border-color: transparent transparent var(--error-400) transparent;
 }
 
 .skeleton-panel {

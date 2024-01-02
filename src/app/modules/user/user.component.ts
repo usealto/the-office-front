@@ -120,7 +120,6 @@ export class UserComponent implements OnInit, OnDestroy {
                     this.store.dispatch(updateUserRoles({ userId: user.id, roles: user.roles }));
                     return this.store.select(FromRoot.selectCompanies);
                   }),
-                  first(),
                   tap(({ data: companies }) => {
                     const company = companies.get(this.company.id) as Company;
                     this.user = company.usersById.get(this.user.id) as User;
@@ -131,11 +130,13 @@ export class UserComponent implements OnInit, OnDestroy {
           }),
         )
         .subscribe({
-          next: () => {
-            this.toastService.show({
-              text: 'User roles updated',
-              type: 'success',
-            });
+          next: (data) => {
+            if (data) {
+              this.toastService.show({
+                text: 'User roles updated',
+                type: 'success',
+              });
+            }
           },
           error: () => {
             this.toastService.show({
