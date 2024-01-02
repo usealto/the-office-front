@@ -60,13 +60,15 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
           tap(() => this.pageControl.setValue(1)),
         ),
       ]).subscribe(([page, searchTerm]) => {
-        this.filteredUsers = this.company.users
-          .filter((user) => {
-            return !searchTerm || user.fullname.toLowerCase().includes(searchTerm.toLowerCase());
-          })
-          .slice((page - 1) * this.usersPageSize, page * this.usersPageSize);
+        const allFilteredUsers = this.company.users.filter((user) => {
+          return !searchTerm || user.fullname.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+        this.pageCount = Math.ceil(allFilteredUsers.length / this.usersPageSize);
+        this.filteredUsers = allFilteredUsers.slice(
+          (page - 1) * this.usersPageSize,
+          page * this.usersPageSize,
+        );
         this.usersCount = this.filteredUsers.length;
-        this.pageCount = Math.ceil(this.company.users.length / this.usersPageSize);
         this.usersDataStatus =
           this.filteredUsers.length > 0 ? EPlaceholderStatus.Good : EPlaceholderStatus.NoResult;
       }),
