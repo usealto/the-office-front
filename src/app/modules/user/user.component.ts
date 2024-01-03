@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription, debounceTime, first, merge, of, switchMap, tap } from 'rxjs';
+import { Subscription, debounceTime, merge, of, switchMap, tap } from 'rxjs';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
