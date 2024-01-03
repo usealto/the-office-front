@@ -106,6 +106,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
         }),
         tap(({ data: companiesById }) => {
           this.company = companiesById.get(this.company.id) as Company;
+          this.pageControl.patchValue(this.pageControl.value);
         }),
       )
       .subscribe({
