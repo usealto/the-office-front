@@ -93,7 +93,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
     instance.user = user;
     instance.company = this.company;
 
-    canvaRef.closed
+    const subscription = canvaRef.closed
       .pipe(
         switchMap((user) => {
           if (user) {
@@ -115,6 +115,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
             text: user ? 'User successfully updated' : 'User successfully created',
             type: 'success',
           });
+          subscription.unsubscribe();
         },
       });
   }
