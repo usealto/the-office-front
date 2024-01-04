@@ -27,9 +27,9 @@ export class UserFormComponent implements OnInit {
   @Input() user?: User;
 
   readonly roles = User.getRoleList();
-  readonly rolesOptions: PillOption[] = this.roles
-    .filter((role) => role === EUserRole.AltoAdmin || role === EUserRole.BillingAdmin)
-    .map((role) => new PillOption({ label: role, value: role, color: User.getRoleColor(role) }));
+  readonly rolesOptions: PillOption[] = this.roles.map(
+    (role) => new PillOption({ label: role, value: role, color: User.getRoleColor(role) }),
+  );
   differentBillingAdmin?: User;
 
   userFormGroup = new FormGroup({
@@ -87,10 +87,7 @@ export class UserFormComponent implements OnInit {
         this.user.roles.map(
           (role) =>
             new FormControl<PillOption>(
-              {
-                value: new PillOption({ label: role, value: role, color: User.getRoleColor(role) }),
-                disabled: role !== EUserRole.AltoAdmin && role !== EUserRole.BillingAdmin,
-              },
+              new PillOption({ label: role, value: role, color: User.getRoleColor(role) }),
               { nonNullable: true },
             ),
         ),

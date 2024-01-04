@@ -1,14 +1,23 @@
 <div class="dropdown">
-  <div class="dropdown-input form-control cursor-pointer d-flex justify-content-between align-items-center" (click)="toggleDropdown()">
+  <div
+    *ngIf="!readonly; else readonlyTemplate"
+    class="dropdown-input form-control cursor-pointer d-flex justify-content-between align-items-center"
+    (click)="toggleDropdown()"
+  >
     <div>
       <ng-container *ngIf="controls.value.length > 0; else noOptionSelected">
         <div
-        *ngFor="let itemControl of controls.value; let index = index"
-        class="alto-badge me-2 cursor-pointer"
-        [style]="'color: white; background-color: ' + itemControl.value.color">
+          *ngFor="let itemControl of controls.value; let index = index"
+          class="alto-badge me-2 cursor-pointer"
+          [style]="'color: white; background-color: ' + itemControl.value.color"
+        >
           <span class="d-flex justify-content-between align-items-center gap-2">
             {{ itemControl.value.label }}
-            <i *ngIf="itemControl.enabled" class="bi bi-x-lg px-1" (click)="$event.stopPropagation(); removePill(index)"></i>
+            <i
+              *ngIf="itemControl.enabled"
+              class="bi bi-x-lg px-1"
+              (click)="$event.stopPropagation(); removePill(index)"
+            ></i>
           </span>
         </div>
       </ng-container>
@@ -22,17 +31,22 @@
       <i class="bi" [ngClass]="isDropdownOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
     </div>
   </div>
-  <div #dropdownMenu class="dropdown-menu" [ngClass]="{ show: isDropdownOpen }" (click)="$event.stopPropagation();">
+  <div
+    #dropdownMenu
+    class="dropdown-menu"
+    [ngClass]="{ show: isDropdownOpen }"
+    (click)="$event.stopPropagation()"
+  >
     <ng-container *ngIf="filteredOptions.length > 0; else noOption">
       <div *ngIf="filteredOptions.length > 1" class="dropdown-item border-bottom" (click)="addAll()">
         <p class="alto-grey">Select all</p>
       </div>
 
       <div
-      class="dropdown-item"
-      *ngFor="let option of filteredOptions; let index = index; let last = last"
-      [class.border-bottom]="!last"
-      (click)="addPill(option)"
+        class="dropdown-item"
+        *ngFor="let option of filteredOptions; let index = index; let last = last"
+        [class.border-bottom]="!last"
+        (click)="addPill(option)"
       >
         <div class="alto-badge" [style]="'color: white; background-color: ' + option.color">
           <span>{{ option.label }}</span>
@@ -47,3 +61,23 @@
     </ng-template>
   </div>
 </div>
+<ng-template #readonlyTemplate>
+  <div class="dropdown-input form-control d-flex justify-content-between align-items-center">
+    <div>
+      <ng-container *ngIf="controls.value.length > 0; else noOptionSelected">
+        <div
+          *ngFor="let itemControl of controls.value; let index = index"
+          class="alto-badge me-2"
+          [style]="'color: white; background-color: ' + itemControl.value.color"
+        >
+          <span class="d-flex justify-content-between align-items-center gap-2">
+            {{ itemControl.value.label }}
+          </span>
+        </div>
+      </ng-container>
+      <ng-template #noOptionSelected>
+        <p class="alto-grey">{{ placeholder }}</p>
+      </ng-template>
+    </div>
+  </div>
+</ng-template>
