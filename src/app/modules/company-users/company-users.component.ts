@@ -70,7 +70,11 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
         );
         this.usersCount = this.filteredUsers.length;
         this.usersDataStatus =
-          this.filteredUsers.length > 0 ? EPlaceholderStatus.Good : EPlaceholderStatus.NoResult;
+          this.company.users.length > 0
+            ? this.filteredUsers.length > 0
+              ? EPlaceholderStatus.Good
+              : EPlaceholderStatus.NoResult
+            : EPlaceholderStatus.NoData;
       }),
     );
   }
