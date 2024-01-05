@@ -21,9 +21,9 @@ export const EN = {
       averageCompletion: 'Average Completion',
       averageCompletionToolTip: 'Number of successful programs out of number of assigned programs',
       activeMembers: 'Active members',
-      activeMembersToolTip: 'Number of members who interacted with Alto over a given period',
+      activeMembersToolTip: 'Number of members who interacted with Cockpit over a given period',
       inactiveMembers: 'Inactive members',
-      inactiveMembersToolTip: 'Number of members who have not interacted with Alto over a given period',
+      inactiveMembersToolTip: 'Number of members who have not interacted with Cockpit over a given period',
     },
     globalEvolution: {
       title: 'Overall evolution',
