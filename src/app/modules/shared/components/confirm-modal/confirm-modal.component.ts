@@ -6,6 +6,7 @@ export interface IConfirmModalData {
   subtitle?: string;
   confirmText?: string;
   cancelText?: string;
+  icon?: string;
 }
 
 @Component({

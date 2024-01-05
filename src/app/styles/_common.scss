@@ -160,10 +160,10 @@
     width: 4.1667rem;
     padding: 0.5rem;
     line-height: 3.3333rem;
-    background-color: var(--primary-100);
+    background-color: white;
+    border: 1px solid var(--gray-200);
     &:hover {
-      color: white;
-      background-color: var(--primary-400);
+      background-color: var(--primary-100);
     }
   }
 }

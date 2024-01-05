@@ -151,7 +151,7 @@ export class Company implements ICompany {
     this.usersById.set(user.id, user);
     if (user.roles.some((role) => role === EUserRole.BillingAdmin)) {
       const oldBillingAdmin = this.billingAdmin;
-      if (oldBillingAdmin) {
+      if (oldBillingAdmin && oldBillingAdmin.id !== user.id) {
         this.usersById.set(
           oldBillingAdmin.id,
           new User({

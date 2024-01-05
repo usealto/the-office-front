@@ -2,20 +2,20 @@ import { Component, Input, OnInit } from '@angular/core';
 import {
   AbstractControl,
   AsyncValidatorFn,
-  FormArray,
   FormControl,
   FormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { Observable, Subscription, debounceTime, first, map, of, switchMap, tap } from 'rxjs';
-import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveOffcanvas, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription, debounceTime, first, map, merge, of, switchMap, tap } from 'rxjs';
 
+import { Company } from '../../../core/models/company.model';
 import { EUserRole, User } from '../../../core/models/user.model';
 import { UsersRestService } from '../../profile/services/users-rest.service';
+import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
 import { PillOption } from '../../shared/models/select-option.model';
 import { ValidatorsService } from '../../shared/services/validators.service';
-import { Company } from '../../../core/models/company.model';
 
 @Component({
   selector: 'alto-user-form',
@@ -31,6 +31,7 @@ export class UserFormComponent implements OnInit {
     (role) => new PillOption({ label: role, value: role, color: User.getRoleColor(role) }),
   );
   differentBillingAdmin?: User;
+  optionsToDelete: string[] = [];
 
   userFormGroup = new FormGroup({
     firstname: new FormControl('', {
@@ -73,6 +74,7 @@ export class UserFormComponent implements OnInit {
     private readonly usersRestService: UsersRestService,
     private readonly validatorsService: ValidatorsService,
     private readonly activeOffcanvas: NgbActiveOffcanvas,
+    private readonly modalService: NgbModal,
   ) {}
 
   ngOnInit(): void {
@@ -113,6 +115,9 @@ export class UserFormComponent implements OnInit {
         } else {
           this.differentBillingAdmin = undefined;
         }
+
+        this.optionsToDelete =
+          this.user?.roles.filter((role) => !roles.some(({ value }) => value.value === role)) ?? [];
       }),
     );
   }
@@ -141,27 +146,55 @@ export class UserFormComponent implements OnInit {
     };
   }
 
+  private openConfirmModal(): Observable<boolean> {
+    const modalRef = this.modalService.open(ConfirmModalComponent, {
+      centered: true,
+      size: 'md',
+    });
+    modalRef.componentInstance.data = {
+      title: 'Confirm role change',
+      subtitle: 'You are about to add the alto-admin role to this user',
+      icon: 'bi-exclamation-triangle-fill',
+    };
+
+    return merge(modalRef.closed, modalRef.dismissed);
+  }
+
   submit(): void {
     const roles = User.mapRoles(this.rolesCtrl.value.map((control) => control.value.value));
 
-    (this.user
-      ? this.usersRestService.updateUser(this.user.id, roles)
-      : this.usersRestService.createUser(
+    (!this.user
+      ? this.usersRestService.createUser(
           this.firstnameCtrl.value,
           this.lastnameCtrl.value,
           this.emailCtrl.value,
           roles,
           this.company.id,
         )
+      : (roles.includes(EUserRole.AltoAdmin) && !this.user.roles.includes(EUserRole.AltoAdmin)
+          ? this.openConfirmModal()
+          : of(true)
+        ).pipe(
+          switchMap((confirmed) => {
+            if (confirmed) {
+              return this.usersRestService.updateUser(this.user!.id, roles);
+            }
+            return of(null);
+          }),
+        )
     )
       .pipe(
         tap((user) => {
-          this.activeOffcanvas.close(user);
+          if (user) {
+            this.activeOffcanvas.close(user);
+          }
         }),
       )
       .subscribe({
-        complete: () => {
-          this.userFormGroup.reset();
+        next: (user) => {
+          if (user) {
+            this.userFormGroup.reset();
+          }
         },
       });
   }

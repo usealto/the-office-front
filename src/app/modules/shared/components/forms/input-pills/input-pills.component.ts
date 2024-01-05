@@ -16,7 +16,6 @@ export class InputPillsComponent implements OnInit, OnDestroy {
     { nonNullable: true },
   );
   @Input() options: PillOption[] = [];
-  @Input() readonly = false;
 
   isDropdownOpen = false;
   filteredOptions: PillOption[] = [];

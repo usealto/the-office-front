@@ -2,21 +2,21 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription, debounceTime, map, merge, of, switchMap, tap } from 'rxjs';
+import { Subscription, switchMap, tap } from 'rxjs';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
-import { NgbModal, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
 import { Company } from '../../core/models/company.model';
-import { EUserRole, User } from '../../core/models/user.model';
+import { User } from '../../core/models/user.model';
 import { ICompanyUsersData } from '../../core/resolvers/companyUsers.resolver';
 import { EResolverData, ResolversService } from '../../core/resolvers/resolvers.service';
 import { updateUserRoles } from '../../core/store/root/root.action';
 import * as FromRoot from '../../core/store/store.reducer';
 import { ToastService } from '../../core/toast/toast.service';
 import { EmojiName } from '../../core/utils/emoji/data';
+import { UserFormComponent } from '../company-users/user-form/user-form.component';
 import { UsersRestService } from '../profile/services/users-rest.service';
 import { PillOption } from '../shared/models/select-option.model';
-import { UserFormComponent } from '../company-users/user-form/user-form.component';
 
 @Component({
   selector: 'alto-user',
@@ -24,15 +24,12 @@ import { UserFormComponent } from '../company-users/user-form/user-form.componen
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit, OnDestroy {
-  private readonly roles = User.getRoleList();
   readonly Emoji = EmojiName;
   readonly environment = environment;
-  readonly rolesOptions: PillOption[] = this.roles
-    .map((role) => new PillOption({ label: role, value: role, color: User.getRoleColor(role) }));
+  readonly User = User;
+  private readonly roles = User.getRoleList();
   company!: Company;
   user!: User;
-
-  rolesCtrl = new FormControl<FormControl<PillOption>[]>([], { nonNullable: true });
 
   private readonly userComponentSubscription = new Subscription();
 
@@ -42,7 +39,6 @@ export class UserComponent implements OnInit, OnDestroy {
     private readonly usersRestService: UsersRestService,
     private readonly store: Store<FromRoot.AppState>,
     private readonly toastService: ToastService,
-    private readonly modalService: NgbModal,
     private readonly offcanvasService: NgbOffcanvas,
   ) {}
 
@@ -50,16 +46,6 @@ export class UserComponent implements OnInit, OnDestroy {
     const data = this.resolverService.getDataFromPathFromRoot(this.activatedRoute.pathFromRoot);
     this.company = (data[EResolverData.CompanyUsersData] as ICompanyUsersData).company;
     this.user = (data[EResolverData.UserData] as { user: User }).user;
-    this.rolesCtrl = new FormControl(
-      this.user.roles.map(
-        (role) =>
-          new FormControl<PillOption>(
-            new PillOption({ value: role, label: role, color: User.getRoleColor(role) }),
-            { nonNullable: true },
-          ),
-      ),
-      { nonNullable: true },
-    );
   }
 
   ngOnDestroy(): void {

@@ -46,13 +46,17 @@
     Roles
   </h3>
   <div class="col-6">
-    <alto-input-pills
-      [readonly]="true"
-      placeholder="Select roles"
-      [controls]="rolesCtrl"
-      [options]="rolesOptions"
-    >
-    </alto-input-pills>
+    <div class="d-flex gap-2">
+      <div
+        *ngFor="let role of user.roles"
+        class="alto-badge"
+        [style]="
+          'color: white; background-color: ' + User.getRoleColor(role)
+        "
+      >
+        <span>{{ role }}</span>
+      </div>
+    </div>
   </div>
 </div>
 <hr />
