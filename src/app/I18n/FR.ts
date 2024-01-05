@@ -71,20 +71,20 @@ export const FR = {
       month: '1 mois',
     },
     noSmallScreen: {
-      title: 'Alto n’est pas disponible sur votre taille d’écran.',
+      title: 'Cockpit n’est pas disponible sur votre taille d’écran.',
       subtitle: 'Pour accéder au contenu de l’application, connectez-vous sur un ordinateur.',
     },
     noWebAccess: {
-      title: 'Félicitations ! Votre compte Alto est actif',
+      title: 'Félicitations ! Votre compte Cockpit est actif',
       subtitle:
-        "Comme souhaité par vos collaborateurs, vous profiterez bientôt d'Alto directement dans vos outils préférés tels que Slack ou Teams",
+        "Comme souhaité par vos collaborateurs, vous profiterez bientôt de Cockpit directement dans vos outils préférés tels que Slack ou Teams",
       goodbye: 'À bientôt !',
     },
     noCompany: {
       title: "Oops ! Nous n'avons pas trouvé votre entreprise.",
       subtitle:
         'Une erreur s’est produite. Contactez-nous et nous ferons notre maximum pour régler la situation.',
-      button: 'Envoyer un mail à Alto',
+      button: 'Envoyer un mail à Cockpit',
     },
     noTeams: {
       title: 'Oops ! Vous n’êtes assigné(e) à aucune équipe.',
@@ -657,7 +657,7 @@ export const FR = {
         invitationEmails: 'Invitation par mail',
         invitationEmailsPlaceholder: 'Séparer les emails par une virgule',
         invitationEmailsSubtitle:
-          "Vos collaborateurs recevront une invitation par mail pour s'inscrire à Alto.",
+          "Vos collaborateurs recevront une invitation par mail pour s'inscrire à Cockpit.",
         Programs: 'Programmes assignés',
         programsPlaceholder: 'Sélectionner les programmes assignés à cette équipe',
       },
@@ -752,7 +752,7 @@ export const FR = {
       users: 'Utilisateurs standards',
       usersInactiveTooltip: 'Pour réactiver l’intégration, veuillez vous rendre dans l’onglet “Diffusion”.',
       warningTooltip:
-        'Nous rencontrons un problème avec cet utilisateur. Contactez votre administrateur Slack ou la team Alto si le problème persiste.',
+        'Nous rencontrons un problème avec cet utilisateur. Contactez votre administrateur Slack ou la team Cockpit si le problème persiste.',
       usersDesc:
         'Les utilisateurs peuvent participer aux programmes, suggérer des questions et ont accès à des statistiques détaillées sur leurs résultats seulement.',
       table: {
@@ -813,7 +813,7 @@ export const FR = {
           },
           subtitles: {
             activateConnector:
-              'Activer les intégrations vous permettra de diffuser vos questions sur la plateforme de communication choisie. Pour cela, merci de vous rapprocher de la team Alto 🙂(romain@usealto.com).',
+              'Activer les intégrations vous permettra de diffuser vos questions sur la plateforme de communication choisie. Pour cela, merci de vous rapprocher de la team Cockpit 🙂(romain@getcockpit.io).',
             desactivateConnector:
               'Vous et vos collaborateurs ne pourrez plus envoyer de questions via votre canal de communication et ne recevrez plus de messages de notre part. Confirmez-vous ce choix ?',
             activateWebApp:
@@ -824,7 +824,7 @@ export const FR = {
               'Vos prochaines questions ne seront plus envoyées via le même canal de communication. Confirmez-vous ce choix ?',
           },
           validBtns: {
-            activateConnector: 'Contacter Alto',
+            activateConnector: 'Contacter Cockpit',
             desactivateConnector: 'Désactiver la plateforme',
             activateWebApp: 'Activer la web app',
             desactivateWebApp: 'Désactiver la web app',
