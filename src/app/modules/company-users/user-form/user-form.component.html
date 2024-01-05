@@ -30,6 +30,9 @@
     <ng-container *ngIf="differentBillingAdmin">
       <p class="fst-italic alto-warning">Adding billing admin role will remove billing admin role from {{ differentBillingAdmin.fullname }}</p>
     </ng-container>
+    <ng-container *ngIf="optionsToDelete.length">
+      <p class="fst-italic alto-warning">You are about to delete the following roles : {{ optionsToDelete.join(', ') }}</p>
+    </ng-container>
   </div>
   <div class="footer">
     <button type="submit" class="btn btn-primary float-end" [disabled]="userFormGroup.pending || userFormGroup.invalid">

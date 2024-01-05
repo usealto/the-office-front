@@ -153,6 +153,19 @@
     margin: 0;
     font-weight: 500;
   }
+
+  .header-btn {
+    text-align: center;
+    height: 4.1667rem;
+    width: 4.1667rem;
+    padding: 0.5rem;
+    line-height: 3.3333rem;
+    background-color: white;
+    border: 1px solid var(--gray-200);
+    &:hover {
+      background-color: var(--primary-100);
+    }
+  }
 }
 
 @media screen and (max-width: 820px) {
@@ -217,7 +230,6 @@ h2 {
   }
 }
 
-
 /* Tooltip container */
 .tooltip-container {
   position: relative;
@@ -258,14 +270,14 @@ h2 {
 
 /* Tooltip arrow */
 .tooltip-container .tooltip-text::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 100%;
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color:  transparent transparent #555 transparent;
+  border-color: transparent transparent #555 transparent;
 
   &.top {
     top: 100%;
