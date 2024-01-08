@@ -111,13 +111,13 @@ export const rootReducer = createReducer(
     };
   }),
   on(setApplications, (state, { applications }): RootState => {
-    const ApplicationsById = new Map<string, Application>(
+    const applicationsById = new Map<string, Application>(
       [...state.ApplicationsById.data.values()].map((application) => [application.id, application]),
     );
-    applications.forEach((application) => ApplicationsById.set(application.id, application));
+    applications.forEach((application) => applicationsById.set(application.id, application));
     return {
       ...state,
-      ApplicationsById: new TimestampedEntity<Map<string, Application>>(ApplicationsById),
+      ApplicationsById: new TimestampedEntity<Map<string, Application>>(applicationsById),
     };
   }),
 );
