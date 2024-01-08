@@ -32,14 +32,14 @@ export interface RootState {
   me: TimestampedEntity<User>;
   companiesById: TimestampedEntity<Map<string, Company>>;
   breadcrumbItems: IBreadcrumbItem[];
-  ApplicationsById: TimestampedEntity<Map<string, Application>>;
+  applicationsById: TimestampedEntity<Map<string, Application>>;
 }
 
 export const initialState: RootState = {
   me: new TimestampedEntity<User>(new User({} as IUser), null),
   companiesById: new TimestampedEntity<Map<string, Company>>(new Map(), null),
   breadcrumbItems: [],
-  ApplicationsById: new TimestampedEntity<Map<string, Application>>(new Map(), null),
+  applicationsById: new TimestampedEntity<Map<string, Application>>(new Map(), null),
 };
 
 export const rootReducer = createReducer(
@@ -112,12 +112,12 @@ export const rootReducer = createReducer(
   }),
   on(setApplications, (state, { applications }): RootState => {
     const applicationsById = new Map<string, Application>(
-      [...state.ApplicationsById.data.values()].map((application) => [application.id, application]),
+      [...state.applicationsById.data.values()].map((application) => [application.id, application]),
     );
     applications.forEach((application) => applicationsById.set(application.id, application));
     return {
       ...state,
-      ApplicationsById: new TimestampedEntity<Map<string, Application>>(applicationsById),
+      applicationsById: new TimestampedEntity<Map<string, Application>>(applicationsById),
     };
   }),
 );
