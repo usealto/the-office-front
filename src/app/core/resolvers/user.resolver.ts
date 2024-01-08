@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, of, switchMap, tap } from 'rxjs';
+import { combineLatest, map, of, switchMap, tap } from 'rxjs';
 
 import { UsersRestService } from '../../modules/profile/services/users-rest.service';
 import { Company } from '../models/company.model';
@@ -10,20 +10,25 @@ import { addBreadcrumbItem, setUser } from '../store/root/root.action';
 import * as FromRoot from '../store/store.reducer';
 import { AltoRoutes } from '../../modules/shared/constants/routes';
 import { EmojiName } from '../utils/emoji/data';
+import { Application } from '../models/application.model';
 
 export interface IUserData {
   user: User;
+  applications: Application[];
 }
 
 export const userResolver: ResolveFn<IUserData> = (activatedRoute) => {
   const store = inject<Store<FromRoot.AppState>>(Store<FromRoot.AppState>);
   const usersRestService = inject<UsersRestService>(UsersRestService);
 
-  return store.select(FromRoot.selectCompanies).pipe(
-    switchMap(({ data: companiesById }) => {
+  return combineLatest([
+    store.select(FromRoot.selectCompanies),
+    store.select(FromRoot.selectApplications),
+  ]).pipe(
+    switchMap(([{ data: companiesById }, { data: applicationsById }]) => {
       const company = companiesById.get(activatedRoute.params['id']) as Company;
       const user = company.getUserById(activatedRoute.params['userId']) as User;
-
+      const applications = Array.from(applicationsById.values());
       if (!user.auth0Settings.infos) {
         return usersRestService.getAuth0User(user.auth0Settings.id).pipe(
           switchMap((auth0user) => {
@@ -45,12 +50,13 @@ export const userResolver: ResolveFn<IUserData> = (activatedRoute) => {
               user: (companiesById.get(activatedRoute.params['id']) as Company).usersById.get(
                 activatedRoute.params['userId'],
               ) as User,
+              applications: applications,
             };
           }),
         );
       }
 
-      return of({ user });
+      return of({ user: user, applications: applications });
     }),
     tap(({ user }) => {
       store.dispatch(

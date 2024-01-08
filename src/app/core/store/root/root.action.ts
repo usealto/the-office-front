@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Company } from '../../models/company.model';
 import { EUserRole, User } from '../../models/user.model';
 import { IBreadcrumbItem } from '../../../modules/shared/models/breadcrumb-item.model';
+import { Application } from '../../models/application.model';
 
 // Breadcrumb
 export const setBreadcrumbItems = createAction(
@@ -25,3 +26,6 @@ export const updateUserRoles = createAction(
   '[Company] Update User Roles',
   props<{ userId: string; roles: EUserRole[] }>(),
 );
+
+// Applications
+export const addApplications = createAction('[Application] Set Applications', props<{ applications: Application[] }>());

@@ -60,8 +60,9 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
           tap(() => this.pageControl.setValue(1)),
         ),
       ]).subscribe(([page, searchTerm]) => {
+        const searchTermRegex = new RegExp(searchTerm ?? '', 'i');
         const allFilteredUsers = this.company.users.filter((user) => {
-          return !searchTerm || user.fullname.toLowerCase().includes(searchTerm.toLowerCase());
+          return searchTermRegex.test(user.fullname) || searchTermRegex.test(user.email)
         });
         this.pageCount = Math.ceil(allFilteredUsers.length / this.usersPageSize);
         this.filteredUsers = allFilteredUsers.slice(

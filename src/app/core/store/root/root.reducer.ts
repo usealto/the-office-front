@@ -1,8 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { Company } from '../../models/company.model';
-import { EUserRole, IUser, User } from '../../models/user.model';
+import { IUser, User } from '../../models/user.model';
 import {
+  addApplications,
   addBreadcrumbItem,
   addCompanies,
   setBreadcrumbItems,
@@ -11,6 +12,7 @@ import {
   updateUserRoles,
 } from '../root/root.action';
 import { IBreadcrumbItem } from '../../../modules/shared/models/breadcrumb-item.model';
+import { Application } from '../../models/application.model';
 
 export class TimestampedEntity<T> {
   data: T;
@@ -30,12 +32,14 @@ export interface RootState {
   me: TimestampedEntity<User>;
   companiesById: TimestampedEntity<Map<string, Company>>;
   breadcrumbItems: IBreadcrumbItem[];
+  ApplicationsById: TimestampedEntity<Map<string, Application>>;
 }
 
 export const initialState: RootState = {
   me: new TimestampedEntity<User>(new User({} as IUser), null),
   companiesById: new TimestampedEntity<Map<string, Company>>(new Map(), null),
   breadcrumbItems: [],
+  ApplicationsById: new TimestampedEntity<Map<string, Application>>(new Map(), null),
 };
 
 export const rootReducer = createReducer(
@@ -104,6 +108,16 @@ export const rootReducer = createReducer(
     return {
       ...state,
       companiesById: new TimestampedEntity<Map<string, Company>>(companiesById),
+    };
+  }),
+  on(addApplications, (state, { applications }): RootState => {
+    const ApplicationsById = new Map<string, Application>(
+      [...state.ApplicationsById.data.values()].map((application) => [application.id, application]),
+    );
+    applications.forEach((application) => ApplicationsById.set(application.id, application));
+    return {
+      ...state,
+      ApplicationsById: new TimestampedEntity<Map<string, Application>>(ApplicationsById),
     };
   }),
 );
