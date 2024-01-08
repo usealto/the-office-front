@@ -6,7 +6,7 @@ import { combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { User } from '../models/user.model';
 import * as FromRoot from '../store/store.reducer';
 import { EmojiMap, EmojiName, emojiData } from '../utils/emoji/data';
-import { addApplications, setBreadcrumbItems } from '../store/root/root.action';
+import { setApplications, setBreadcrumbItems } from '../store/root/root.action';
 import { AltoRoutes } from '../../modules/shared/constants/routes';
 import { ApplicationsRestService } from '../../modules/applications/service/applications-rest.service';
 
@@ -25,7 +25,7 @@ export const appResolver: ResolveFn<IAppData> = () => {
       if (applicationsById.needsUpdate()) {
         return applicationsRestService.getApplications().pipe(
           map((applications) => {
-            store.dispatch(addApplications({ applications }));
+            store.dispatch(setApplications({ applications }));
             return me;
           }),
         );

@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { Company } from '../../models/company.model';
 import { IUser, User } from '../../models/user.model';
 import {
-  addApplications,
+  setApplications,
   addBreadcrumbItem,
   addCompanies,
   setBreadcrumbItems,
@@ -110,7 +110,7 @@ export const rootReducer = createReducer(
       companiesById: new TimestampedEntity<Map<string, Company>>(companiesById),
     };
   }),
-  on(addApplications, (state, { applications }): RootState => {
+  on(setApplications, (state, { applications }): RootState => {
     const ApplicationsById = new Map<string, Application>(
       [...state.ApplicationsById.data.values()].map((application) => [application.id, application]),
     );

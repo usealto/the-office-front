@@ -1,4 +1,4 @@
-import { ApplicationDtoApi } from "@usealto/the-office-sdk-angular";
+import { ApplicationDtoApi } from '@usealto/the-office-sdk-angular';
 
 export interface IApplication {
   id: string;
@@ -31,5 +31,9 @@ export class Application implements IApplication {
       name: this.name,
       url: this.url,
     };
+  }
+
+  static Cmp(a: Application, b: Application): number {
+    return a.name.localeCompare(b.name);
   }
 }

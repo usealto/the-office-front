@@ -29,6 +29,7 @@ export const userResolver: ResolveFn<IUserData> = (activatedRoute) => {
       const company = companiesById.get(activatedRoute.params['id']) as Company;
       const user = company.getUserById(activatedRoute.params['userId']) as User;
       const applications = Array.from(applicationsById.values());
+
       if (!user.auth0Settings.infos) {
         return usersRestService.getAuth0User(user.auth0Settings.id).pipe(
           switchMap((auth0user) => {
@@ -50,7 +51,7 @@ export const userResolver: ResolveFn<IUserData> = (activatedRoute) => {
               user: (companiesById.get(activatedRoute.params['id']) as Company).usersById.get(
                 activatedRoute.params['userId'],
               ) as User,
-              applications: applications,
+              applications: applications.sort(Application.Cmp),
             };
           }),
         );

@@ -28,4 +28,7 @@ export const updateUserRoles = createAction(
 );
 
 // Applications
-export const addApplications = createAction('[Application] Set Applications', props<{ applications: Application[] }>());
+export const setApplications = createAction(
+  '[Application] Set Applications',
+  props<{ applications: Application[] }>(),
+);
