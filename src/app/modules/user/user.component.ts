@@ -17,6 +17,7 @@ import { EmojiName } from '../../core/utils/emoji/data';
 import { UserFormComponent } from '../company-users/user-form/user-form.component';
 import { UsersRestService } from '../profile/services/users-rest.service';
 import { PillOption } from '../shared/models/select-option.model';
+import { Application } from '../../core/models/application.model';
 
 @Component({
   selector: 'alto-user',
@@ -30,6 +31,7 @@ export class UserComponent implements OnInit, OnDestroy {
   private readonly roles = User.getRoleList();
   company!: Company;
   user!: User;
+  applications!: Application[];
 
   private readonly userComponentSubscription = new Subscription();
 
@@ -46,6 +48,7 @@ export class UserComponent implements OnInit, OnDestroy {
     const data = this.resolverService.getDataFromPathFromRoot(this.activatedRoute.pathFromRoot);
     this.company = (data[EResolverData.CompanyUsersData] as ICompanyUsersData).company;
     this.user = (data[EResolverData.UserData] as { user: User }).user;
+    this.applications = (data[EResolverData.UserData] as { applications: Application[] }).applications;
   }
 
   ngOnDestroy(): void {
