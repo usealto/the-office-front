@@ -15,3 +15,4 @@ export const selectBreadcrumbItems = createSelector(selectRoot, (state) => state
 
 export const selectUserMe = createSelector(selectRoot, (state) => state.me);
 export const selectCompanies = createSelector(selectRoot, (state) => state.companiesById);
+export const selectApplications = createSelector(selectRoot, (state) => state.applicationsById);

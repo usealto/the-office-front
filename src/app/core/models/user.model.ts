@@ -21,8 +21,9 @@ export interface IUser {
   updatedAt: Date;
   companyId: string;
   emailVerified: boolean;
-  trainxSettings: ITrainxUserSettings;
-  recordxSettings: IRecordxUserSettings;
+  applicationIds: string[];
+  trainxSettings?: ITrainxUserSettings;
+  recordxSettings?: IRecordxUserSettings;
   auth0Settings: IAuth0UserSettings;
 }
 
@@ -116,6 +117,7 @@ export class User implements IUser {
   updatedAt: Date;
   companyId: string;
   emailVerified: boolean;
+  applicationIds: string[];
   trainxSettings: TrainxUserSettings;
   recordxSettings: RecordxUserSettings;
   auth0Settings: Auth0UserSettings;
@@ -130,6 +132,7 @@ export class User implements IUser {
     this.updatedAt = data.updatedAt ?? new Date();
     this.companyId = data.companyId ?? '';
     this.emailVerified = data.emailVerified ?? false;
+    this.applicationIds = data.applicationIds ?? [];
 
     this.trainxSettings = new TrainxUserSettings({
       deletedAt: data.trainxSettings?.deletedAt,
@@ -138,7 +141,7 @@ export class User implements IUser {
     });
 
     this.recordxSettings = new RecordxUserSettings({
-      hasLicense: data.recordxSettings?.hasLicense,
+      hasLicense: data.recordxSettings?.hasLicense ?? false,
     });
 
     this.auth0Settings = new Auth0UserSettings({
@@ -183,6 +186,7 @@ export class User implements IUser {
       updatedAt: theOfficeData.updatedAt,
       companyId: theOfficeData.companyId,
       emailVerified: theOfficeData.emailVerified,
+      applicationIds: theOfficeData.applicationIds,
       trainxSettings: {
         deletedAt: trainxData?.deletedAt,
         isConnectorActive: trainxData?.isConnectorActive,
@@ -246,6 +250,7 @@ export class User implements IUser {
       updatedAt: this.updatedAt,
       companyId: this.companyId,
       emailVerified: this.emailVerified,
+      applicationIds: this.applicationIds,
       trainxSettings: this.trainxSettings.rawData,
       recordxSettings: this.recordxSettings.rawData,
       auth0Settings: this.auth0Settings?.rawData,
