@@ -182,20 +182,15 @@ export class UserFormComponent implements OnInit {
             return of(null);
           }),
         )
-    )
-      .pipe(
-        tap((user) => {
-          if (user) {
-            this.activeOffcanvas.close(user);
-          }
-        }),
-      )
-      .subscribe({
-        next: (user) => {
-          if (user) {
-            this.userFormGroup.reset();
-          }
-        },
-      });
+    ).subscribe({
+      next: (user) => {
+        if (user) {
+          this.userFormGroup.reset();
+          this.activeOffcanvas.close(user);
+        } else {
+          this.activeOffcanvas.close();
+        }
+      },
+    });
   }
 }
