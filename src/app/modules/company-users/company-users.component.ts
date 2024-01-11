@@ -101,9 +101,11 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap((user) => {
           if (user) {
-            this.store.dispatch(updateUserRoles({ userId: user.id, roles: user.roles }));
-          } else {
-            this.store.dispatch(setUser({ user }));
+            if (this.company.usersById.has(user.id)) {
+              this.store.dispatch(updateUserRoles({ userId: user.id, roles: user.roles }));
+            } else {
+              this.store.dispatch(setUser({ user }));
+            }
           }
 
           return this.store.select(FromRoot.selectCompanies);
