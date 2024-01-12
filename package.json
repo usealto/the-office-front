@@ -10,12 +10,14 @@
     "build:develop": "ng build --configuration develop",
     "prebuild": "node build-time.js",
     "build": "ng build --configuration production",
+    "build:prod": "npm run build && npm run sentry:sourcemaps",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test-ci": "ng test --karma-config=karma-ci.conf.js --no-progress",
     "test-ci-bis": "ng test --no-watch --no-progress --watch=false --code-coverage --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org alto-w0 --project theoffice-front ./dist && sentry-cli sourcemaps upload --org alto-w0 --project theoffice-front ./dist"
   },
   "private": true,
   "dependencies": {
@@ -33,6 +35,8 @@
     "@ng-select/ng-select": "^10.0.3",
     "@ngrx/store": "15.2",
     "@popperjs/core": "^2.11.6",
+    "@sentry/angular-ivy": "^7.93.0",
+    "@sentry/cli": "^2.25.0",
     "@usealto/sdk-ts-angular": "^1.0.202312281408-dev",
     "@usealto/the-office-sdk-angular": "^1.0.202312281550-dev",
     "bootstrap": "^5.3.0",
