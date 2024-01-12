@@ -32,7 +32,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
 import { UserComponent } from './modules/user/user.component';
 import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
-import { Router } from 'express';
+import { Router } from '@angular/router';
 @NgModule({
   declarations: [
     HomeComponent,
