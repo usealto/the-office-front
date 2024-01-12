@@ -11,6 +11,6 @@ export const environment = {
   auth0URL: 'https://manage.auth0.com/dashboard/eu/usealto/users/',
   sentryDsn: 'https://4c5db3174b7e575494d145068d5ecdda@o4506417447174144.ingest.sentry.io/4506558940971008',
   sentryTracesSampleRate: 1.0,
-  sentryReplaysSessionSampleRate: 0.1,
+  sentryReplaysSessionSampleRate: 0,
   sentryReplaysOnErrorSampleRate: 1.0,
 };
