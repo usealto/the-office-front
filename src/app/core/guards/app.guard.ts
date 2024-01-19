@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 
 import { UsersRestService } from '../../modules/profile/services/users-rest.service';
 import { AltoRoutes } from '../../modules/shared/constants/routes';
@@ -32,6 +32,10 @@ export const AppGuard: CanActivateFn = () => {
         return false;
       }
       return true;
+    }),
+    catchError(() => {
+      router.navigate(['/', AltoRoutes.unauthorized]);
+      return of(false);
     }),
   );
 };

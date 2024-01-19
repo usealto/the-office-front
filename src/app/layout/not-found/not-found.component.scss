@@ -1,9 +1,3 @@
-:host {
-  position: absolute;
-  width: calc(100% - 5rem);
-  left: 5rem;
-}
-
 .panel-full {
   background-color: white;
   border-radius: 1.333rem;
@@ -12,29 +6,17 @@
   height: 93vh;
 }
 
-.text-404 {
-  h1 {
-    font-size: 1.66667rem;
-  }
-  p {
-    width: 53.3rem;
-    font-size: 1.16667rem;
-  }
-  a {
-    font-size: 1rem;
-    font-weight: 600;
-  }
-  i {
-    font-size: 1.66667rem;
-    font-weight: 600;
-  }
-}
-
-.btn {
-  padding: 0.83333rem 1.16667rem;
-  align-items: center;
-}
-
 .background-img {
   opacity: 0.1;
+  height: 75%;
+}
+.text-404 {
+  margin-top: -3rem;
+  h1 {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  .btn span {
+    font-size: 1rem;
+  }
 }

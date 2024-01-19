@@ -74,22 +74,8 @@ export const FR = {
       title: 'Cockpit n’est pas disponible sur votre taille d’écran.',
       subtitle: 'Pour accéder au contenu de l’application, connectez-vous sur un ordinateur.',
     },
-    noWebAccess: {
-      title: 'Félicitations ! Votre compte Cockpit est actif',
-      subtitle:
-        "Comme souhaité par vos collaborateurs, vous profiterez bientôt de Cockpit directement dans vos outils préférés tels que Slack ou Teams",
-      goodbye: 'À bientôt !',
-    },
-    noCompany: {
-      title: "Oops ! Nous n'avons pas trouvé votre entreprise.",
-      subtitle:
-        'Une erreur s’est produite. Contactez-nous et nous ferons notre maximum pour régler la situation.',
-      button: 'Envoyer un mail à Cockpit',
-    },
-    noTeams: {
-      title: 'Oops ! Vous n’êtes assigné(e) à aucune équipe.',
-      subtitle: 'S’il s’agit d’une erreur, informez-en votre administrateur directement.',
-      button: 'Envoyer un mail à mon administrateur',
+    unauthorized: {
+      title: 'Vous n’avez pas les droits pour accéder à cette page.',
     },
     global: 'Global',
     deletedUsername: 'Utilisateur supprimé',
