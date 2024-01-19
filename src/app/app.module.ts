@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/angular-ivy';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -31,6 +32,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
 import { UserComponent } from './modules/user/user.component';
 import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
+import { Router } from '@angular/router';
 @NgModule({
   declarations: [
     HomeComponent,
@@ -77,6 +79,10 @@ import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
   ],
   providers: [
     {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthHttpInterceptor,
       multi: true,
@@ -103,7 +109,7 @@ import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
       provide: APP_INITIALIZER,
       multi: true,
       useFactory: localeInitializer,
-      deps: [LOCALE_ID],
+      deps: [LOCALE_ID, Sentry.TraceService],
     },
   ],
   bootstrap: [AppComponent],
