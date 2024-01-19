@@ -16,6 +16,7 @@ import { HomeComponent } from './modules/home/home.component';
 import { AltoRoutes } from './modules/shared/constants/routes';
 import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
 import { UserComponent } from './modules/user/user.component';
+import { NotFoundComponent } from './layout/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -63,12 +64,16 @@ const routes: Routes = [
     ],
   },
   {
-    path: '**',
-    redirectTo: AltoRoutes.notFound,
+    path: AltoRoutes.unauthorized,
+    component: UnauthorizedComponent,
   },
   {
-    path: 'unauthorized',
-    component: UnauthorizedComponent,
+    path: AltoRoutes.notFound,
+    component: NotFoundComponent,
+  },
+  {
+    path: '**',
+    redirectTo: AltoRoutes.notFound,
   },
 ];
 @NgModule({
