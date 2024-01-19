@@ -20,8 +20,11 @@ export const AppGuard: CanActivateFn = () => {
             map((user) => {
               if (user) {
                 store.dispatch(setUserMe({ user }));
-              }
-              return user;
+                return user;
+              } else {
+                router.navigate(['/', AltoRoutes.unauthorized]);
+                return undefined;
+              };
             }),
           )
         : of(me.data);
