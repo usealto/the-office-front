@@ -209,7 +209,6 @@ h2 {
   vertical-align: middle;
 }
 
-// Used in modals
 .close-button {
   padding: 0;
   width: 2.5rem;
@@ -294,6 +293,7 @@ h2 {
 
 .tooltip-container .tooltip-text.error::after {
   border-color: transparent transparent var(--error-400) transparent;
+  color: white;
 }
 
 .skeleton-panel {
