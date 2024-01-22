@@ -94,7 +94,8 @@ export const rootReducer = createReducer(
     const companiesById = new Map<string, Company>(
       [...state.companiesById.data.values()].map((company) => [company.id, company]),
     );
-    const company = companiesById.get(state.me.data.companyId);
+
+    const company = [...companiesById.values()].find((c) => c.usersById.has(userId));
     if (company) {
       const updatedCompany = new Company(company.rawData);
       const user = updatedCompany.usersById.get(userId);
