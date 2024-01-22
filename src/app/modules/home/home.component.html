@@ -34,32 +34,32 @@
       </thead>
       <tbody>
         <tr *ngFor="let companyInfos of filteredCompanies" style="height: 53px" class="cursor-pointer" [routerLink]="['/', AltoRoutes.companies, companyInfos.company.id]">
-            <td>
-              <span placement="left">
-                <p>{{ companyInfos.company.name }}</p>
+          <td>
+            <span placement="left">
+              <p>{{ companyInfos.company.name }}</p>
                 <p class="fw-lighter alto-grey smaller fst-italic">
                   {{ companyInfos.company.users.length }} user{{ companyInfos.company.users.length > 1 ? 's' : '' }}
                 </p>
-              </span>
-            </td>
-            <td>{{ companyInfos.company.billingAdmin?.fullname }}</td>
-            <td class="centered">
-              <div class="tooltip-container p-4" [class.error]="companyInfos.company.trainxUsedLicenses > companyInfos.company.trainxAvailableLicenses">
-                <div
+            </span>
+          </td>
+          <td>{{ companyInfos.company.billingAdmin?.fullname }}</td>
+          <td class="centered">
+            <div class="tooltip-container p-4" [class.error]="companyInfos.company.trainxUsedLicenses > companyInfos.company.trainxAvailableLicenses">
+              <div
                 class="licenses-status rounded-circle"
                 [class]="
                   companyInfos.company.trainxUsedLicenses > companyInfos.company.trainxAvailableLicenses
                   ? 'danger'
                   : 'valid'
                   "
-                  >
-                </div>
-                <div class="tooltip-text" [class.error]="companyInfos.company.trainxUsedLicenses > companyInfos.company.trainxAvailableLicenses">
-                  <p >
-                    {{companyInfos.company.trainxUsedLicenses}} / {{companyInfos.company.trainxAvailableLicenses}}
-                  </p>
-                </div>
+                >
               </div>
+              <div class="tooltip-text" [class.error]="companyInfos.company.trainxUsedLicenses > companyInfos.company.trainxAvailableLicenses">
+                <p>
+                  {{companyInfos.company.trainxUsedLicenses}} / {{companyInfos.company.trainxAvailableLicenses}}
+                </p>
+              </div>
+            </div>
           </td>
           <td class="centered">
             <div class="tooltip-container p-4" [class.error]="companyInfos.company.recordxUsedLicenses > companyInfos.company.recordxAvailableLicenses">
@@ -72,7 +72,7 @@
                 "
             ></div>
             <div class="tooltip-text" [class.error]="companyInfos.company.recordxUsedLicenses > companyInfos.company.recordxAvailableLicenses">
-              <p [class.error]="companyInfos.company.recordxUsedLicenses > companyInfos.company.recordxAvailableLicenses">
+              <p>
                 {{companyInfos.company.recordxUsedLicenses}} / {{companyInfos.company.recordxAvailableLicenses}}
               </p>
             </div>
