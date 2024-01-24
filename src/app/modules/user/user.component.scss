@@ -8,6 +8,20 @@
   min-height: 250px;
 }
 
+.disabled {
+  background-color: var(--gray-100);
+  border: 1px solid var(--gray-200);
+
+  .alto-badge {
+    background-color: var(--gray-200);
+    color: var(--gray-300)
+  }
+
+  .icon-btn {
+    display: none;
+  }
+}
+
 .icon-btn {
   text-align: center;
   height: 33px;
