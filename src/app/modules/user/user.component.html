@@ -50,9 +50,7 @@
       <div
         *ngFor="let role of user.roles"
         class="alto-badge"
-        [style]="
-          'color: white; background-color: ' + User.getRoleColor(role)
-        "
+        [style]="'color: white; background-color: ' + User.getRoleColor(role)"
       >
         <span>{{ role }}</span>
       </div>
@@ -105,49 +103,72 @@
     </div>
   </div>
 
-  <!-- Trainx card -->
-  <div *ngFor="let application of applications" class="panel m-3">
-    <div  class="mb-3 d-flex justify-content-between align-items-center">
-      <h2 class="m-0">{{application.name | titlecase}}</h2>
-      <a *ngIf="application.name === 'trainx'"
-        class="rounded-circle icon-btn cursor-pointer"
-        [href]="this.application.url + '/impersonate/' + user.email + '?auto=true'"
-        target="_blank"
-      >
-        <i class="fs-5 bi bi-incognito"></i>
-      </a>
-    </div>
-    <p class="py-3">
-      <span>
-        <img class="me-1" [src]="Emoji.BookmarkTabs | emoji" height="16" width="16" />
-        Has license:
-      </span>
-      <span *ngIf="application.name === 'trainx'" class="float-end alto-badge fs-6" [class]="user.hasTrainxLicense() ? 'green' : 'red'">{{
-        user.hasTrainxLicense() ? 'Yes' : 'No'
-      }}</span>
-      <span *ngIf="application.name ==='recordx'" class="float-end alto-badge fs-6" [class]="user.hasRecordxLicense() ? 'green' : 'red'">{{
-        user.hasRecordxLicense() ? 'Yes' : 'No'
-      }}</span>
-    </p>
-    <p class="py-3" *ngIf="application.name === 'trainx'">
-      <span>
-        <img class="me-1" [src]="Emoji.Link | emoji" height="16" width="16" />
-        Is connector active:
-      </span>
-      <span
-        class="float-end alto-badge fs-6"
-        [class]="user.trainxSettings.isConnectorActive ? 'green' : 'red'"
-        >{{ user.trainxSettings.isConnectorActive ? 'Yes' : 'No' }}</span
-      >
-    </p>
-    <p class="py-3" *ngIf="application.name === 'trainx'">
-      <span>
-        <img class="me-1" [src]="Emoji.Wastebasket | emoji" height="16" width="16" />
-        Is user deleted:
-      </span>
-      <span class="float-end alto-badge fs-6" [class]="user.trainxSettings.deletedAt ? 'green' : 'red'">{{
-        user.trainxSettings.deletedAt ? 'Yes' : 'No'
-      }}</span>
-    </p>
+  <!-- application cards -->
+  <div
+    *ngFor="let application of applications"
+    class="panel m-3"
+    [ngSwitch]="application.name"
+    [class.disabled]="!user.hasApplicationId(application.id)"
+  >
+    <!-- TRAINX -->
+    <ng-container *ngSwitchCase="'trainx'">
+      <div class="mb-3 d-flex justify-content-between align-items-center">
+        <h2 class="m-0">{{ application.name | titlecase }}</h2>
+        <a
+          class="rounded-circle icon-btn cursor-pointer"
+          [href]="this.application.url + '/impersonate/' + user.email + '?auto=true'"
+          target="_blank"
+        >
+          <i class="fs-5 bi bi-incognito"></i>
+        </a>
+      </div>
+      <p class="py-3">
+        <span>
+          <img class="me-1" [src]="Emoji.BookmarkTabs | emoji" height="16" width="16" />
+          Has license:
+        </span>
+        <span class="float-end alto-badge fs-6" [class]="user.hasTrainxLicense() ? 'green' : 'red'">{{
+          user.hasTrainxLicense() ? 'Yes' : 'No'
+        }}</span>
+      </p>
+      <p class="py-3">
+        <span>
+          <img class="me-1" [src]="Emoji.Link | emoji" height="16" width="16" />
+          Is connector active:
+        </span>
+        <span
+          class="float-end alto-badge fs-6"
+          [class]="user.trainxSettings.isConnectorActive ? 'green' : 'red'"
+          >{{ user.trainxSettings.isConnectorActive ? 'Yes' : 'No' }}</span
+        >
+      </p>
+      <p class="py-3">
+        <span>
+          <img class="me-1" [src]="Emoji.Wastebasket | emoji" height="16" width="16" />
+          Is user deleted:
+        </span>
+        <span class="float-end alto-badge fs-6" [class]="user.trainxSettings.deletedAt ? 'green' : 'red'">{{
+          user.trainxSettings.deletedAt ? 'Yes' : 'No'
+        }}</span>
+      </p>
+    </ng-container>
+
+    <!-- RECORDX -->
+    <ng-container *ngSwitchCase="'recordx'">
+      <div class="mb-3 d-flex justify-content-between align-items-center">
+        <h2 class="m-0">{{ application.name | titlecase }}</h2>
+      </div>
+      <p class="py-3">
+        <span>
+          <img class="me-1" [src]="Emoji.BookmarkTabs | emoji" height="16" width="16" />
+          Has license:
+        </span>
+        <span
+          class="float-end alto-badge fs-6"
+          [class]="user.hasRecordxLicense() ? 'green' : 'red'"
+          >{{ user.hasRecordxLicense() ? 'Yes' : 'No' }}</span
+        >
+      </p>
+    </ng-container>
   </div>
 </div>

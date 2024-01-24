@@ -296,4 +296,8 @@ export class User implements IUser {
   hasRecordxLicense(): boolean {
     return this.recordxSettings.hasLicense;
   }
+
+  hasApplicationId(applicationId: string): boolean {
+    return this.applicationIds.includes(applicationId);
+  }
 }
