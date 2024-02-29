@@ -17,6 +17,7 @@ import { AltoRoutes } from './modules/shared/constants/routes';
 import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.component';
 import { UserComponent } from './modules/user/user.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
+import { UnknownErrorComponent } from './modules/unknown-error/unknown-error.component';
 
 const routes: Routes = [
   {
@@ -66,6 +67,10 @@ const routes: Routes = [
   {
     path: AltoRoutes.unauthorized,
     component: UnauthorizedComponent,
+  },
+  {
+    path: AltoRoutes.unkownError,
+    component: UnknownErrorComponent,
   },
   {
     path: AltoRoutes.notFound,

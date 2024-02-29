@@ -33,8 +33,8 @@ export const AppGuard: CanActivateFn = () => {
       }
       return true;
     }),
-    catchError(() => {
-      router.navigate(['/', AltoRoutes.unauthorized]);
+    catchError((e) => {     
+      router.navigate(['/', AltoRoutes.unkownError, { error: e?.message }]);
       return of(false);
     }),
   );
