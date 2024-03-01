@@ -4,12 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'alto-unknown-error',
   templateUrl: './unknown-error.component.html',
-  styleUrls: ['./unknown-error.component.scss']
+  styleUrls: ['./unknown-error.component.scss'],
 })
 export class UnknownErrorComponent implements OnInit {
-  constructor( 
-    public route: ActivatedRoute,
-  ) {}
+  constructor(public route: ActivatedRoute) {}
   errorMessage: string = '';
 
   ngOnInit() {

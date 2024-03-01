@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { I18ns } from '../../core/utils/i18n/I18n';
 import { AuthService } from '@auth0/auth0-angular';
