@@ -33,6 +33,7 @@ import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.compo
 import { UserComponent } from './modules/user/user.component';
 import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
 import { Router } from '@angular/router';
+import { UnknownErrorComponent } from './modules/unknown-error/unknown-error.component';
 @NgModule({
   declarations: [
     HomeComponent,
@@ -47,6 +48,7 @@ import { Router } from '@angular/router';
     CompanyFormComponent,
     UserFormComponent,
     BreadcrumbComponent,
+    UnknownErrorComponent,
   ],
   imports: [
     CoreModule,

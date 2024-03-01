@@ -5,11 +5,9 @@
 <div class="panel-full d-flex justify-content-center align-items-center">
   <div class="text-center text-404">
     <img class="mb-8" width="182" src="assets/img/logo.png" alt="Alto Logo" />
-    <h1 class="mb-5">
-      You are not authorized to access to The Office.
-    </h1>
-    <a class="btn btn-danger" (click)="logOut()">
-      <div><i class="bi bi-box-arrow-right"></i>{{ I18ns.menu.disconnect }}</div>
-    </a>
+    <h1 class="mb-5">The Office experienced an unknown error. Sorry about that.</h1>
+    Please contact the support team.
+    <br />
+    <code *ngIf="errorMessage.length > 0"> {{ errorMessage }} </code>
   </div>
 </div>
