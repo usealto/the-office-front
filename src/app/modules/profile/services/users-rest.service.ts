@@ -52,17 +52,16 @@ export class UsersRestService {
 
   getMe(): Observable<User | undefined> {
     return combineLatest([
-      this.theofficeUserApi.getMe(), 
-      this.trainxUserApi.getMe()
-      .pipe(
-        catchError((e) => { 
+      this.theofficeUserApi.getMe(),
+      this.trainxUserApi.getMe().pipe(
+        catchError((e) => {
           // If we can, we specify the error cause
           if (e.status === 401) {
-            throw new Error('TheOffice does not allow users without a Trainx account in this version.')
+            throw new Error('TheOffice does not allow users without a Trainx account in this version.');
           }
-          throw e; 
-        })
-      )
+          throw e;
+        }),
+      ),
     ]).pipe(
       map(([theofficeUser, trainxUser]) =>
         theofficeUser.data && trainxUser.data
