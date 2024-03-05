@@ -69,9 +69,6 @@ export class UsersRestService {
           ? User.fromDtos(theofficeUser.data, trainxUser.data)
           : undefined,
       ),
-      catchError((e) => { 
-        throw e; 
-      })      
     );
   }
 
