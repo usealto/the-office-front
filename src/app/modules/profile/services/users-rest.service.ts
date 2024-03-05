@@ -51,25 +51,24 @@ export class UsersRestService {
   }
 
   getMe(): Observable<User | undefined> {
-    return combineLatest([this.theofficeUserApi.getMe()]).pipe(
-      map(([theofficeUser]) =>
-        theofficeUser.data
-          ? User.fromDtos(theofficeUser.data)
+    return combineLatest([this.theofficeUserApi.getMe(), this.trainxUserApi.getMe()]).pipe(
+      map(([theofficeUser, trainxUser]) =>
+        theofficeUser.data && trainxUser.data
+          ? User.fromDtos(theofficeUser.data, trainxUser.data)
           : undefined,
       ),
+      catchError((e) => { 
+        // If we can, we specify the error cause
+        // Here we know when a user is not found in TrainX, an error is thrown
+        // "Http failure response for http://localhost:3000/v1/users/me: 401 Unauthorized"
+        // Note: TrainX is on port 3000 in localhost
+        if (e.status === 401 && (e.message.toLowerCase().includes('trainx') 
+        || e.message.toLowerCase().includes('3000'))) {
+          throw new Error('TheOffice does not allow users without a Trainx account in this version.')
+        }       
+        throw e; 
+      })      
     );
-  }
-
-  canMeAccessTrainx(companyId: string): Observable<any> {
-    return this.trainxAdminApi
-      .getUsersFromTheOfficeCompanyId({
-        theOfficeCompanyId: companyId,
-        page: 1,
-        itemsPerPage: 2,
-      }).pipe(
-        tap((res) => { return of(true)}),
-        catchError((e) => { throw e; })
-      )
   }
 
   getUsersByCompanyId(companyId: string): Observable<User[]> {

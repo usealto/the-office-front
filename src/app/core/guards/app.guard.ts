@@ -39,29 +39,3 @@ export const AppGuard: CanActivateFn = () => {
     }),
   );
 };
-
-
-/**
- * This guard checks if the user is authorized to access the TrainX.
- * If the user is not on TrainX, it redirects to the dedicated error page.
- * ⚠️ This guard should be used after the AppGuard because it depends on the user being set.
- * @returns An observable that emits a boolean indicating if the user is authorized.
- */
-export const AppGuardTrainX: CanActivateFn = () => {
-  const store = inject<Store<FromRoot.AppState>>(Store<FromRoot.AppState>);
-  const usersRestService = inject<UsersRestService>(UsersRestService);
-  const router = inject<Router>(Router);
-
-  return store.select(FromRoot.selectUserMe).pipe(
-    switchMap((me) => {
-      return usersRestService.canMeAccessTrainx(me.data.companyId).pipe(
-          map((boo) =>  boo),
-          catchError((e) => { throw e; }),
-        )
-    }),
-    catchError((e) => {
-      router.navigate(['/', AltoRoutes.unkownError, { error: 'TheOffice does not allow users without a Trainx account in the current version' }]);
-      return of(false);
-    }),
-  );
-};
