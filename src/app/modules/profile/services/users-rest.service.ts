@@ -11,7 +11,7 @@ import {
   AuthApiService,
 } from '@usealto/the-office-sdk-angular';
 
-import { Observable, combineLatest, map, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { EUserRole, User } from '../../../core/models/user.model';
 
 import { User as Auth0User } from '@auth0/auth0-spa-js';
@@ -51,7 +51,18 @@ export class UsersRestService {
   }
 
   getMe(): Observable<User | undefined> {
-    return combineLatest([this.theofficeUserApi.getMe(), this.trainxUserApi.getMe()]).pipe(
+    return combineLatest([
+      this.theofficeUserApi.getMe(),
+      this.trainxUserApi.getMe().pipe(
+        catchError((e) => {
+          // If we can, we specify the error cause
+          if (e.status === 401) {
+            throw new Error('TheOffice does not allow users without a Trainx account in this version.');
+          }
+          throw e;
+        }),
+      ),
+    ]).pipe(
       map(([theofficeUser, trainxUser]) =>
         theofficeUser.data && trainxUser.data
           ? User.fromDtos(theofficeUser.data, trainxUser.data)
