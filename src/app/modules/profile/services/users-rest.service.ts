@@ -11,7 +11,7 @@ import {
   AuthApiService,
 } from '@usealto/the-office-sdk-angular';
 
-import { Observable, combineLatest, map, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { EUserRole, User } from '../../../core/models/user.model';
 
 import { User as Auth0User } from '@auth0/auth0-spa-js';
@@ -51,13 +51,25 @@ export class UsersRestService {
   }
 
   getMe(): Observable<User | undefined> {
-    return combineLatest([this.theofficeUserApi.getMe(), this.trainxUserApi.getMe()]).pipe(
-      map(([theofficeUser, trainxUser]) =>
-        theofficeUser.data && trainxUser.data
-          ? User.fromDtos(theofficeUser.data, trainxUser.data)
+    return combineLatest([this.theofficeUserApi.getMe()]).pipe(
+      map(([theofficeUser]) =>
+        theofficeUser.data
+          ? User.fromDtos(theofficeUser.data)
           : undefined,
       ),
     );
+  }
+
+  canMeAccessTrainx(companyId: string): Observable<any> {
+    return this.trainxAdminApi
+      .getUsersFromTheOfficeCompanyId({
+        theOfficeCompanyId: companyId,
+        page: 1,
+        itemsPerPage: 2,
+      }).pipe(
+        tap((res) => { return of(true)}),
+        catchError((e) => { throw e; })
+      )
   }
 
   getUsersByCompanyId(companyId: string): Observable<User[]> {

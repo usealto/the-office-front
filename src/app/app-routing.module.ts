@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@auth0/auth0-angular';
 
-import { AppGuard } from './core/guards/app.guard';
+import { AppGuard, AppGuardTrainX } from './core/guards/app.guard';
 import { CompanyGuard } from './core/guards/company.guard';
 import { UserGuard } from './core/guards/user.guard';
 import { FlagBasedPreloadingStrategy } from './core/interceptors/module-loading-strategy';
@@ -28,7 +28,7 @@ const routes: Routes = [
     resolve: {
       [EResolverData.AppData]: appResolver,
     },
-    canActivateChild: [AuthGuard, AppGuard],
+    canActivateChild: [AuthGuard, AppGuard, AppGuardTrainX],
     children: [
       {
         path: AltoRoutes.home,
