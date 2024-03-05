@@ -13,4 +13,5 @@ export const environment = {
   sentryTracesSampleRate: 1.0,
   sentryReplaysSessionSampleRate: 0,
   sentryReplaysOnErrorSampleRate: 1.0,
+  sentryEnvironment: 'development',
 };
