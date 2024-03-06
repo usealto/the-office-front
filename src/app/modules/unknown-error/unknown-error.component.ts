@@ -19,9 +19,7 @@ export class UnknownErrorComponent implements OnInit {
     this.errorMessage = this.route.snapshot.paramMap.get('error') || '';
   }
 
-  logOut() {
-    console.log('heere');
-    
+  logOut() {    
     this.auth.logout({ logoutParams: { returnTo: window.location.origin } });
     return;
   }
