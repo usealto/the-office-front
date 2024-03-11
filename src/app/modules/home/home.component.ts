@@ -67,6 +67,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.searchTerm.valueChanges.pipe(
           startWith(null),
           debounce((searchTerm) => (searchTerm ? timer(500) : of(null))),
+          tap(() => this.pageControl.patchValue(1)),
         ),
       ])
         .pipe(
