@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   me!: User;
   filteredCompanies: ICompanyInfos[] = [];
 
-  readonly companiesPageSize = 5;
+  readonly companiesPageSize = 10;
   pageControl = new FormControl(1, { nonNullable: true });
   pageCount = 1;
   companiesCount = 0;

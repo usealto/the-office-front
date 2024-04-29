@@ -28,7 +28,7 @@ export class CompaniesRestService {
   ): Observable<{ companies: Company[]; itemCount: number; pageCount: number }> {
     const req: GetCompaniesRequestParams = {
       page,
-      sortBy: 'createdAt:asc',
+      sortBy: 'createdAt:desc',
       itemsPerPage,
       search: searchTerm,
     };
