@@ -1,0 +1,40 @@
+<div class="mx-6 my-4">
+  <alto-icon-badge icon="bi-person-circle" [size]="4" class="me-4"></alto-icon-badge>
+  <h1 class="title d-inline-block">Upload questions</h1>
+</div>
+
+<form (submit)="submit()" [formGroup]="uploadQuestionsFormGroup">
+  <div class="px-6 sidebar-body">
+    <!-- <div class="mb-4">
+      <label class="form-label required">Lead ID</label>
+      <alto-input-text placeholder="58e36fd6-36a0-49ac-87bc-9e0517527d51c" [control]="leadIdCtrl"></alto-input-text>
+    </div>
+    <div class="mb-4">
+      <label class="form-label">Coach ID</label>
+      <alto-input-text placeholder="58e36fd6-36a0-49ac-87bc-9e0517527d51c" [control]="coachIdCtrl"></alto-input-text>
+    </div> -->
+    <div class="mb-4">
+      <label class="form-label required">Lead</label>
+      <select class="form-select">
+        <option *ngFor="let lead of leads" [value]="lead.id">{{ lead.firstname }} {{ lead.lastname }}</option>
+      </select>
+    </div>    
+    <div class="mb-4">
+      <label class="form-label required">Questions</label>
+      <input type="file" #filePicker >
+    </div>  
+    <div class="mb-4">
+      <select class="form-select">
+        <option value="1">Coach 1</option>
+        <option value="2">Coach 1</option>
+        <option value="3">Coach 1</option>
+      </select>
+    </div>  
+    <label class="form-label required">Coach</label>
+    </div> 
+  <div class="footer">
+    <button type="submit" class="btn btn-primary float-end" [disabled]="uploadQuestionsFormGroup.pending || uploadQuestionsFormGroup.invalid">
+      <i class="bi bi-plus-lg"></i><span>Send</span>
+    </button>
+  </div>
+</form>

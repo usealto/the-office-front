@@ -34,6 +34,7 @@ import { UserComponent } from './modules/user/user.component';
 import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
 import { Router } from '@angular/router';
 import { UnknownErrorComponent } from './modules/unknown-error/unknown-error.component';
+import { UploadQuestionsFormComponent } from './modules/company-users/upload-questions-form/upload-questions-form.component';
 @NgModule({
   declarations: [
     HomeComponent,
@@ -47,6 +48,7 @@ import { UnknownErrorComponent } from './modules/unknown-error/unknown-error.com
     UnauthorizedComponent,
     CompanyFormComponent,
     UserFormComponent,
+    UploadQuestionsFormComponent,
     BreadcrumbComponent,
     UnknownErrorComponent,
   ],

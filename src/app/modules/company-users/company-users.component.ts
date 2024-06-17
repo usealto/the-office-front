@@ -7,7 +7,7 @@ import { Subscription, combineLatest, debounce, map, of, startWith, switchMap, t
 
 import { EmojiName } from 'src/app/core/utils/emoji/data';
 import { Company } from '../../core/models/company.model';
-import { User } from '../../core/models/user.model';
+import { EUserRole, User } from '../../core/models/user.model';
 import { ICompanyUsersData } from '../../core/resolvers/companyUsers.resolver';
 import { EResolverData, ResolversService } from '../../core/resolvers/resolvers.service';
 import * as FromRoot from '../../core/store/store.reducer';
@@ -16,6 +16,8 @@ import { EPlaceholderStatus } from '../shared/models/placeholder.model';
 import { UserFormComponent } from './user-form/user-form.component';
 import { setUser, updateUserRoles } from '../../core/store/root/root.action';
 import { ToastService } from '../../core/toast/toast.service';
+import { UploadQuestionsFormComponent } from './upload-questions-form/upload-questions-form.component';
+import { RoleEnumApi } from '@usealto/sdk-ts-angular';
 
 @Component({
   selector: 'alto-company-users',
@@ -115,7 +117,6 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
               this.store.dispatch(setUser({ user }));
             }
           }
-
           return this.store.select(FromRoot.selectCompanies);
         }),
         tap(({ data: companiesById }) => {
@@ -132,5 +133,31 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
           subscription.unsubscribe();
         },
       });
+  }
+
+  openUploadQuestionForm(): void {
+    const canvaRef = this.offcanvasService.open(UploadQuestionsFormComponent, {
+      position: 'end',
+      panelClass: 'overflow-auto',
+    });
+
+    const instance = canvaRef.componentInstance as UploadQuestionsFormComponent;
+    instance.leads = this.company.users.filter((user) => user.roles.includes(EUserRole.TrainxLead));
+
+    instance.company = this.company;
+
+    const subscription = canvaRef.closed.subscribe({
+      next: () => {
+        this.toastService.show({
+          text: 'Questions successfully uploaded',
+          type: 'success',
+        });
+        subscription.unsubscribe();
+      },
+    });
+  }
+
+  get isReadyToUploadQuestions(): boolean {
+    return this.company.users.some((user) => user.roles.includes(EUserRole.TrainxLead));
   }
 }
