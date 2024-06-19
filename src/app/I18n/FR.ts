@@ -715,6 +715,7 @@ export const FR = {
   },
   menu: {
     home: 'Dashboard',
+    coachs: 'Coachs',
     programs: 'Mes programmes',
     statistics: 'Statistiques',
     team: 'Mes équipes',
