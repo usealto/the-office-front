@@ -9,7 +9,6 @@ export const environment = {
   auth0ClientId: 'ThcIBQZrRso5QaZq67kCU5eFYTfZwTSK',
   audience: 'https://api.usealto.com',
   theofficeURL: 'http://localhost:3001',
-  // audience: 'https://dev-bmttww5s.eu.auth0.com/api/v2',
   trainxTheOfficeId: '5de36fd6-36c0-49ac-97bc-9e0517527d1c',
   recordxTheOfficeId: '305fd64b-f9b7-46ae-a82f-1ca36be7088a',
   stripeCustomerURL: 'https://dashboard.stripe.com/test/customers/',

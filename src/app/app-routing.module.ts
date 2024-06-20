@@ -18,6 +18,7 @@ import { UnauthorizedComponent } from './modules/unauthorized/unauthorized.compo
 import { UserComponent } from './modules/user/user.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { UnknownErrorComponent } from './modules/unknown-error/unknown-error.component';
+import { CoachsComponent } from './modules/coachs/coachs.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
     },
     canActivateChild: [AuthGuard, AppGuard],
     children: [
+      {
+        path: AltoRoutes.coachs,
+        component: CoachsComponent,
+      },
       {
         path: AltoRoutes.home,
         component: HomeComponent,

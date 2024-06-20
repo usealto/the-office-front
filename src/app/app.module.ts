@@ -34,6 +34,8 @@ import { UserComponent } from './modules/user/user.component';
 import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
 import { Router } from '@angular/router';
 import { UnknownErrorComponent } from './modules/unknown-error/unknown-error.component';
+import { CoachsComponent } from './modules/coachs/coachs.component';
+import { CoachFormComponent } from './modules/coachs/coach-form/coach-form.component';
 @NgModule({
   declarations: [
     HomeComponent,
@@ -46,6 +48,8 @@ import { UnknownErrorComponent } from './modules/unknown-error/unknown-error.com
     UserComponent,
     UnauthorizedComponent,
     CompanyFormComponent,
+    CoachFormComponent,
+    CoachsComponent,
     UserFormComponent,
     BreadcrumbComponent,
     UnknownErrorComponent,
