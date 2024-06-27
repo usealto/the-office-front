@@ -7,13 +7,13 @@
   <div class="px-6 sidebar-body">
     <div class="mb-4">
       <label class="form-label required">Lead</label>
-      <select class="form-select" formControlName="leadCtrl">
+      <select class="form-select" formControlName="leadCtrl" >
         <option *ngFor="let lead of leads" [value]="lead.id">{{ lead.firstname }} {{ lead.lastname }}</option>
       </select>
     </div>    
     <div class="mb-4">
       <label class="form-label required">Questions</label>
-      <input type="file" formControlName="questionsCtrl" class="form-control" accept=".csv" />
+      <input type="file" formControlName="questionsCtrl" class="form-control" accept=".csv"  (change)="onFileSelected($event)" />
     </div> 
     
     <label class="form-label">Coach</label>

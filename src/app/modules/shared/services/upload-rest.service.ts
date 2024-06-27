@@ -12,7 +12,7 @@ import { Observable, tap } from 'rxjs';
 export class UploadRestService {
   constructor(private readonly trainxUploadApi: TrainxUploadApiService) {}
 
-  uploadQuestion(leadId: string, companyId: string, file: File, coachId?: string): Observable<void> {
+  uploadQuestion(leadId: string, companyId: string, file: File, coachId?: string): Observable<any> {
     const req = {
       file,
       companyId2: companyId,
@@ -20,6 +20,16 @@ export class UploadRestService {
       coachId: coachId,
     } as UploadsControllerUploadQuestionsRequestParams;
 
-    return this.trainxUploadApi.uploadsControllerUploadQuestions(req).pipe(tap((res) => console.log(res)));
+    return this.trainxUploadApi
+      .uploadsControllerUploadQuestions(req, 'body', false, {
+        httpHeaderAccept: 'text/csv',
+        context: undefined,
+      } as any)
+      .pipe(
+        tap((data) => {
+          console.log('File uploaded');
+          return data;
+        }),
+      );
   }
 }

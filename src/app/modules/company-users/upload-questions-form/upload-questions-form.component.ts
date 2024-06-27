@@ -26,7 +26,6 @@ export class UploadQuestionsFormComponent implements OnInit {
       validators: [this.validatorsService.requiredValidator('Lead is mandatory')],
     }),
     questionsCtrl: new FormControl<File | null>(null, {
-      nonNullable: true,
       validators: [this.validatorsService.requiredValidator('File is mandatory')],
     }),
     coachCtrl: new FormControl<String | null>(null, {}),
@@ -38,8 +37,8 @@ export class UploadQuestionsFormComponent implements OnInit {
     return this.uploadQuestionsFormGroup.controls.leadCtrl as FormControl<User | null>;
   }
 
-  get fileCtrl(): FormControl<File | null> {
-    return this.uploadQuestionsFormGroup.controls.questionsCtrl as FormControl<File | null>;
+  get questionsCtrl(): FormControl<String | null> {
+    return this.uploadQuestionsFormGroup.controls.questionsCtrl as FormControl<String | null>;
   }
 
   get coachCtrl(): FormControl<String | null> {
@@ -58,23 +57,60 @@ export class UploadQuestionsFormComponent implements OnInit {
     }
   }
 
+  onFileSelected(event: Event): void {
+    const element = event.currentTarget as HTMLInputElement;
+    let file: File | null = element.files ? element.files[0] : null;
+    if (file) {
+      this.questionsCtrl.setValue(file.name);
+    } else {
+      this.questionsCtrl.reset();
+    }
+  }
+
+  downloadFile(data: string, filename: string): void {
+    const blob = new Blob([data], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = filename;
+    document.body.appendChild(anchor); // Required for Firefox
+    anchor.click();
+
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(anchor);
+    }, 0);
+  }
+
   submit(): void {
     const selectedLeadId = this.uploadQuestionsFormGroup.value.leadCtrl;
     const selectedCoachId = this.uploadQuestionsFormGroup.value.coachCtrl;
-    const questions = this.uploadQuestionsFormGroup.value.questionsCtrl as File;
+    const questionFile = this.uploadQuestionsFormGroup.value.questionsCtrl;
+
+    const selectedLead = this.leads.find((l) => l.id === selectedLeadId);
+    console.log(selectedLead, selectedCoachId, questionFile);
+    if (!selectedLead || !questionFile) {
+      console.error('Form is incomplete. Lead and Questions are required.');
+      return;
+    }
 
     this.uploadRestService
-      .uploadQuestion(selectedLeadId!.toString(), this.company.id, questions, selectedCoachId?.toString())
+      .uploadQuestion(
+        selectedLead.trainxSettings.id!,
+        selectedLead.trainxSettings.companyId!,
+        questionFile,
+        selectedCoachId?.toString(),
+      )
       .subscribe({
-        next: () => {
+        next: (response) => {
+          this.downloadFile(response, 'response.csv');
           this.activeOffcanvas.close();
+          console.log('Question uploaded and file downloaded successfully');
+        },
+        error: (err) => {
+          console.error('Error uploading question:', err);
         },
       });
-
-    // this.uploadRestService.uploadQuestion('id', this.company.id, new Blob(), 'coachId').subscribe({
-    //   next: () => {
-    //     this.activeOffcanvas.close();
-    //   },
-    // });
   }
 }
