@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { UploadsApiService as TrainxUploadApiService } from '@usealto/sdk-ts-angular';
+import {
+  UploadsApiService as TrainxUploadApiService,
+  UploadsControllerUploadQuestionsRequestParams,
+} from '@usealto/sdk-ts-angular';
 
 import { Observable, tap } from 'rxjs';
 
@@ -9,13 +12,14 @@ import { Observable, tap } from 'rxjs';
 export class UploadRestService {
   constructor(private readonly trainxUploadApi: TrainxUploadApiService) {}
 
-  uploadQuestion(leadId: string, companyId: string, coachId?: string): Observable<void> {
-    return this.trainxUploadApi
-      .uploadsControllerUploadQuestions({
-        file: new Blob(),
-        companyId2: companyId,
-        userId2: leadId,
-      })
-      .pipe(tap((res) => console.log(res)));
+  uploadQuestion(leadId: string, companyId: string, file: File, coachId?: string): Observable<void> {
+    const req = {
+      file,
+      companyId2: companyId,
+      userId2: leadId,
+      coachId: coachId,
+    } as UploadsControllerUploadQuestionsRequestParams;
+
+    return this.trainxUploadApi.uploadsControllerUploadQuestions(req).pipe(tap((res) => console.log(res)));
   }
 }

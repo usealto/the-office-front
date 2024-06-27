@@ -17,7 +17,8 @@ import { UserFormComponent } from './user-form/user-form.component';
 import { setUser, updateUserRoles } from '../../core/store/root/root.action';
 import { ToastService } from '../../core/toast/toast.service';
 import { UploadQuestionsFormComponent } from './upload-questions-form/upload-questions-form.component';
-import { RoleEnumApi } from '@usealto/sdk-ts-angular';
+import { CoachDtoApi, RoleEnumApi } from '@usealto/sdk-ts-angular';
+import { CoachsRestService } from '../coachs/services/coachs-rest.service';
 
 @Component({
   selector: 'alto-company-users',
@@ -30,6 +31,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
   readonly User = User;
 
   company!: Company;
+  coachs?: CoachDtoApi[];
   filteredUsers: User[] = [];
   usersDataStatus = EPlaceholderStatus.Good;
 
@@ -47,11 +49,18 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
     private readonly offcanvasService: NgbOffcanvas,
     private readonly store: Store<FromRoot.AppState>,
     private readonly toastService: ToastService,
+    private readonly coachsRestService: CoachsRestService,
   ) {}
 
   ngOnInit(): void {
     const data = this.resolverService.getDataFromPathFromRoot(this.activatedRoute.pathFromRoot);
     this.company = (data[EResolverData.CompanyUsersData] as ICompanyUsersData).company;
+
+    this.coachsRestService.getPaginatedCoachs(1, 100).subscribe({
+      next: (data) => {
+        this.coachs = data.coachs;
+      },
+    });
 
     this.companyUsersSubscription.add(
       combineLatest([
@@ -143,6 +152,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy {
 
     const instance = canvaRef.componentInstance as UploadQuestionsFormComponent;
     instance.leads = this.company.users.filter((user) => user.roles.includes(EUserRole.TrainxLead));
+    instance.coachs = this.coachs;
 
     instance.company = this.company;
 
