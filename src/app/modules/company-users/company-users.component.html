@@ -14,8 +14,11 @@
     ></alto-input-search>
   </div>
   <div class="col text-end">
-    <button class="btn btn-primary" (click)="openUserForm()">
+    <button class="btn btn-primary mx-4" (click)="openUserForm()">
       <i class="bi bi-plus-lg"></i>Create user
+    </button>
+    <button class="btn btn-primary" (click)="openUploadQuestionForm()" [disabled]="!isReadyToUploadQuestions">
+      <i class="bi bi-upload"></i>Upload Questions
     </button>
   </div>
 </div>

@@ -1,0 +1,32 @@
+<div class="mx-6 my-4">
+  <alto-icon-badge icon="bi-person-circle" [size]="4" class="me-4"></alto-icon-badge>
+  <h1 class="title d-inline-block">Upload questions</h1>
+</div>
+
+<form (submit)="submit()" [formGroup]="uploadQuestionsFormGroup">
+  <div class="px-6 sidebar-body">
+    <div class="mb-4">
+      <label class="form-label required">Lead</label>
+      <select class="form-select" formControlName="leadCtrl" >
+        <option *ngFor="let lead of leads" [value]="lead.id">{{ lead.firstname }} {{ lead.lastname }}</option>
+      </select>
+    </div>    
+    <div class="mb-4">
+      <label class="form-label required">Questions</label>
+      <input type="file" formControlName="questionsCtrl" class="form-control" accept=".csv"  (change)="onFileSelected($event)" />
+    </div> 
+    
+    <label class="form-label">Coach</label>
+    <div class="mb-4">
+      <select class="form-select" formControlName="coachCtrl">
+        <option value="">No Coach</option>
+        <option *ngFor="let coach of coachs" [value]="coach.id">{{ coach.name }}</option>
+      </select>
+    </div>  
+    </div> 
+  <div class="footer">
+    <button type="submit" class="btn btn-primary float-end">
+      <i class="bi bi-plus-lg"></i><span>Send</span>
+    </button>
+  </div>
+</form>

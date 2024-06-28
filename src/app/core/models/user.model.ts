@@ -28,17 +28,23 @@ export interface IUser {
 }
 
 export interface ITrainxUserSettings {
+  id?: string;
+  companyId?: string;
   deletedAt?: Date;
   isConnectorActive?: boolean;
   hasLicense: boolean;
 }
 
 export class TrainxUserSettings {
+  id?: string;
+  companyId?: string;
   deletedAt?: Date;
   isConnectorActive?: boolean;
   hasLicense: boolean;
 
   constructor(data: ITrainxUserSettings) {
+    this.id = data.id;
+    this.companyId = data.companyId;
     this.deletedAt = data.deletedAt;
     this.isConnectorActive = data.isConnectorActive;
     this.hasLicense = data.hasLicense;
@@ -46,6 +52,8 @@ export class TrainxUserSettings {
 
   get rawData(): ITrainxUserSettings {
     return {
+      id: this.id,
+      companyId: this.companyId,
       deletedAt: this.deletedAt,
       isConnectorActive: this.isConnectorActive,
       hasLicense: this.hasLicense,
@@ -135,6 +143,8 @@ export class User implements IUser {
     this.applicationIds = data.applicationIds ?? [];
 
     this.trainxSettings = new TrainxUserSettings({
+      id: data.trainxSettings?.id,
+      companyId: data.trainxSettings?.companyId,
       deletedAt: data.trainxSettings?.deletedAt,
       isConnectorActive: data.trainxSettings?.isConnectorActive ?? false,
       hasLicense: data.trainxSettings?.hasLicense ?? false,
@@ -188,6 +198,8 @@ export class User implements IUser {
       emailVerified: theOfficeData.emailVerified,
       applicationIds: theOfficeData.applicationIds,
       trainxSettings: {
+        id: trainxData?.id,
+        companyId: trainxData?.companyId,
         deletedAt: trainxData?.deletedAt,
         isConnectorActive: trainxData?.isConnectorActive,
         hasLicense: theOfficeData.licenses.includes(environment.trainxTheOfficeId),
