@@ -35,7 +35,7 @@
     "@ng-select/ng-select": "^10.0.3",
     "@ngrx/store": "15.2",
     "@popperjs/core": "^2.11.6",
-    "@sentry/angular-ivy": "^7.93.0",
+    "@sentry/angular-ivy": "^7.119.1",
     "@sentry/cli": "^2.32.1",
     "@usealto/sdk-ts-angular": "^1.0.202406031227-dev",
     "@usealto/the-office-sdk-angular": "^1.0.202312281550-dev",
